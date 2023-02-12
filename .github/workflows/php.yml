@@ -6,9 +6,13 @@ on:
       - '**.php'
     branches-ignore:
       - "master"
+      - "dev-diagram"
   pull_request:
     paths:
       - '**.php'
+    branches-ignore:
+      - "master"
+      - "dev-diagram"
 
 permissions:
   contents: read
