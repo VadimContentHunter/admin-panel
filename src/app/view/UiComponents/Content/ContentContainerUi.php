@@ -41,7 +41,7 @@ class ContentContainerUi implements IContentContainerUi
     private function getContentItemsHtml(): string
     {
         return implode(array_map(
-            fn (IContentItemUi $objContentItemUi) => $objContentItemUi->getGridColumnCount(),
+            fn (IContentItemUi $objContentItemUi) => $objContentItemUi->getHtml(),
             $this->contentItems
         ));
     }
