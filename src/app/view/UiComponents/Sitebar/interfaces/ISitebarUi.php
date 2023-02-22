@@ -19,7 +19,7 @@ interface ISitebarUi
      */
     public function setLogo(string $logo_path): ISitebarUi;
 
-    public function addMenuMainItem( IMainItemUi $main_item ): ISitebarUi;
+    public function addMenuMainItem(IMainItemUi $main_item): ISitebarUi;
 
-    public function addMenuModuleItem( IModuleItemUi $module_item ): ISitebarUi;
+    public function addMenuModuleItem(IModuleItemUi $module_item): ISitebarUi;
 }

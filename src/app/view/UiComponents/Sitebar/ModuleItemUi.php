@@ -13,9 +13,9 @@ use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IModuleIte
 class ModuleItemUi implements IModuleItemUi
 {
     public function __construct(
-        protected string $iconPath = 'icon-module',
         protected string $title,
         protected string $requestContent,
+        protected string $iconPath = 'icon-module',
         protected bool $activated = false,
     ) {
     }

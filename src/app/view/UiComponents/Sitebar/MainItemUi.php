@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPane\view\UiComponents\Sitebar;
+
 use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IMainItemUi;
 
 /**
@@ -12,9 +13,9 @@ use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IMainItemU
 class MainItemUi implements IMainItemUi
 {
     public function __construct(
-        protected string $iconPath = 'icon-module',
         protected string $title,
         protected string $requestContent,
+        protected string $iconPath = 'icon-module',
         protected bool $activated = false,
     ) {
     }
