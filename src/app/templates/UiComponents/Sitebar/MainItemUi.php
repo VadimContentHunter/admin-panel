@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\templates\UiComponents\Sitebar;
+namespace vadimcontenthunter\AdminPanel\templates\UiComponents\Sitebar;
 
-use vadimcontenthunter\AdminPane\templates\UiComponents\Sitebar\interfaces\IMainItemUi;
+use vadimcontenthunter\AdminPanel\templates\UiComponents\Sitebar\interfaces\IMainItemUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

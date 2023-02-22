@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\templates\UiComponents\AdminPageFactories;
+namespace vadimcontenthunter\AdminPanel\templates\UiComponents\AdminPageFactories;
 
-use vadimcontenthunter\AdminPane\templates\UiComponents\Header\interfaces\IHeaderUi;
-use vadimcontenthunter\AdminPane\templates\UiComponents\Sitebar\interfaces\ISitebarUi;
-use vadimcontenthunter\AdminPane\templates\UiComponents\Content\interfaces\IContentContainerUi;
-use vadimcontenthunter\AdminPane\templates\UiComponents\AdminPageFactories\interfaces\IAdminPageUiFactory;
+use vadimcontenthunter\AdminPanel\templates\UiComponents\Header\interfaces\IHeaderUi;
+use vadimcontenthunter\AdminPanel\templates\UiComponents\Sitebar\interfaces\ISitebarUi;
+use vadimcontenthunter\AdminPanel\templates\UiComponents\Content\interfaces\IContentContainerUi;
+use vadimcontenthunter\AdminPanel\templates\UiComponents\AdminPageFactories\interfaces\IAdminPageUiFactory;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

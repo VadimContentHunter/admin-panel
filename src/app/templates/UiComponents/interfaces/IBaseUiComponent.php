@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\templates\UiComponents\interfaces;
+namespace vadimcontenthunter\AdminPanel\templates\UiComponents\interfaces;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

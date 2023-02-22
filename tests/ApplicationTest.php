@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\tests;
+namespace vadimcontenthunter\AdminPanel\tests;
 
 use PHPUnit\Framework\TestCase;
 

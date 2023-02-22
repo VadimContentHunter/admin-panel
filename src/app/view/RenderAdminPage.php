@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\view;
+namespace vadimcontenthunter\AdminPanel\view;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
