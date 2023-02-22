@@ -22,9 +22,9 @@ class AdminPageUiFactory implements IAdminPageUiFactory
     ) {
     }
 
-    public function setContentComponent(IContentContainerUi $contentUi): IAdminPageUiFactory
+    public function setContentComponent(IContentContainerUi $objContentUi): IAdminPageUiFactory
     {
-        $this->contentUi = $contentUi;
+        $this->contentUi = $objContentUi;
         return $this;
     }
 
@@ -34,9 +34,9 @@ class AdminPageUiFactory implements IAdminPageUiFactory
         return $this;
     }
 
-    public function setSidebarComponent(ISitebarUi $sidebarUi): IAdminPageUiFactory
+    public function setSidebarComponent(ISitebarUi $objSidebarUi): IAdminPageUiFactory
     {
-        $this->sidebarUi = $sidebarUi;
+        $this->sidebarUi = $objSidebarUi;
         return $this;
     }
 

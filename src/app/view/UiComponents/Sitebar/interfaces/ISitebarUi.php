@@ -14,9 +14,6 @@ use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IModuleIte
  */
 interface ISitebarUi
 {
-    /**
-     * @return array<IBaseUiComponent>
-     */
     public function setLogo(string $logo_path): ISitebarUi;
 
     public function addMenuMainItem(IMainItemUi $main_item): ISitebarUi;

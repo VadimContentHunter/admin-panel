@@ -41,7 +41,7 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
     private function getModuleItemsHtml(): string
     {
         return implode(array_map(
-            fn (IMainItemUi $objModuleItemUi) => $objModuleItemUi->getHtml(),
+            fn (IModuleItemUi $objModuleItemUi) => $objModuleItemUi->getHtml(),
             $this->moduleItems
         ));
     }
@@ -60,28 +60,18 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
         HTML;
     }
 
-    /**
-     * @return array<IBaseUiComponent>
-     */
     public function setLogo(string $logo_path): ISitebarUi
     {
         $this->logoPath = $logo_path;
         return $this;
     }
 
-    /**
-     * @return ISitebarUi
-     */
     public function addMenuMainItem(IMainItemUi $main_item): ISitebarUi
     {
         $this->mainItems[] = $main_item;
         return $this;
     }
 
-    /**
-     *
-     * @return ISitebarUi
-     */
     public function addMenuModuleItem(IModuleItemUi $module_item): ISitebarUi
     {
         $this->moduleItems[] = $module_item;

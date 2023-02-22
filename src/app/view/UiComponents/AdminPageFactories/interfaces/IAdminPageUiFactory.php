@@ -14,11 +14,11 @@ use vadimcontenthunter\AdminPane\view\UiComponents\Content\interfaces\IContentCo
  */
 interface IAdminPageUiFactory
 {
-    public function setContentComponent(): IAdminPageUiFactory;
+    public function setContentComponent(IContentContainerUi $objContentUi): IAdminPageUiFactory;
 
-    public function setHeaderComponent(): IAdminPageUiFactory;
+    public function setHeaderComponent(IHeaderUi $objHeaderUi): IAdminPageUiFactory;
 
-    public function setSidebarComponent(): IAdminPageUiFactory;
+    public function setSidebarComponent(ISitebarUi $objSidebarUi): IAdminPageUiFactory;
 
     public function getContentComponent(): IContentContainerUi;
 
