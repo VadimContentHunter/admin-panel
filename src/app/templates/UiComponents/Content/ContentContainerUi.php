@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\view\UiComponents\Content;
+namespace vadimcontenthunter\AdminPane\templates\UiComponents\Content;
 
-use vadimcontenthunter\AdminPane\view\UiComponents\Content\interfaces\IContentItemUi;
-use vadimcontenthunter\AdminPane\view\UiComponents\Content\interfaces\IContentContainerUi;
+use vadimcontenthunter\AdminPane\templates\UiComponents\Content\interfaces\IContentItemUi;
+use vadimcontenthunter\AdminPane\templates\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
