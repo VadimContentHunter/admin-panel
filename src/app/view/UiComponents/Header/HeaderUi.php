@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\view\UiComponents;
+namespace vadimcontenthunter\AdminPane\view\UiComponents\Header;
 
-use vadimcontenthunter\AdminPane\view\interfaces\IBaseUiComponent;
-use vadimcontenthunter\AdminPane\view\interfaces\IHeaderUi;
+use vadimcontenthunter\AdminPane\view\UiComponents\Header\interfaces\IHeaderUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class HeaderUi implements IBaseUiComponent, IHeaderUi
+class HeaderUi implements IHeaderUi
 {
     public function __construct(
         protected string $userName,

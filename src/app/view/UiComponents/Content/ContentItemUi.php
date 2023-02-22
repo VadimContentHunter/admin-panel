@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPane\view\UiComponents;
+namespace vadimcontenthunter\AdminPane\view\UiComponents\Content;
 
-use vadimcontenthunter\AdminPane\view\interfaces\IContentItemUi;
-use vadimcontenthunter\AdminPane\view\interfaces\IBaseUiComponent;
+use vadimcontenthunter\AdminPane\view\UiComponents\Content\interfaces\IContentItemUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class ContentItemUi implements IBaseUiComponent, IContentItemUi
+class ContentItemUi implements IContentItemUi
 {
     public function __construct(
         protected string $title,
