@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPane\view\UiComponents\Sitebar;
 
-use vadimcontenthunter\AdminPane\view\interfaces\IBaseUiComponent;
 use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IModuleItemUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class ModuleItemUi implements IBaseUiComponent
+class ModuleItemUi implements IModuleItemUi
 {
     public function __construct(
         protected string $iconPath = 'icon-module',

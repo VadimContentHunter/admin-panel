@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPane\view\UiComponents\Sitebar;
 
-use vadimcontenthunter\AdminPane\view\interfaces\IBaseUiComponent;
+use vadimcontenthunter\AdminPane\view\UiComponents\interfaces\IBaseUiComponent;
 use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\ISitebarUi;
 use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IMainItemUi;
 use vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces\IModuleItemUi;

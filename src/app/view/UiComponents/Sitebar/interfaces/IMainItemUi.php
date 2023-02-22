@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPane\view\UiComponents\Sitebar\interfaces;
 
-use vadimcontenthunter\AdminPane\view\interfaces\IBaseUiComponent;
+use vadimcontenthunter\AdminPane\view\UiComponents\interfaces\IBaseUiComponent;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
