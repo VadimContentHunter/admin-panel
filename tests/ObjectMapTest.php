@@ -14,17 +14,23 @@ use vadimcontenthunter\AdminPanel\services\ObjectMap;
  */
 class ObjectMapTest extends TestCase
 {
+    #[DataProvider('providerConvertClassPropertiesToDbFormat')]
+    public function test_convertClassPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties(object $testObject, array $expected): void
+    {
+        $this->assertEquals($expected, ObjectMap::convertClassPropertiesToDbFormat($testObject::class));
+    }
+
     /**
      * @return array<string,mixed>
      */
-    public function providerConvertPropertiesToDbFormat(): array
+    public function providerConvertClassPropertiesToDbFormat(): array
     {
         return [
             'test 1' => [
                 new class {
-                    protected string $name = "testObject";
-                    protected string $type = "test";
-                    protected string $value = "testValue";
+                    protected string $name = 'testObject';
+                    protected string $type = 'test';
+                    protected string $value = 'testValue';
                 },
                 [
                     'name',
@@ -35,9 +41,31 @@ class ObjectMapTest extends TestCase
         ];
     }
 
-    #[DataProvider('providerConvertPropertiesToDbFormat')]
-    public function test_convertPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties(object $testObject, array $expected): void
+    #[DataProvider('providerConvertObjectPropertiesToDbFormat')]
+    public function test_convertObjectPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties(object $testObject, array $expected): void
     {
-        $this->assertEquals($expected, ObjectMap::convertPropertiesToDbFormat($testObject::class));
+        $this->assertEquals($expected, ObjectMap::convertObjectPropertiesToDbFormat($testObject));
+    }
+
+    /**
+     * @return array<string,mixed>
+     */
+    public function providerConvertObjectPropertiesToDbFormat(): array
+    {
+        $object = new \stdClass();
+        $object->name = 'testObject';
+        $object->type = 'test';
+        $object->value = 'testValue';
+
+        return [
+            'test 1' => [
+                $object,
+                [
+                    'name' => 'testObject',
+                    'type' => 'test',
+                    'value' => 'testValue',
+                ],
+            ],
+        ];
     }
 }
