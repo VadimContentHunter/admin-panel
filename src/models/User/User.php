@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\model\User;
 
-use vadimcontenthunter\AdminPane\services\ActiveRecord;
+use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\model\User\interfaces\IUser;
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
@@ -75,7 +75,7 @@ class User extends ActiveRecord implements IUser
 
     public static function selectByEmailAndPassword(string $email, string $password): ?IUser
     {
-        if (self::createTable(DB::$connector->getDatabaseName()) !== false) {
+        if (self::createTable() !== false) {
             return null;
         }
 
