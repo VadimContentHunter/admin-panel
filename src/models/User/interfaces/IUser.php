@@ -16,9 +16,7 @@ interface IUser
 
     public function setEmail(string $email): IUser;
 
-    public function setPassword(string $password): IUser;
-
-    public function setPasswordHash(): IUser;
+    public function setPasswordHash(string $password): IUser;
 
     public function getId(): int;
 
@@ -26,7 +24,7 @@ interface IUser
 
     public function getEmail(): ?string;
 
-    public function getPassword(): ?string;
+    public function getPasswordHash(): ?string;
 
     public function validateByNameAndPassword(): bool;
 

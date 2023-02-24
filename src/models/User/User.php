@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\model\User;
 
+use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\model\User\interfaces\IUser;
-use vadimcontenthunter\MyDB\DB;
+use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
+use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
+use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -19,7 +22,7 @@ class User extends ActiveRecord implements IUser
         protected int $id,
         protected ?string $name = null,
         protected ?string $email = null,
-        protected ?string $password = null,
+        protected ?string $passwordHash = null,
     ) {
     }
 
@@ -38,12 +41,7 @@ class User extends ActiveRecord implements IUser
         return $this;
     }
 
-    public function setPassword(string $password): IUser
-    {
-        return $this;
-    }
-
-    public function setPasswordHash(): IUser
+    public function setPasswordHash(string $password): IUser
     {
         return $this;
     }
@@ -63,14 +61,19 @@ class User extends ActiveRecord implements IUser
         return $this->email;
     }
 
-    public function getPassword(): ?string
+    public function getPasswordHash(): ?string
     {
-        return $this->password;
+        return $this->passwordHash;
     }
 
     public function validateByNameAndPassword(): bool
     {
         return false;
+    }
+
+    public function getTableName(): string
+    {
+        return 'users';
     }
 
     public static function selectByEmailAndPassword(string $email, string $password): ?IUser
@@ -97,8 +100,33 @@ class User extends ActiveRecord implements IUser
         return $objects instanceof User ? $objects : null;
     }
 
-    public function getTableName(): string
+    public static function createTable(): bool
     {
-        return 'users';
+        if (!User::isTableName(DB::$connector->getDatabaseName())) {
+            $db = new DB();
+            $db->singleRequest()
+                ->singleQuery(
+                    (new TableMySQLQueryBuilder())
+                        ->create(self::getTableName())
+                            ->addField('id', FieldDataType::INT, [
+                                FieldAttributes::AUTO_INCREMENT,
+                                FieldAttributes::PRIMARY_KEY
+                            ])
+                            ->addField('username', FieldDataType::TEXT, [
+                                FieldAttributes::NOT_NULL
+                            ])
+                            ->addField('email', FieldDataType::getTypeVarchar(80), [
+                                FieldAttributes::NOT_NULL,
+                                FieldAttributes::UNIQUE
+                            ])
+                            ->addField('password_hash', FieldDataType::TEXT, [
+                                FieldAttributes::NOT_NULL
+                            ])
+                )
+                ->send();
+
+            return true;
+        }
+        return false;
     }
 }

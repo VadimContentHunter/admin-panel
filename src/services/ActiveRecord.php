@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\services;
 
 use vadimcontenthunter\MyDB\DB;
+use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DatabaseMySQLQueryBuilder\DatabaseMySQLQueryBuilder;
@@ -17,6 +18,8 @@ abstract class ActiveRecord
 {
     abstract public function getTableName(): string;
 
+    abstract public static function createTable(): bool;
+
     public static function isTableName(string $db_name): bool
     {
         $db = new DB();
@@ -28,17 +31,6 @@ abstract class ActiveRecord
             ->send()[0][0] ?? '';
 
         if (is_string($tableName) && strcmp($tableName, static::getTableName()) === 0) {
-            return true;
-        }
-        return false;
-    }
-
-    public static function createTable(): bool
-    {
-        if (!self::isTableName(DB::$connector->getDatabaseName())) {
-            $db = new DB();
-            $objTableMySQLQueryBuilder = (new TableMySQLQueryBuilder())->create(static::getTableName());
-
             return true;
         }
         return false;
