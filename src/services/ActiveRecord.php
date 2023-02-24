@@ -7,7 +7,6 @@ namespace vadimcontenthunter\AdminPanel\services;
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
-use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DatabaseMySQLQueryBuilder\DatabaseMySQLQueryBuilder;
 
 /**
@@ -36,7 +35,30 @@ abstract class ActiveRecord
         return false;
     }
 
-    public static function getById(int $id): ?static
+    /**
+     * @return static[]|null
+     */
+    public static function selectAllFields(): ?array
+    {
+        if (static::createTable() !== false) {
+            return null;
+        }
+
+        $db = new DB();
+        $objects = $db->singleRequest()
+            ->singleQuery(
+                (new DataMySQLQueryBuilder())
+                    ->select()
+                        ->addField('*')
+                        ->from(static::getTableName())
+            )
+            ->setClassName(static::class)
+            ->send();
+
+        return count($objects) > 0 ? $objects : null;
+    }
+
+    public static function selectById(int $id): ?static
     {
         if (self::createTable() !== false) {
             return null;
@@ -54,13 +76,13 @@ abstract class ActiveRecord
             ->setClassName(static::class)
             ->addParameter(':id', $id)
             ->send();
-        return $objects ? $objects[0] : null;
+        return count($objects) > 0 ? $objects[0] : null;
     }
 
     /**
      * @return static[]|null
      */
-    public static function getSelectedByAll(): ?array
+    public static function selectByField(string $field, string|int $field_value): ?array
     {
         if (static::createTable() !== false) {
             return null;
@@ -73,10 +95,45 @@ abstract class ActiveRecord
                     ->select()
                         ->addField('*')
                         ->from(static::getTableName())
+                            ->where($field . '=:field')
             )
             ->setClassName(static::class)
+            ->addParameter(':field', $field_value)
             ->send();
 
-        return is_array($objects) ? $objects : null;
+        return count($objects) > 0 ? $objects : null;
+    }
+
+    /**
+     * @param array<string,string|int> $fields
+     *
+     * @return static[]|null
+     */
+    public static function selectByFields(array $fields): ?array
+    {
+        if (static::createTable() !== false) {
+            return null;
+        }
+
+        $db = new DB();
+        $objSingleRequest = $db->singleRequest()->setClassName(static::class);
+        $query = (new DataMySQLQueryBuilder())->select()->addField('*')->from(static::getTableName());
+
+        $first_element = true;
+        foreach ($fields as $field_name => $field_value) {
+            $parameter_name = ':field_' . $field_name;
+            if ($first_element) {
+                $query->where($field_name . '=' . $parameter_name);
+                $first_element = false;
+            } else {
+                $query->and($field_name . '=' . $parameter_name);
+            }
+
+            $objSingleRequest->addParameter($parameter_name, $field_value);
+        }
+
+        $objects = $objSingleRequest->singleQuery($query)->send();
+
+        return count($objects) > 0 ? $objects : null;
     }
 }
