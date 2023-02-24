@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\services;
 
-use ReflectionProperty;
-
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
 class ObjectMap
 {
-    public function __construct(
-        protected object $object
-    ) {
+    public function __construct()
+    {
     }
 
-    private function camelCaseToUnderscore(string $source): string
+    public static function camelCaseToUnderscore(string $source): string
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $source));
     }
 
-    public function convertPropertiesToDbFormat(): array
+    public static function convertPropertiesToDbFormat($className): array
     {
-        $reflector = new \ReflectionObject($this->object);
+        $reflector = new \ReflectionClass($className);
         $properties = $reflector->getProperties();
 
         $mappedProperties = [];
@@ -32,9 +29,7 @@ class ObjectMap
             if (!($property instanceof \ReflectionProperty)) {
                 continue;
             }
-            $propertyName = $property->getName();
-            $propertyNameAsUnderscore = $this->camelCaseToUnderscore($propertyName);
-            $mappedProperties[$propertyNameAsUnderscore] = $property->getValue($this->object);
+            $mappedProperties[] = $property->getName();
         }
 
         return $mappedProperties;

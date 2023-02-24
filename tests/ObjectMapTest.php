@@ -27,9 +27,9 @@ class ObjectMapTest extends TestCase
                     protected string $value = "testValue";
                 },
                 [
-                    'name' => 'testObject',
-                    'type' => 'test',
-                    'value' => 'testValue',
+                    'name',
+                    'type',
+                    'value',
                 ],
             ],
         ];
@@ -38,7 +38,6 @@ class ObjectMapTest extends TestCase
     #[DataProvider('providerConvertPropertiesToDbFormat')]
     public function test_convertPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties(object $testObject, array $expected): void
     {
-        $objectMap = new ObjectMap($testObject);
-        $this->assertEquals($expected, $objectMap->convertPropertiesToDbFormat());
+        $this->assertEquals($expected, ObjectMap::convertPropertiesToDbFormat($testObject::class));
     }
 }
