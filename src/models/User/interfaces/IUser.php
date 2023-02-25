@@ -10,15 +10,11 @@ namespace vadimcontenthunter\AdminPanel\model\User\interfaces;
  */
 interface IUser
 {
-    public function setId(int $id): IUser;
-
     public function setName(string $user_name): IUser;
 
     public function setEmail(string $email): IUser;
 
     public function setPasswordHash(string $password): IUser;
-
-    public function getId(): int;
 
     public function getName(): ?string;
 

@@ -19,16 +19,10 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
 class User extends ActiveRecord implements IUser
 {
     public function __construct(
-        protected int $id,
         protected ?string $name = null,
         protected ?string $email = null,
         protected ?string $passwordHash = null,
     ) {
-    }
-
-    public function setId(int $id): IUser
-    {
-        return $this;
     }
 
     public function setName(string $name): IUser
@@ -44,11 +38,6 @@ class User extends ActiveRecord implements IUser
     public function setPasswordHash(string $password): IUser
     {
         return $this;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getName(): ?string
@@ -71,7 +60,7 @@ class User extends ActiveRecord implements IUser
         return false;
     }
 
-    public function getTableName(): string
+    public static function getTableName(): string
     {
         return 'users';
     }
@@ -88,11 +77,11 @@ class User extends ActiveRecord implements IUser
                 (new DataMySQLQueryBuilder())
                     ->select()
                         ->addField('*')
-                        ->from(static::getTableName())
+                        ->from(self::getTableName())
                             ->where('email=:email')
                             ->and('password=:password')
             )
-            ->setClassName(static::class)
+            ->setClassName(self::class)
             ->addParameter(':email', $email)
             ->addParameter(':password', $password)
             ->send()[0] ?? null;
@@ -102,7 +91,7 @@ class User extends ActiveRecord implements IUser
 
     public static function createTable(): bool
     {
-        if (!User::isTableName(DB::$connector->getDatabaseName())) {
+        if (!User::isTableName((DB::$connector?->getDatabaseName()) ?? '')) {
             $db = new DB();
             $db->singleRequest()
                 ->singleQuery(

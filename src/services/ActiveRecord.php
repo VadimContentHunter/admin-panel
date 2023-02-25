@@ -6,6 +6,7 @@ namespace vadimcontenthunter\AdminPanel\services;
 
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
+use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DatabaseMySQLQueryBuilder\DatabaseMySQLQueryBuilder;
 
@@ -15,8 +16,23 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DatabaseMySQLQueryBuilder\Da
  */
 abstract class ActiveRecord
 {
-    abstract public function getTableName(): string;
+    protected ?int $id = null;
 
+    public function setId(int $id): static
+    {
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    abstract public static function getTableName(): string;
+
+    /**
+     * @return bool Возвращает true, если таблица была создана иначе false.
+     */
     abstract public static function createTable(): bool;
 
     public static function isTableName(string $db_name): bool
@@ -40,7 +56,7 @@ abstract class ActiveRecord
      */
     public static function selectAllFields(): ?array
     {
-        if (static::createTable() !== false) {
+        if (static::createTable()) {
             return null;
         }
 
@@ -60,7 +76,7 @@ abstract class ActiveRecord
 
     public static function selectById(int $id): ?static
     {
-        if (self::createTable() !== false) {
+        if (static::createTable()) {
             return null;
         }
 
@@ -84,7 +100,7 @@ abstract class ActiveRecord
      */
     public static function selectByField(string $field, string|int $field_value): ?array
     {
-        if (static::createTable() !== false) {
+        if (static::createTable()) {
             return null;
         }
 
@@ -111,7 +127,7 @@ abstract class ActiveRecord
      */
     public static function selectByFields(array $fields): ?array
     {
-        if (static::createTable() !== false) {
+        if (static::createTable()) {
             return null;
         }
 
@@ -135,5 +151,149 @@ abstract class ActiveRecord
         $objects = $objSingleRequest->singleQuery($query)->send();
 
         return count($objects) > 0 ? $objects : null;
+    }
+
+
+    /**
+     * @throws AdminPanelException
+     */
+    public function insertObjectToDb(): static
+    {
+        static::createTable();
+
+        $query = (new DataMySQLQueryBuilder())->insert(static::getTableName());
+        $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+
+        foreach ($mapProperties as $field_name => $field_value) {
+            if (!is_string($field_value) && !is_numeric($field_value)) {
+                throw new AdminPanelException('Error adding to database, data is not a string or number.');
+            }
+
+            $query->addValue($field_name, (string)$field_value);
+        }
+
+        $db = new DB();
+        $db->singleRequest()
+            ->singleQuery(
+                $query
+            )
+            ->send();
+
+        return $this;
+    }
+
+    /**
+     * Использует данные в объекте
+     *
+     * @throws AdminPanelException
+     */
+    public function updateObjectToDbById(): static
+    {
+        static::createTable();
+
+        $query = (new DataMySQLQueryBuilder())->update(static::getTableName());
+        $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+
+        foreach ($mapProperties as $field_name => $field_value) {
+            if (self::getId() !== null) {
+                throw new AdminPanelException('Database update error, id not specified.');
+            }
+
+            if (!is_string($field_value) && !is_numeric($field_value)) {
+                throw new AdminPanelException('Database update error, data is not a string or number.');
+            }
+
+            $query->set($field_name, (string)$field_value);
+        }
+
+        $db = new DB();
+        $db->singleRequest()
+            ->singleQuery(
+                $query->getOperators()->where('id=' . self::getId())
+            )
+            ->send();
+
+        return $this;
+    }
+
+    /**
+     * Использует данные в объекте
+     *
+     * @throws AdminPanelException
+     */
+    public function updateObjectToDbByField(string $field, string|int $field_value): static
+    {
+        static::createTable();
+
+        $query = (new DataMySQLQueryBuilder())->update(static::getTableName());
+        $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+
+        foreach ($mapProperties as $field_name => $field_value) {
+            if (self::getId() !== null) {
+                throw new AdminPanelException('Database update error, id not specified.');
+            }
+
+            if (!is_string($field_value) && !is_numeric($field_value)) {
+                throw new AdminPanelException('Database update error, data is not a string or number.');
+            }
+
+            $query->set($field_name, (string)$field_value);
+        }
+
+        $db = new DB();
+        $db->singleRequest()
+            ->singleQuery(
+                $query->getOperators()->where($field . '=' . $field_value)
+            )
+            ->send();
+
+        return $this;
+    }
+
+    /**
+     * Использует данные в объекте
+     *
+     * @param array<string,string|int> $fields
+     *
+     * @throws AdminPanelException
+     */
+    public function updateObjectToDbByFields(array $fields): static
+    {
+        static::createTable();
+
+        $query = (new DataMySQLQueryBuilder())->update(static::getTableName());
+        $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+
+        foreach ($mapProperties as $field_name => $field_value) {
+            if (self::getId() !== null) {
+                throw new AdminPanelException('Database update error, id not specified.');
+            }
+
+            if (!is_string($field_value) && !is_numeric($field_value)) {
+                throw new AdminPanelException('Database update error, data is not a string or number.');
+            }
+
+            $query->set($field_name, (string)$field_value);
+        }
+
+        $query = $query->getOperators();
+        $first_element = true;
+        foreach ($fields as $field_name => $field_value) {
+            if ($first_element) {
+                $query->where($field_name . '=' . $field_value);
+                $first_element = false;
+            } else {
+                $query->and($field_name . '=' . $field_value);
+            }
+        }
+
+        $db = new DB();
+        $db->singleRequest()
+            ->singleQuery(
+                $query
+            )
+            ->send();
+
+        return $this;
     }
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\exceptions;
 
-use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

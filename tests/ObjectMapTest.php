@@ -14,6 +14,9 @@ use vadimcontenthunter\AdminPanel\services\ObjectMap;
  */
 class ObjectMapTest extends TestCase
 {
+    /**
+     * @param mixed[] $expected
+     */
     #[DataProvider('providerConvertClassPropertiesToDbFormat')]
     public function test_convertClassPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties(object $testObject, array $expected): void
     {
@@ -41,6 +44,9 @@ class ObjectMapTest extends TestCase
         ];
     }
 
+    /**
+     * @param mixed[] $expected
+     */
     #[DataProvider('providerConvertObjectPropertiesToDbFormat')]
     public function test_convertObjectPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties(object $testObject, array $expected): void
     {
