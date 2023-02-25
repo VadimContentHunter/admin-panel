@@ -26,7 +26,7 @@ class ObjectMapTest extends TestCase
     /**
      * @return array<string,mixed>
      */
-    public function providerConvertClassPropertiesToDbFormat(): array
+    public static function providerConvertClassPropertiesToDbFormat(): array
     {
         return [
             'test 1' => [
@@ -56,7 +56,7 @@ class ObjectMapTest extends TestCase
     /**
      * @return array<string,mixed>
      */
-    public function providerConvertObjectPropertiesToDbFormat(): array
+    public static function providerConvertObjectPropertiesToDbFormat(): array
     {
         $object = new \stdClass();
         $object->name = 'testObject';
