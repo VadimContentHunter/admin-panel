@@ -7,6 +7,7 @@ namespace vadimcontenthunter\AdminPanel\models\Module;
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
+use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
@@ -24,12 +25,67 @@ abstract class Module extends ActiveRecord implements IModule
 
     protected int $status = StatusCode::ERROR;
 
-    /**
-     * @var array<string,mixed>
-     */
-    protected array $data = [];
+    protected string $data = '{}';
 
     protected ?string $pathConfig = null;
+
+    protected static function getDefaultPathConfig(): string
+    {
+        return __DIR__ . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
+    }
+
+    /**
+     * @throws AdminPanelException
+     */
+    public static function initializeObject(?string $title = null, int $status = StatusCode::ON, ?string $path_config = null): IModule
+    {
+        if ($title === null) {
+            $title = self::initializeObjectFromModuleConfig()->getTitle();
+        }
+
+        $object = self::selectByField('title', $title)[0] ?? null;
+        if ($object === null) {
+            $object = new static();
+            $object->setTitle($title);
+            $object->setStatus($status);
+            $object->setPathConfig($path_config);
+            $object->insertObjectToDb();
+
+            $object = self::selectByField('title', $title)[0] ?? null;
+            if ($object instanceof IModule) {
+                $object->initializeJsonConfig();
+            } else {
+                throw new AdminPanelException('Error, unable to convert data from json format');
+            }
+        }
+        return $object;
+    }
+
+    /**
+     * @throws AdminPanelException
+     */
+    public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule
+    {
+        $dataFromFile = file_get_contents(self::getDefaultPathConfig());
+        $arrDataForObject = json_decode($dataFromFile, true);
+        $data = json_decode($arrDataForObject['data'] ?? '', true);
+        if (
+            !is_array($arrDataForObject)
+            || $arrDataForObject['title']
+            || $arrDataForObject['status']
+            || $arrDataForObject['pathConfig']
+            || !is_array($data)
+        ) {
+            throw new AdminPanelException("Error Incorrect data received from file.");
+        }
+
+        $object = new static();
+        $object->setTitle($arrDataForObject['title']);
+        $object->setStatus($arrDataForObject['status']);
+        $object->setData($data);
+        $object->setPathConfig($arrDataForObject['pathConfig']);
+        return $object;
+    }
 
     public function setTitle(string $title): IModule
     {
@@ -50,7 +106,7 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setData(array $data): IModule
     {
-        $this->data = $data;
+        $this->data = json_encode($data) ?? '';
         return $this;
     }
 
@@ -59,7 +115,7 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setPathConfig(?string $path_config = null): IModule
     {
-        $this->pathConfig = $path_config;
+        $this->pathConfig = $path_config ?? self::getDefaultPathConfig();
         return $this;
     }
 
@@ -77,18 +133,21 @@ abstract class Module extends ActiveRecord implements IModule
      * Возвращает данные, которые обрабатываются в админке.
      *
      * @return array<string,mixed> $data
+     *
+     * @throws AdminPanelException
      */
     public function getData(): array
     {
-        return $this->data;
+        try {
+            return json_decode($this->data, true);
+        } catch (\Throwable $th) {
+            throw new AdminPanelException('Error, unable to convert data from json format');
+        }
     }
 
-    /**
-     * @return null|string null - лежит в текущей директории
-     */
-    public function getPathConfig(): ?string
+    public function getPathConfig(): string
     {
-        return $this->pathConfig ?? __DIR__ . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
+        return $this->pathConfig ?? self::getDefaultPathConfig();
     }
 
     abstract public function getAdminContentUi(): IContentContainerUi;
@@ -108,12 +167,7 @@ abstract class Module extends ActiveRecord implements IModule
 
         $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
 
-        file_put_contents($path, $json, FILE_APPEND | LOCK_EX);
-        return $this;
-    }
-
-    public function updateJsonConfig(): IModule
-    {
+        file_put_contents($path, $json, LOCK_EX);
         return $this;
     }
 
@@ -124,7 +178,7 @@ abstract class Module extends ActiveRecord implements IModule
 
     public static function createTable(): bool
     {
-        if (!self::isTableName((DB::$connector?->getDatabaseName()) ?? '')) {
+        if (!self::isTableName()) {
             $db = new DB();
             $db->singleRequest()
                 ->singleQuery(

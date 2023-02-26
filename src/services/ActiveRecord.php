@@ -8,6 +8,7 @@ use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
+use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DatabaseMySQLQueryBuilder\DatabaseMySQLQueryBuilder;
 
 /**
@@ -35,19 +36,40 @@ abstract class ActiveRecord
      */
     abstract public static function createTable(): bool;
 
-    public static function isTableName(string $db_name): bool
+    public static function isTableName(): bool
     {
         $db = new DB();
         $tableName =  $db->singleRequest()
             ->singleQuery(
                 (new DatabaseMySQLQueryBuilder())
-                    ->isTable($db_name, static::getTableName())
+                    ->isTable((DB::$connector?->getDatabaseName()) ?? '', static::getTableName())
             )
             ->send()[0][0] ?? '';
 
         if (is_string($tableName) && strcmp($tableName, static::getTableName()) === 0) {
             return true;
         }
+        return false;
+    }
+
+    public static function dropTable(): bool
+    {
+        if (!self::isTableName()) {
+            return true;
+        }
+
+        $db = new DB();
+        $db->singleRequest()
+            ->singleQuery(
+                (new TableMySQLQueryBuilder())
+                    ->drop(static::getTableName())
+            )
+            ->send();
+
+        if (!self::isTableName()) {
+            return true;
+        }
+
         return false;
     }
 
@@ -165,6 +187,10 @@ abstract class ActiveRecord
         $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
 
         foreach ($mapProperties as $field_name => $field_value) {
+            if ($field_name === 'id') {
+                continue;
+            }
+
             if (!is_string($field_value) && !is_numeric($field_value)) {
                 throw new AdminPanelException('Error adding to database, data is not a string or number.');
             }

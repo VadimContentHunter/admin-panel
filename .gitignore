@@ -4,3 +4,4 @@
 /index.php
 /.htaccess
 /phpunit.xml.bak
+/.phpunit.cache

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module\interfaces;
 
+use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
+use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\templates\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -12,6 +14,10 @@ use vadimcontenthunter\AdminPanel\templates\UiComponents\Content\interfaces\ICon
  */
 interface IModule
 {
+    public static function initializeObject(?string $title, int $status = StatusCode::ON, ?string $path_config = null): IModule;
+
+    public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule;
+
     public function setTitle(string $title): IModule;
 
     public function setStatus(int $status): IModule;
@@ -26,7 +32,7 @@ interface IModule
     /**
      * @param string|null $path_config null - лежит в текущей директории
      */
-    public function setPathConfig(?string $path_config = null): IModule;
+    public function setPathConfig(string $path_config = null): IModule;
 
     public function getTitle(): string;
 
@@ -36,17 +42,14 @@ interface IModule
      * Возвращает данные, которые обрабатываются в админке.
      *
      * @return array<string,mixed>
+     *
+     * @throws AdminPanelException
      */
     public function getData(): array;
 
-    /**
-     * @return string|null null - лежит в текущей директории
-     */
-    public function getPathConfig(): ?string;
+    public function getPathConfig(): string;
 
     public function getAdminContentUi(): IContentContainerUi;
 
     public function initializeJsonConfig(): IModule;
-
-    public function updateJsonConfig(): IModule;
 }
