@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\model\User;
+namespace vadimcontenthunter\AdminPanel\models\User;
 
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
-use vadimcontenthunter\AdminPanel\model\User\interfaces\IUser;
+use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
@@ -91,7 +91,7 @@ class User extends ActiveRecord implements IUser
 
     public static function createTable(): bool
     {
-        if (!User::isTableName((DB::$connector?->getDatabaseName()) ?? '')) {
+        if (!self::isTableName((DB::$connector?->getDatabaseName()) ?? '')) {
             $db = new DB();
             $db->singleRequest()
                 ->singleQuery(

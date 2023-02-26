@@ -1,1 +1,11 @@
-{"version":1,"defects":[],"times":{"vadimcontenthunter\\AdminPanel\\tests\\ObjectMapTest::test_convertClassPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties#test 1":0.004,"vadimcontenthunter\\AdminPanel\\tests\\ObjectMapTest::test_convertObjectPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties#test 1":0.001}}
+{
+    "version": 1,
+    "defects": {
+        "vadimcontenthunter\\AdminPanel\\tests\\ModuleTest::test_initializeJsonConfig_shouldCreateJsonFileBasedOnObject": 7
+    },
+    "times": {
+        "vadimcontenthunter\\AdminPanel\\tests\\ObjectMapTest::test_convertClassPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties#test 1": 0.004,
+        "vadimcontenthunter\\AdminPanel\\tests\\ObjectMapTest::test_convertObjectPropertiesToDbFormat_shouldReturnAnArrayWithObjectProperties#test 1": 0.001,
+        "vadimcontenthunter\\AdminPanel\\tests\\ModuleTest::test_initializeJsonConfig_shouldCreateJsonFileBasedOnObject": 0.022
+    }
+}

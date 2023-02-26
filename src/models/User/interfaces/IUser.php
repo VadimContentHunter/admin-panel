@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\model\User\interfaces;
+namespace vadimcontenthunter\AdminPanel\models\User\interfaces;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
