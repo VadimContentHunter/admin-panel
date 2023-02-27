@@ -16,13 +16,13 @@ interface IUser
 
     public function setPasswordHash(string $password): IUser;
 
-    public function getName(): ?string;
+    public function getName(): string;
 
-    public function getEmail(): ?string;
+    public function getEmail(): string;
 
-    public function getPasswordHash(): ?string;
+    public function getPasswordHash(): string;
 
-    public function validateByNameAndPassword(): bool;
+    public function validateByEmailAndPassword(): bool;
 
     public static function selectByEmailAndPassword(string $email, string $password): ?IUser;
 }

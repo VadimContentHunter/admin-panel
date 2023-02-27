@@ -18,46 +18,67 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
  */
 class User extends ActiveRecord implements IUser
 {
+    protected string $name;
+
+    protected string $email;
+
+    protected string $passwordHash;
+
     public function __construct(
-        protected ?string $name = null,
-        protected ?string $email = null,
-        protected ?string $passwordHash = null,
+        ?string $name = null,
+        ?string $email = null,
+        ?string $password = null,
     ) {
+        if ($name !== null) {
+            $this->setName($name);
+        }
+
+        if ($name !== null) {
+            $this->setEmail($name);
+        }
+
+        if ($password !== null) {
+            $this->setPasswordHash($password);
+        }
     }
 
     public function setName(string $name): IUser
     {
+        $this->name = $name;
         return $this;
     }
 
     public function setEmail(string $email): IUser
     {
+        $this->email = $email;
         return $this;
     }
 
     public function setPasswordHash(string $password): IUser
     {
+        $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
-    public function getPasswordHash(): ?string
+    public function getPasswordHash(): string
     {
         return $this->passwordHash;
     }
 
-    public function validateByNameAndPassword(): bool
+    public function validateByEmailAndPassword(): bool
     {
-        return false;
+        $object = self::selectByEmailAndPassword($this->getEmail(), $this->getPasswordHash());
+        return $object instanceof User ? true : false;
     }
 
     public static function getTableName(): string
@@ -65,7 +86,7 @@ class User extends ActiveRecord implements IUser
         return 'users';
     }
 
-    public static function selectByEmailAndPassword(string $email, string $password): ?IUser
+    public static function selectByEmailAndPassword(string $email, string $password_hash): ?IUser
     {
         if (self::createTable() !== false) {
             return null;
@@ -79,11 +100,11 @@ class User extends ActiveRecord implements IUser
                         ->addField('*')
                         ->from(self::getTableName())
                             ->where('email=:email')
-                            ->and('password=:password')
+                            ->and('password_hash=:password_hash')
             )
             ->setClassName(self::class)
             ->addParameter(':email', $email)
-            ->addParameter(':password', $password)
+            ->addParameter(':password_hash', $password_hash)
             ->send()[0] ?? null;
 
         return $objects instanceof User ? $objects : null;
@@ -91,7 +112,7 @@ class User extends ActiveRecord implements IUser
 
     public static function createTable(): bool
     {
-        if (!self::isTableName((DB::$connector?->getDatabaseName()) ?? '')) {
+        if (!self::isTableName()) {
             $db = new DB();
             $db->singleRequest()
                 ->singleQuery(
@@ -101,7 +122,7 @@ class User extends ActiveRecord implements IUser
                                 FieldAttributes::AUTO_INCREMENT,
                                 FieldAttributes::PRIMARY_KEY
                             ])
-                            ->addField('username', FieldDataType::TEXT, [
+                            ->addField('name', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
                             ->addField('email', FieldDataType::getTypeVarchar(80), [

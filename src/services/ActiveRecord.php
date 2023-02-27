@@ -175,6 +175,28 @@ abstract class ActiveRecord
         return count($objects) > 0 ? $objects : null;
     }
 
+    public static function selectLastRecord(): ?static
+    {
+        if (!static::isTableName()) {
+            return null;
+        }
+
+        $db = new DB();
+        $object = $db->singleRequest()
+            ->singleQuery(
+                (new DataMySQLQueryBuilder())
+                    ->select()
+                        ->addField('*')
+                        ->from(static::getTableName())
+                            ->orderByDesc('id')
+                            ->limit(1)
+            )
+            ->setClassName(static::class)
+            ->send()[0];
+
+        return $object instanceof static ? $object : null;
+    }
+
 
     /**
      * @throws AdminPanelException
@@ -206,6 +228,15 @@ abstract class ActiveRecord
             ->send();
 
         return $this;
+    }
+
+    /**
+     * @throws AdminPanelException
+     */
+    public function insertReturnObjectToDb(): static
+    {
+        $this->insertObjectToDb();
+        return self::selectLastRecord() ?? throw new AdminPanelException('Error Object not found in database');
     }
 
     /**
