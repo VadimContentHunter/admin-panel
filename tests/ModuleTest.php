@@ -87,7 +87,9 @@ class ModuleTest extends TestCase
     public function test_createTable_shouldCreateATableWithModelFields(): void
     {
         $this->createConnectDB();
-        ModuleFake::dropTable();
+        if (ModuleFake::isTableName()) {
+            ModuleFake::dropTable();
+        }
 
         $this->assertEquals(true, ModuleFake::createTable());
     }
@@ -114,7 +116,9 @@ class ModuleTest extends TestCase
     public function test_initializeObject_shouldCreateAnObject(): void
     {
         $this->createConnectDB();
-        ModuleFake::dropTable();
+        if (ModuleFake::isTableName()) {
+            ModuleFake::dropTable();
+        }
         ModuleFake::createTable();
 
         $this->assertInstanceOf(ModuleFake::class, ModuleFake::initializeObject('Test initializeObject'));
