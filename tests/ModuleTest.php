@@ -103,7 +103,9 @@ class ModuleTest extends TestCase
         $this->moduleFake->insertObjectToDb();
 
         $obj = ModuleFake::selectByField('title', $this->moduleFake->getTitle())[0] ?? null;
-        ModuleFake::dropTable();
+        if (ModuleFake::isTableName()) {
+            ModuleFake::dropTable();
+        }
         $actual = null;
 
         if ($obj instanceof IModule) {
@@ -122,6 +124,8 @@ class ModuleTest extends TestCase
         ModuleFake::createTable();
 
         $this->assertInstanceOf(ModuleFake::class, ModuleFake::initializeObject('Test initializeObject'));
-        ModuleFake::dropTable();
+        if (ModuleFake::isTableName()) {
+            ModuleFake::dropTable();
+        }
     }
 }
