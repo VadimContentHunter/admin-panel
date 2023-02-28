@@ -33,8 +33,8 @@ class User extends ActiveRecord implements IUser
             $this->setName($name);
         }
 
-        if ($name !== null) {
-            $this->setEmail($name);
+        if ($email !== null) {
+            $this->setEmail($email);
         }
 
         if ($password !== null) {

@@ -29,6 +29,10 @@ abstract class Module extends ActiveRecord implements IModule
 
     protected ?string $pathConfig = null;
 
+    final public function __construct()
+    {
+    }
+
     protected static function getDefaultPathConfig(): string
     {
         return __DIR__ . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
@@ -67,21 +71,36 @@ abstract class Module extends ActiveRecord implements IModule
     public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule
     {
         $dataFromFile = file_get_contents(self::getDefaultPathConfig());
+        if (!is_string($dataFromFile)) {
+            throw new AdminPanelException("Error failed to read file.");
+        }
+
         $arrDataForObject = json_decode($dataFromFile, true);
-        $data = json_decode($arrDataForObject['data'] ?? '', true);
         if (
             !is_array($arrDataForObject)
             || $arrDataForObject['title']
             || $arrDataForObject['status']
             || $arrDataForObject['pathConfig']
-            || !is_array($data)
         ) {
             throw new AdminPanelException("Error Incorrect data received from file.");
         }
 
+        $data = json_decode($arrDataForObject['data'] ?? '', true);
+        if (!is_array($data)) {
+            throw new AdminPanelException("Error failed to convert module data to array.");
+        }
+
+        if (
+            !is_string($arrDataForObject['title'])
+            || !is_numeric($arrDataForObject['status'])
+            || !is_string($arrDataForObject['pathConfig'])
+        ) {
+            throw new AdminPanelException("Error Incorrect type for the parameter. Must be a string.");
+        }
+
         $object = new static();
         $object->setTitle($arrDataForObject['title']);
-        $object->setStatus($arrDataForObject['status']);
+        $object->setStatus((int) $arrDataForObject['status']);
         $object->setData($data);
         $object->setPathConfig($arrDataForObject['pathConfig']);
         return $object;
@@ -106,7 +125,8 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setData(array $data): IModule
     {
-        $this->data = json_encode($data) ?? '';
+        $json = json_encode($data);
+        $this->data = is_string($json) ? $json : throw new AdminPanelException("Error failed to convert to json string.");
         return $this;
     }
 
@@ -138,11 +158,12 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function getData(): array
     {
-        try {
-            return json_decode($this->data, true);
-        } catch (\Throwable $th) {
-            throw new AdminPanelException('Error, unable to convert data from json format');
+        $data = json_decode($this->data, true);
+        if (!is_array($data)) {
+            throw new AdminPanelException("Error failed to convert module data to array.");
         }
+
+        return $data;
     }
 
     public function getPathConfig(): string

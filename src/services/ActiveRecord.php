@@ -54,10 +54,6 @@ abstract class ActiveRecord
 
     public static function dropTable(): bool
     {
-        if (!self::isTableName()) {
-            return true;
-        }
-
         $db = new DB();
         $db->singleRequest()
             ->singleQuery(
