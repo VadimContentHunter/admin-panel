@@ -207,25 +207,23 @@ abstract class ActiveRecord
 
         $query = (new DataMySQLQueryBuilder())->insert(static::getTableName());
         $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+        $db = (new DB())->singleRequest();
 
-        foreach ($mapProperties as $field_name => $field_value) {
-            if ($field_name === 'id') {
+        foreach ($mapProperties as $property_name => $property_value) {
+            $parameter = ':field_' . $property_name;
+            if ($property_name === 'id') {
                 continue;
             }
 
-            if (!is_string($field_value) && !is_numeric($field_value)) {
+            if (!is_string($property_value) && !is_numeric($property_value)) {
                 throw new AdminPanelException('Error adding to database, data is not a string or number.');
             }
 
-            $query->addValue($field_name, (string)$field_value);
+            $query->addValue($property_name, $parameter);
+            $db->addParameter($parameter, $property_value);
         }
 
-        $db = new DB();
-        $db->singleRequest()
-            ->singleQuery(
-                $query
-            )
-            ->send();
+        $db->singleQuery($query)->send();
 
         return $this;
     }
@@ -250,26 +248,27 @@ abstract class ActiveRecord
 
         $query = (new DataMySQLQueryBuilder())->update(static::getTableName());
         $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+        $db = (new DB())->singleRequest();
 
-        foreach ($mapProperties as $field_name => $field_value) {
+        foreach ($mapProperties as $property_name => $property_value) {
+            $parameter = ':field_' . $property_name;
             if (self::getId() !== null) {
                 throw new AdminPanelException('Database update error, id not specified.');
             }
 
-            if (!is_string($field_value) && !is_numeric($field_value)) {
+            if (!is_string($property_value) && !is_numeric($property_value)) {
                 throw new AdminPanelException('Database update error, data is not a string or number.');
             }
 
-            $query->set($field_name, (string)$field_value);
+            $query->set($property_name, $parameter);
+            $db->addParameter($parameter, $property_value);
         }
 
-        $db = new DB();
-        $db->singleRequest()
-            ->singleQuery(
-                $query->getOperators()->where('id=' . self::getId())
-            )
-            ->send();
-
+        $db->singleQuery(
+            $query->getOperators()
+                ->where('id=' . self::getId())
+        )
+        ->send();
         return $this;
     }
 
@@ -284,25 +283,27 @@ abstract class ActiveRecord
 
         $query = (new DataMySQLQueryBuilder())->update(static::getTableName());
         $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+        $db = (new DB())->singleRequest();
 
-        foreach ($mapProperties as $field_name => $field_value) {
-            if (self::getId() !== null) {
-                throw new AdminPanelException('Database update error, id not specified.');
+        foreach ($mapProperties as $property_name => $property_value) {
+            $parameter = ':field_' . $property_name;
+            if ($property_name === 'id' && $property_value === null) {
+                continue;
             }
 
-            if (!is_string($field_value) && !is_numeric($field_value)) {
+            if (!is_string($property_value) && !is_numeric($property_value)) {
                 throw new AdminPanelException('Database update error, data is not a string or number.');
             }
 
-            $query->set($field_name, (string)$field_value);
+            $query->set($property_name, $parameter);
+            $db->addParameter($parameter, $property_value);
         }
 
-        $db = new DB();
-        $db->singleRequest()
-            ->singleQuery(
-                $query->getOperators()->where($field . '=' . $field_value)
-            )
-            ->send();
+        $db->singleQuery(
+            $query->getOperators()
+                ->where($field . "='" . $field_value . "'")
+        )
+        ->send();
 
         return $this;
     }
@@ -320,37 +321,34 @@ abstract class ActiveRecord
 
         $query = (new DataMySQLQueryBuilder())->update(static::getTableName());
         $mapProperties = ObjectMap::convertObjectPropertiesToDbFormat($this);
+        $db = (new DB())->singleRequest();
 
-        foreach ($mapProperties as $field_name => $field_value) {
-            if (self::getId() !== null) {
-                throw new AdminPanelException('Database update error, id not specified.');
+        foreach ($mapProperties as $property_name => $property_value) {
+            $parameter = ':field_' . $property_name;
+            if ($property_name === 'id' && $property_value === null) {
+                continue;
             }
 
-            if (!is_string($field_value) && !is_numeric($field_value)) {
+            if (!is_string($property_value) && !is_numeric($property_value)) {
                 throw new AdminPanelException('Database update error, data is not a string or number.');
             }
 
-            $query->set($field_name, (string)$field_value);
+            $query->set($property_name, $parameter);
+            $db->addParameter($parameter, $property_value);
         }
 
         $query = $query->getOperators();
         $first_element = true;
         foreach ($fields as $field_name => $field_value) {
             if ($first_element) {
-                $query->where($field_name . '=' . $field_value);
+                $query->where($field_name . '="' . $field_value . '"');
                 $first_element = false;
             } else {
-                $query->and($field_name . '=' . $field_value);
+                $query->and($field_name . '="' . $field_value . '"');
             }
         }
 
-        $db = new DB();
-        $db->singleRequest()
-            ->singleQuery(
-                $query
-            )
-            ->send();
-
+        $db->singleQuery($query)->send();
         return $this;
     }
 }

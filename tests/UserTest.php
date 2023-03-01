@@ -81,4 +81,28 @@ class UserTest extends TestCase
 
         $this->assertEquals(false, $object2->validateByEmailAndPassword());
     }
+
+    public function test_updateObjectToDbByField_shouldUpdateDataInDb(): void
+    {
+        $this->user->insertReturnObjectToDb();
+        $this->user->setName('newName');
+        $this->user->updateObjectToDbByField('email', $this->user->getEmail());
+        $expected = User::selectByField('email', $this->user->getEmail())[0] ?? null;
+
+        $this->assertEquals($this->user->getName(), $expected->getName());
+    }
+
+    public function test_updateObjectToDbByFields_shouldUpdateDataInDb(): void
+    {
+        $parameters = [
+            'email' => $this->user->getEmail(),
+            'password_hash' => $this->user->getPasswordHash()
+        ];
+        $this->user->insertReturnObjectToDb();
+        $this->user->setName('newName');
+        $this->user->updateObjectToDbByFields($parameters);
+        $expected = User::selectByFields($parameters)[0] ?? null;
+
+        $this->assertEquals($this->user->getName(), $expected->getName());
+    }
 }
