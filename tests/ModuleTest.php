@@ -38,15 +38,7 @@ class ModuleTest extends TestCase
                                 'param2' => 'value2',
                                 'param3' => 'value3',
                             ]);
-    }
 
-    protected function tearDown(): void
-    {
-        unlink($this->path);
-    }
-
-    protected function createConnectDB(): void
-    {
         try {
             DB::$connector = new Connector(
                 typeDb: 'mysql',
@@ -60,11 +52,18 @@ class ModuleTest extends TestCase
             );
 
             DB::$connector->connect();
+            ModuleFake::dropTable();
         } catch (\Exception $e) {
             $this->markTestSkipped(
                 'Пропуск теста из за отсутствия базы данных в удаленном окружении.'
             );
         }
+    }
+
+    protected function tearDown(): void
+    {
+        unlink($this->path);
+        ModuleFake::dropTable();
     }
 
     public function test_initializeJsonConfig_shouldCreateJsonFileBasedOnObject(): void
@@ -74,7 +73,7 @@ class ModuleTest extends TestCase
                     . '"data":{"param1":"value1",'
                     . '"param2":"value2",'
                     . '"param3":"value3"},'
-                    . '"pathConfig":"D:\\\OpenServer\\\domains\\\admin-panel\\\tests\\\ModuleFakeConfig.json"}';
+                    . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->path) . '"}';
 
         $this->moduleFake->setPathConfig($this->path)
                             ->initializeJsonConfig();
@@ -86,26 +85,17 @@ class ModuleTest extends TestCase
 
     public function test_createTable_shouldCreateATableWithModelFields(): void
     {
-        $this->createConnectDB();
-        if (ModuleFake::isTableName()) {
-            ModuleFake::dropTable();
-        }
-
         $this->assertEquals(true, ModuleFake::createTable());
     }
 
     public function test_addAndGetDataDB(): void
     {
-        $this->createConnectDB();
         ModuleFake::createTable();
 
         $this->moduleFake->setPathConfig($this->path)->initializeJsonConfig();
         $this->moduleFake->insertObjectToDb();
 
         $obj = ModuleFake::selectByField('title', $this->moduleFake->getTitle())[0] ?? null;
-        if (ModuleFake::isTableName()) {
-            ModuleFake::dropTable();
-        }
         $actual = null;
 
         if ($obj instanceof IModule) {
@@ -117,15 +107,8 @@ class ModuleTest extends TestCase
 
     public function test_initializeObject_shouldCreateAnObject(): void
     {
-        $this->createConnectDB();
-        if (ModuleFake::isTableName()) {
-            ModuleFake::dropTable();
-        }
         ModuleFake::createTable();
 
         $this->assertInstanceOf(ModuleFake::class, ModuleFake::initializeObject('Test initializeObject'));
-        if (ModuleFake::isTableName()) {
-            ModuleFake::dropTable();
-        }
     }
 }

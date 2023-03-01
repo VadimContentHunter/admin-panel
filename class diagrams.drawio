@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="gpABhHPcg4QVMedRf2A4" name="Page-1">
-        <mxGraphModel dx="2726" dy="4097" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="3303" dy="4562" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -560,73 +560,68 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="831" style="edgeStyle=elbowEdgeStyle;html=1;strokeColor=#FF6666;strokeWidth=2;endSize=12;endArrow=open;endFill=0;" edge="1" parent="1" source="333" target="677">
+                <mxCell id="831" style="edgeStyle=elbowEdgeStyle;html=1;strokeColor=#FF6666;strokeWidth=2;endSize=12;endArrow=open;endFill=0;" parent="1" source="333" target="664" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
+                            <mxPoint x="2710" y="-2370"/>
                             <mxPoint x="2700" y="-2480"/>
                             <mxPoint x="2700" y="-2440"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="333" value="&lt;&lt;abstract&gt;&gt;&#10;ActiveRecord" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=default;" parent="1" vertex="1">
-                    <mxGeometry x="2490" y="-2320" width="420" height="516" as="geometry"/>
+                    <mxGeometry x="2490" y="-2320" width="420" height="464" as="geometry"/>
                 </mxCell>
                 <mxCell id="775" value="- id = null: ?int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="333" vertex="1">
                     <mxGeometry y="40" width="420" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="829" value="- stringValidation: IDataValidation" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="333">
-                    <mxGeometry y="66" width="420" height="26" as="geometry"/>
-                </mxCell>
                 <mxCell id="335" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="333" vertex="1">
-                    <mxGeometry y="92" width="420" height="8" as="geometry"/>
-                </mxCell>
-                <mxCell id="830" value="+ setStringValidation( stringValidation: IDataValidation ): IUser" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="333">
-                    <mxGeometry y="100" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="66" width="420" height="8" as="geometry"/>
                 </mxCell>
                 <mxCell id="576" value="+ setId( id: int ): IUser" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
-                    <mxGeometry y="126" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="74" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="582" value="+ getId(): int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
-                    <mxGeometry y="152" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="100" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="337" value="+ abstract static getTableName(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="178" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="126" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="552" value="+ abstract static createTable(): bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="204" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="152" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="769" value="+ static isTableName(db_name: string): bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="230" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="178" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="555" value="+ static selectAllFields(): null | static[ ]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="256" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="204" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="774" value="+ static selectById( id: int): null | static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="282" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="230" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="554" value="+ static selectByField(field: string , field_value: string | int): null | static[ ]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="308" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="256" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="773" value="+ static selectByFields( fields:array&lt;string, string | int&gt; ): null | static[ ]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
-                    <mxGeometry y="334" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="282" width="420" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="836" value="+ static selectLastRecord( ): null | static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" vertex="1" parent="333">
-                    <mxGeometry y="360" width="420" height="26" as="geometry"/>
+                <mxCell id="836" value="+ static selectLastRecord( ): null | static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="333" vertex="1">
+                    <mxGeometry y="308" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="776" value="+ insertObjectToDb( ): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
-                    <mxGeometry y="386" width="420" height="26" as="geometry"/>
+                    <mxGeometry y="334" width="420" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="833" value="+ insertReturnObjectToDb( ): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="333">
-                    <mxGeometry y="412" width="420" height="26" as="geometry"/>
+                <mxCell id="833" value="+ insertReturnObjectToDb( ): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
+                    <mxGeometry y="360" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="777" value="+ updateObjectToDbById( ): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
+                    <mxGeometry y="386" width="420" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="834" value="+ updateObjectToDbByField(field: string , field_value: string | int): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
+                    <mxGeometry y="412" width="420" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="835" value="+ updateObjectToDbByFields(fields:array&lt;string, string | int&gt;): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="333" vertex="1">
                     <mxGeometry y="438" width="420" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="834" value="+ updateObjectToDbByField(field: string , field_value: string | int): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="333">
-                    <mxGeometry y="464" width="420" height="26" as="geometry"/>
-                </mxCell>
-                <mxCell id="835" value="+ updateObjectToDbByFields(fields:array&lt;string, string | int&gt;): static" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="333">
-                    <mxGeometry y="490" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="338" value="DATABASE" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=middle;fontSize=20;" parent="1" vertex="1">
                     <mxGeometry x="2104.95" y="-2280" width="180" height="90" as="geometry"/>
@@ -661,7 +656,7 @@
                 <mxCell id="612" value="+ setData( data: array&lt;string,mixed&gt; ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
                     <mxGeometry y="204" width="600" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="812" value="+ setPathConfig( path_config: string | null): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="349">
+                <mxCell id="812" value="+ setPathConfig( path_config: string | null): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
                     <mxGeometry y="230" width="600" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="615" value="+ getTitle(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
@@ -673,7 +668,7 @@
                 <mxCell id="617" value="+ getData(): array&lt;string,mixed&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
                     <mxGeometry y="308" width="600" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="811" value="+ getPathConfig(): string " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="349">
+                <mxCell id="811" value="+ getPathConfig(): string " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
                     <mxGeometry y="334" width="600" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="781" value="+ getAdminContentUi(): IContentContainerUi" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
@@ -682,7 +677,7 @@
                 <mxCell id="782" value="+ initializeJsonConfig(path_jscon_config = null: string | null): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="349" vertex="1">
                     <mxGeometry y="386" width="600" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="807" value="+ static initialize(title: string, status = StatusCode::ON : int, $path_config = null: string | null ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" vertex="1" parent="349">
+                <mxCell id="807" value="+ static initialize(title: string, status = StatusCode::ON : int, $path_config = null: string | null ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="349" vertex="1">
                     <mxGeometry y="412" width="600" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="804" value="+ static getTableName(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="349" vertex="1">
@@ -952,13 +947,13 @@
                 <mxCell id="580" value="+ setPasswordHash( password: string ): IUser" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="570" vertex="1">
                     <mxGeometry y="100" width="460" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="828" value="+ getName(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="570">
+                <mxCell id="828" value="+ getName(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="570" vertex="1">
                     <mxGeometry y="126" width="460" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="581" value="+ getEmail(): string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="570" vertex="1">
                     <mxGeometry y="152" width="460" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="826" value="+ getPasswordHash( ): string " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="570">
+                <mxCell id="826" value="+ getPasswordHash( ): string " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="570" vertex="1">
                     <mxGeometry y="178" width="460" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="771" value="+ validateByEmailAndPassword(): bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="570" vertex="1">
@@ -994,7 +989,7 @@
                 <mxCell id="606" value="+ getData(): array&lt;string,mixed&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="585" vertex="1">
                     <mxGeometry y="204" width="600" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="810" value="+ getPathConfig(): string " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" vertex="1" parent="585">
+                <mxCell id="810" value="+ getPathConfig(): string " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="585" vertex="1">
                     <mxGeometry y="230" width="600" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="780" value="+ getAdminContentUi(): IContentContainerUi" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="585" vertex="1">
@@ -1003,10 +998,10 @@
                 <mxCell id="778" value="+ initializeJsonConfig(): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="585" vertex="1">
                     <mxGeometry y="282" width="600" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="808" value="+ static initializeObject(title: string, status = StatusCode::ON : int, $path_config = null: string | null ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" vertex="1" parent="585">
+                <mxCell id="808" value="+ static initializeObject(title: string, status = StatusCode::ON : int, $path_config = null: string | null ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="585" vertex="1">
                     <mxGeometry y="308" width="600" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="813" value="+ static initializeObjectFromModuleConfig( path_config = null: string | null ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" vertex="1" parent="585">
+                <mxCell id="813" value="+ static initializeObjectFromModuleConfig( path_config = null: string | null ): IModule" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=2" parent="585" vertex="1">
                     <mxGeometry y="334" width="600" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="660" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#FFFFFF;strokeWidth=2;endArrow=block;endFill=0;endSize=12;" parent="1" source="349" target="333" edge="1">

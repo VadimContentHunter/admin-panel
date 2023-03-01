@@ -52,8 +52,12 @@ abstract class ActiveRecord
         return false;
     }
 
-    public static function dropTable(): bool
+    public static function dropTable(bool $table_check = true): bool
     {
+        if ($table_check && !self::isTableName()) {
+            return false;
+        }
+
         $db = new DB();
         $db->singleRequest()
             ->singleQuery(
