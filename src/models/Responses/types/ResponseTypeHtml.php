@@ -7,31 +7,29 @@ namespace vadimcontenthunter\AdminPanel\models\Responses\types;
 use vadimcontenthunter\AdminPanel\models\Responses\Response;
 use vadimcontenthunter\AdminPanel\models\Responses\interfaces\IResponse;
 use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
+use vadimcontenthunter\AdminPanel\templates\UiComponents\interfaces\IBaseUiComponent;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class ResponseTypeData extends AResponseType
+class ResponseTypeHtml extends AResponseType
 {
-    /**
-     * @param mixed[] $data
-     */
-    public function __construct(bool $success, string $message, int $code, array $data)
+    public function __construct(bool $success, string $message, int $code, IBaseUiComponent $uiComponent)
     {
         $this->response = new Response();
         $this->response->setSuccess($success);
         $this->response->setMessage($message);
         $this->response->setCode($code);
-        $this->response->setData($data);
+        $this->response->setData([$uiComponent->getHtml()]);
     }
 
     /**
      * @param mixed[] $data
      */
-    public function setData(array $data): ResponseTypeData
+    public function setUiComponent(IBaseUiComponent $uiComponent): ResponseTypeHtml
     {
-        $this->response->setData($data);
+        $this->response->setData([$uiComponent->getHtml()]);
         return $this;
     }
 
@@ -42,6 +40,6 @@ class ResponseTypeData extends AResponseType
 
     public function getType(): string
     {
-        return 'data';
+        return 'html';
     }
 }
