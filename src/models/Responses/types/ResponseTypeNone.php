@@ -13,25 +13,16 @@ use vadimcontenthunter\AdminPanel\templates\UiComponents\interfaces\IBaseUiCompo
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class ResponseTypeHtml extends AResponseType
+class ResponseTypeNone extends AResponseType
 {
-    public function __construct(bool $success, int $code, IBaseUiComponent $uiComponent, ?string $message = null)
+    public function __construct(bool $success, int $code, ?string $message = null)
     {
         $this->response = new Response();
         $this->response->setSuccess($success);
         $this->response->setMessage($message ?? '');
         $this->response->setCode($code);
-        $this->response->setData([$uiComponent->getHtml()]);
     }
 
-    /**
-     * @param mixed[] $data
-     */
-    public function setUiComponent(IBaseUiComponent $uiComponent): ResponseTypeHtml
-    {
-        $this->response->setData([$uiComponent->getHtml()]);
-        return $this;
-    }
 
     public function getResponse(): IResponse
     {

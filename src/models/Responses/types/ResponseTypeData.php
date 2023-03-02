@@ -17,11 +17,11 @@ class ResponseTypeData extends AResponseType
     /**
      * @param mixed[] $data
      */
-    public function __construct(bool $success, string $message, int $code, array $data)
+    public function __construct(bool $success, int $code, array $data, ?string $message = null)
     {
         $this->response = new Response();
         $this->response->setSuccess($success);
-        $this->response->setMessage($message);
+        $this->response->setMessage($message ?? '');
         $this->response->setCode($code);
         $this->response->setData($data);
     }
