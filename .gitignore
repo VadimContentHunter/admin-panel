@@ -3,3 +3,7 @@
 /vendor
 /index.php
 /.htaccess
+/phpunit.xml.bak
+/.phpunit.cache
+/.phpunit.cache/test-results
+.phpunit.cache/test-results
