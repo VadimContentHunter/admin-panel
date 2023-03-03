@@ -89,7 +89,7 @@ class UserTest extends TestCase
         $this->user->updateObjectToDbByField('email', $this->user->getEmail());
         $expected = User::selectByField('email', $this->user->getEmail())[0] ?? null;
 
-        $this->assertEquals($this->user->getName(), $expected->getName());
+        $this->assertEquals($this->user->getName(), $expected?->getName());
     }
 
     public function test_updateObjectToDbByFields_shouldUpdateDataInDb(): void
@@ -103,6 +103,6 @@ class UserTest extends TestCase
         $this->user->updateObjectToDbByFields($parameters);
         $expected = User::selectByFields($parameters)[0] ?? null;
 
-        $this->assertEquals($this->user->getName(), $expected->getName());
+        $this->assertEquals($this->user->getName(), $expected?->getName());
     }
 }

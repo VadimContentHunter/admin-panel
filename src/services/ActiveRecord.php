@@ -220,7 +220,7 @@ abstract class ActiveRecord
             }
 
             $query->addValue($property_name, $parameter);
-            $db->addParameter($parameter, $property_value);
+            $db->addParameter($parameter, (string)$property_value);
         }
 
         $db->singleQuery($query)->send();
@@ -261,7 +261,7 @@ abstract class ActiveRecord
             }
 
             $query->set($property_name, $parameter);
-            $db->addParameter($parameter, $property_value);
+            $db->addParameter($parameter, (string)$property_value);
         }
 
         $db->singleQuery(
@@ -296,7 +296,7 @@ abstract class ActiveRecord
             }
 
             $query->set($property_name, $parameter);
-            $db->addParameter($parameter, $property_value);
+            $db->addParameter($parameter, (string)$property_value);
         }
 
         $db->singleQuery(
@@ -334,7 +334,7 @@ abstract class ActiveRecord
             }
 
             $query->set($property_name, $parameter);
-            $db->addParameter($parameter, $property_value);
+            $db->addParameter($parameter, (string)$property_value);
         }
 
         $query = $query->getOperators();

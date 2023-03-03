@@ -75,11 +75,11 @@ class Response implements IResponse
 
     public function getDataJson(): string
     {
-        try {
-            return json_encode($this->getData());
-        } catch (\Exception $e) {
+        $json = json_encode($this->getData());
+        if (!is_string($json)) {
             throw new AdminPanelException("Error, unable to convert request data to json format.");
         }
+        return $json;
     }
 
     public function getCode(): int
@@ -105,10 +105,10 @@ class Response implements IResponse
         $object->code = $this->getCode();
         $object->data = $this->getDataJson();
 
-        try {
-            return json_encode($this->getData());
-        } catch (\Exception $e) {
+        $json = json_encode($object);
+        if (!is_string($json)) {
             throw new AdminPanelException("Error, unable to convert request object to json format.");
         }
+        return $json;
     }
 }

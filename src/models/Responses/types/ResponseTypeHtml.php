@@ -24,9 +24,6 @@ class ResponseTypeHtml extends AResponseType
         $this->response->setData([$uiComponent->getHtml()]);
     }
 
-    /**
-     * @param mixed[] $data
-     */
     public function setUiComponent(IBaseUiComponent $uiComponent): ResponseTypeHtml
     {
         $this->response->setData([$uiComponent->getHtml()]);
