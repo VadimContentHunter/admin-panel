@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\templates\UiComponents\Sitebar;
+namespace vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar;
 
-use vadimcontenthunter\AdminPanel\templates\UiComponents\Sitebar\interfaces\IMainItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class MainItemUi implements IMainItemUi
+class ModuleItemUi implements IModuleItemUi
 {
     public function __construct(
         protected string $title,

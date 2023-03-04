@@ -12,7 +12,7 @@ use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
-use vadimcontenthunter\AdminPanel\templates\UiComponents\Content\interfaces\IContentContainerUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 
 /**
