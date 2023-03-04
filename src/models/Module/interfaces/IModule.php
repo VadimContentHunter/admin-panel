@@ -6,7 +6,7 @@ namespace vadimcontenthunter\AdminPanel\models\Module\interfaces;
 
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
-use vadimcontenthunter\AdminPanel\templates\UiComponents\Content\interfaces\IContentContainerUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

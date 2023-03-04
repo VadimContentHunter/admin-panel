@@ -7,7 +7,7 @@ namespace vadimcontenthunter\AdminPanel\models\Responses\types;
 use vadimcontenthunter\AdminPanel\models\Responses\Response;
 use vadimcontenthunter\AdminPanel\models\Responses\interfaces\IResponse;
 use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
-use vadimcontenthunter\AdminPanel\templates\UiComponents\interfaces\IBaseUiComponent;
+use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\templates\UiComponents\Header;
+namespace vadimcontenthunter\AdminPanel\views\UiComponents\Header;
 
-use vadimcontenthunter\AdminPanel\templates\UiComponents\Header\interfaces\IHeaderUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IHeaderUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>

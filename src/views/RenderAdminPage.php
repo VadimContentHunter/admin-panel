@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\views;
 
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
-use vadimcontenthunter\AdminPanel\templates\UiComponents\AdminPageFactories\interfaces\IAdminPageUiFactory;
+use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\interfaces\IAdminPageUiFactory;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
