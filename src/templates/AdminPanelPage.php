@@ -1,3 +1,15 @@
+<?php
+
+$css_paths = $css_paths ?? [];
+$js_head_paths = $js_head_paths ?? [];
+$js_begin_body_paths = $js_begin_body_paths ?? [];
+$js_after_body_paths = $js_after_body_paths ?? [];
+
+$sidebar = $sidebar ?? '';
+$header = $header ?? '';
+$body_container = $body_container ?? '';
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
