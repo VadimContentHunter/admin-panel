@@ -18,24 +18,33 @@ class Routing
      */
     protected array $routes = [];
 
-    public function addRoute(string $url, string $class_name, string $method_name): Routing
+    public function addRoute(string $pattern, string $class_name, string $method_name): Routing
     {
-        $this->routes[] = new Route($url, $class_name, $method_name);
+        $this->routes[] = new Route($pattern, $class_name, $method_name);
         return $this;
     }
 
     /**
      * @param mixed[] $parameters
      */
-    public function start(string $url, array $parameters = []): void
+    public function start(string $current_url, array $parameters = []): void
     {
         foreach ($this->routes as $key => $route) {
-            if (strcasecmp($url, $route->getUrl()) === 0) {
+            if (preg_match($route->getPattern(), $current_url, $matches)) {
+                if (!empty($matches)) {
+                    echo 'Страница не найдена!';
+                    return;
+                }
+
+                unset($matches[0]);
+                $parameters += $matches;
+
                 $class_name = $route->getClassName();
                 $method_name = $route->getMethodName();
                 $obj = new $class_name();
                 $obj->$method_name($parameters);
-                break;
+
+                return;
             }
         }
     }

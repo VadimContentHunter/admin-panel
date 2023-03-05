@@ -16,15 +16,15 @@ class Route implements IRoute
      * @param mixed[] $parameters
      */
     public function __construct(
-        protected string $url,
+        protected string $pattern,
         protected string $class_name,
         protected string $method_name,
         protected array $parameters = []
     ) {
     }
-    public function setUrl(string $url): IRoute
+    public function setPattern(string $pattern): IRoute
     {
-        $this->url = $url;
+        $this->pattern = $pattern;
         return $this;
     }
 
@@ -49,9 +49,9 @@ class Route implements IRoute
         return $this;
     }
 
-    public function getUrl(): string
+    public function getPattern(): string
     {
-        return $this->url;
+        return $this->pattern;
     }
 
     public function getClassName(): string
