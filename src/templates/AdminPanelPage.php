@@ -35,10 +35,7 @@ $body_container = $body_container ?? '';
         <main>
             <?= $header ?>
             <section class="content-wrapper">
-                <!-- <h2>Dashboard</h2> -->
-                <div class="items-container">
-                    <?= $body_container ?>
-                </div>
+                <?= $body_container ?>
             </section>
         </main>
     </div>

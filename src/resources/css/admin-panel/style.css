@@ -135,10 +135,10 @@ header .notification-block .notifications .icon-header-notification i {
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/notifications_24.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/notifications_24.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/notifications_24.svg");
+  mask: url("http://admin-panel/src/resources/img/notifications_24.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -218,10 +218,10 @@ header .notification-block .sub-menu article h4 menu button.check .icon-check i 
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/check_FILL0_wght300_GRAD0_opsz24.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/check_FILL0_wght300_GRAD0_opsz24.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/check_FILL0_wght300_GRAD0_opsz24.svg");
+  mask: url("http://admin-panel/src/resources/img/check_FILL0_wght300_GRAD0_opsz24.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -254,10 +254,10 @@ header .notification-block .sub-menu article.__push menu button.check:hover .ico
   width: inherit;
   height: inherit;
   background: var(--main-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/check_FILL0_wght300_GRAD0_opsz24.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/check_FILL0_wght300_GRAD0_opsz24.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/check_FILL0_wght300_GRAD0_opsz24.svg");
+  mask: url("http://admin-panel/src/resources/img/check_FILL0_wght300_GRAD0_opsz24.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -322,10 +322,10 @@ header .account-block .account-block-main .account-name .icon-triangle i {
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/change_history_20.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/change_history_20.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/change_history_20.svg");
+  mask: url("http://admin-panel/src/resources/img/change_history_20.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -382,10 +382,10 @@ header section.control-panel .logo i {
   width: inherit;
   height: inherit;
   background: var(--main-logo-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/admin_control_panel_icon_150307.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/admin_control_panel_icon_150307.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/admin_control_panel_icon_150307.svg");
+  mask: url("http://admin-panel/src/resources/img/admin_control_panel_icon_150307.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -423,10 +423,10 @@ header section.control-panel .logo i {
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/extension_FILL0_40.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/extension_FILL0_40.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/extension_FILL0_40.svg");
+  mask: url("http://admin-panel/src/resources/img/extension_FILL0_40.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -439,10 +439,10 @@ header section.control-panel .logo i {
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/extension_off_FILL0_wght300_GRAD0_opsz40.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/extension_off_FILL0_wght300_GRAD0_opsz40.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/extension_off_FILL0_wght300_GRAD0_opsz40.svg");
+  mask: url("http://admin-panel/src/resources/img/extension_off_FILL0_wght300_GRAD0_opsz40.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
@@ -560,10 +560,10 @@ section.header-menu .sub-menu {
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel-layout/src/resources/edit_FILL1_24.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/edit_FILL1_24.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel-layout/src/resources/edit_FILL1_24.svg");
+  mask: url("http://admin-panel/src/resources/img/edit_FILL1_24.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
