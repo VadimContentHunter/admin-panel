@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\views;
 
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\interfaces\IAdminPageUiFactory;
 
 /**
@@ -33,9 +34,29 @@ class RenderAdminPage
      */
     protected array $jsAfterBodyPaths = [];
 
+    /**
+     * @param mixed[] $vars;
+     */
     public function __construct(
-        protected IAdminPageUiFactory $adminPageUiFactory
+        protected string $templatesPath,
     ) {
+    }
+
+    public function render(string $templateName, IAdminPageUiFactory $adminPageUiFactory, array $parameters = [], int $code = 200): void
+    {
+        http_response_code($code);
+        extract($parameters);
+
+        $sidebar = $adminPageUiFactory->getSidebarComponent()->getHtml();
+        $header = $adminPageUiFactory->getHeaderComponent()->getHtml();
+        $body_container = $adminPageUiFactory->getContentComponent()->getHtml();
+
+        ob_start();
+            include $this->templatesPath . '/' . $templateName;
+            $buffer = ob_get_contents();
+        ob_end_clean();
+
+        echo $buffer;
     }
 
     protected function checkFileExtension(string $path_file, string $extension): bool

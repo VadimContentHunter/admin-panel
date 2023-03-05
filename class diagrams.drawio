@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="gpABhHPcg4QVMedRf2A4" name="Page-1">
-        <mxGraphModel dx="2510" dy="3822" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="2721" dy="3958" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -11,34 +11,34 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="20" value="RenderAdminPage" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=default;" parent="1" vertex="1">
-                    <mxGeometry x="720" y="-120" width="440" height="242" as="geometry"/>
+                    <mxGeometry x="555" y="-120" width="770" height="242" as="geometry"/>
                 </mxCell>
                 <mxCell id="83" value="- adminPageUiFactory: IAdminPageUiFactory " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="20" vertex="1">
-                    <mxGeometry y="26" width="440" height="26" as="geometry"/>
+                    <mxGeometry y="26" width="770" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="22" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="20" vertex="1">
-                    <mxGeometry y="52" width="440" height="8" as="geometry"/>
+                    <mxGeometry y="52" width="770" height="8" as="geometry"/>
                 </mxCell>
                 <mxCell id="35" value="+ RenderAdminPage( objAdminPageUiFactory: IAdminPageUiFactory )" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="20" vertex="1">
-                    <mxGeometry y="60" width="440" height="26" as="geometry"/>
+                    <mxGeometry y="60" width="770" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="850" value="- checkFileExtension( path_file: string, extension: string ): bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="20">
-                    <mxGeometry y="86" width="440" height="26" as="geometry"/>
+                <mxCell id="850" value="- checkFileExtension( path_file: string, extension: string ): bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="20" vertex="1">
+                    <mxGeometry y="86" width="770" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="144" value="+ addCssFile(path_file: string): RenderAdminPage" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="20" vertex="1">
-                    <mxGeometry y="112" width="440" height="26" as="geometry"/>
+                    <mxGeometry y="112" width="770" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="149" value="+ addJsFileHead (path_file: string): RenderAdminPage" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="20" vertex="1">
-                    <mxGeometry y="138" width="440" height="26" as="geometry"/>
+                    <mxGeometry y="138" width="770" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="146" value="+ addJsFileBeginBody (path_file: string): RenderAdminPage" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="20" vertex="1">
-                    <mxGeometry y="164" width="440" height="26" as="geometry"/>
+                    <mxGeometry y="164" width="770" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="145" value="+ addJsFileAfterBody (path_file: string): RenderAdminPage" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="20" vertex="1">
-                    <mxGeometry y="190" width="440" height="26" as="geometry"/>
+                    <mxGeometry y="190" width="770" height="26" as="geometry"/>
                 </mxCell>
-                <mxCell id="75" value="+ render(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="20" vertex="1">
-                    <mxGeometry y="216" width="440" height="26" as="geometry"/>
+                <mxCell id="75" value="+ render(templateName:string, adminPageUiFactory:IAdminPageUiFactory, parameters = []:array&lt;mixed&gt;, code = 200: int ): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontStyle=0" parent="20" vertex="1">
+                    <mxGeometry y="216" width="770" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="29" value="&lt;&lt;interface&gt;&gt;&#10;IAdminPageUiFactory" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;swimlaneFillColor=default;" parent="1" vertex="1">
                     <mxGeometry x="720" y="240" width="440" height="204" as="geometry"/>
