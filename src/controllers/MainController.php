@@ -36,7 +36,7 @@ class MainController
      */
     public function view(array $parameters): void
     {
-        $page_title = 'Admin panel';
+        $page_title = 'Admin Panel';
         $user_name = $parameters['user_name'] ?? 'Test';
         $user_icon_path = AdminPanelSetting::getPathToResources('img/profile.png');
         $logo_path = 'icon-panel';
