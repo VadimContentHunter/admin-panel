@@ -25,7 +25,10 @@ class MainController
 
     public function __construct()
     {
-        $this->renderAdminPage = new RenderAdminPage(AdminPanelSetting::getPathToTemplates());
+        $this->renderAdminPage = new RenderAdminPage(
+            AdminPanelSetting::getPathToTemplates(),
+            'head.php'
+        );
     }
 
     /**
@@ -33,6 +36,7 @@ class MainController
      */
     public function view(array $parameters): void
     {
+        $page_title = 'Admin panel';
         $user_name = $parameters['user_name'] ?? 'Test';
         $user_icon_path = AdminPanelSetting::getPathToResources('img/profile.png');
         $logo_path = 'icon-panel';
@@ -47,9 +51,10 @@ class MainController
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
-        $this->renderAdminPage->render(
-            'AdminPanelPage.php',
-            (new AdminPageUiFactory($headerUi, $sitebarUi, $contentContainer))
+        $this->renderAdminPage->renderPageUiComponent(
+            'admin-panel-page.php',
+            (new AdminPageUiFactory($headerUi, $sitebarUi, $contentContainer)),
+            ['page_title' => $page_title]
         );
     }
 

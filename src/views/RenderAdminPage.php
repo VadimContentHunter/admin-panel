@@ -34,15 +34,17 @@ class RenderAdminPage
      */
     protected array $jsAfterBodyPaths = [];
 
-    /**
-     * @param mixed[] $vars;
-     */
     public function __construct(
         protected string $templatesPath,
+        protected string $templateHeadName,
     ) {
     }
 
-    public function render(string $templateName, IAdminPageUiFactory $adminPageUiFactory, array $parameters = [], int $code = 200): void
+    /**
+     * @param  array<string, mixed> $parameters
+     * @throws AdminPanelException
+     */
+    public function renderPageUiComponent(string $template_name, IAdminPageUiFactory $adminPageUiFactory, array $parameters = [], int $code = 200): void
     {
         http_response_code($code);
         extract($parameters);
@@ -56,7 +58,39 @@ class RenderAdminPage
         $js_after_body_paths = $this->jsAfterBodyPaths;
 
         ob_start();
-            include $this->templatesPath . '/' . $templateName;
+            include $this->templatesPath . '/' . $this->templateHeadName;
+            $head = ob_get_contents();
+        ob_end_clean();
+
+        ob_start();
+            include $this->templatesPath . '/' . $template_name;
+            $buffer = ob_get_contents();
+        ob_end_clean();
+
+        echo $buffer;
+    }
+
+    /**
+     * @param  array<string, mixed> $parameters
+     * @throws AdminPanelException
+     */
+    public function render(string $template_name, array $parameters = [], int $code = 200): void
+    {
+        http_response_code($code);
+        extract($parameters);
+
+        $css_paths = $this->cssPaths;
+        $js_head_paths = $this->jsHeadPaths;
+        $js_begin_body_paths = $this->jsBeginBodyPaths;
+        $js_after_body_paths = $this->jsAfterBodyPaths;
+
+        ob_start();
+            include $this->templatesPath . '/' . $this->templateHeadName;
+            $head = ob_get_contents();
+        ob_end_clean();
+
+        ob_start();
+            include $this->templatesPath . '/' . $template_name;
             $buffer = ob_get_contents();
         ob_end_clean();
 
