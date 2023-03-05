@@ -50,6 +50,10 @@ class RenderAdminPage
         $sidebar = $adminPageUiFactory->getSidebarComponent()->getHtml();
         $header = $adminPageUiFactory->getHeaderComponent()->getHtml();
         $body_container = $adminPageUiFactory->getContentComponent()->getHtml();
+        $css_paths = $this->cssPaths;
+        $js_head_paths = $this->jsHeadPaths;
+        $js_begin_body_paths = $this->jsBeginBodyPaths;
+        $js_after_body_paths = $this->jsAfterBodyPaths;
 
         ob_start();
             include $this->templatesPath . '/' . $templateName;
@@ -69,7 +73,7 @@ class RenderAdminPage
 
     public function addCssFile(string $path_file): RenderAdminPage
     {
-        if (file_exists($path_file) && $this->checkFileExtension($path_file, 'css')) {
+        if (/*!file_exists($path_file) ||*/ !$this->checkFileExtension($path_file, 'css')) {
             throw new AdminPanelException("Error, file not found or not css.");
         }
         $this->cssPaths[] = $path_file;
@@ -78,7 +82,7 @@ class RenderAdminPage
 
     public function addJsFileHead(string $path_file): RenderAdminPage
     {
-        if (file_exists($path_file) && $this->checkFileExtension($path_file, 'js')) {
+        if (/*!file_exists($path_file) ||*/ !$this->checkFileExtension($path_file, 'js')) {
             throw new AdminPanelException("Error, file not found or not js.");
         }
         $this->jsHeadPaths[] = $path_file;
@@ -87,7 +91,7 @@ class RenderAdminPage
 
     public function addJsFileBeginBody(string $path_file): RenderAdminPage
     {
-        if (file_exists($path_file) && $this->checkFileExtension($path_file, 'js')) {
+        if (/*!file_exists($path_file) ||*/ !$this->checkFileExtension($path_file, 'js')) {
             throw new AdminPanelException("Error, file not found or not js.");
         }
         $this->jsBeginBodyPaths[] = $path_file;
@@ -96,7 +100,7 @@ class RenderAdminPage
 
     public function addJsFileAfterBody(string $path_file): RenderAdminPage
     {
-        if (file_exists($path_file) && $this->checkFileExtension($path_file, 'js')) {
+        if (/*!file_exists($path_file) ||*/ !$this->checkFileExtension($path_file, 'js')) {
             throw new AdminPanelException("Error, file not found or not js.");
         }
         $this->jsAfterBodyPaths[] = $path_file;

@@ -1,0 +1,326 @@
+
+header{
+    flex-grow: 1;
+
+    @extend %flex-row-center;
+    justify-content: flex-end;
+
+    position: sticky;
+    top: 0;
+    min-height: var(--header-height);
+    max-height: var(--header-height);
+    z-index: $header-z-index;
+    background-color: var( --header-background-color);
+    border-bottom: var(--header-border-bottom);
+
+    color: var(--header-text-color);
+    font-size: var(--sidebar-font-size);
+
+    /**
+    * Стиль для всплывающих уведомлений
+    */
+    .__push {
+        .notifications {
+            background-color: var(--header-background-active) !important;
+
+            &::after {
+                display: block !important;
+            }
+        }
+
+        .sub-menu {
+            display: block !important;
+
+            article.__push {
+                display: flex !important;
+            }
+
+            article {
+                display: none !important;
+                color: var(--main-soft-text);
+            }
+        }
+    }
+
+    /**
+    * Стиль для индикатора новых уведомлений
+    */
+    .__new {
+        .notifications {
+            &::after {
+                display: block !important;
+            }
+        }
+    }
+
+    section.account-control {
+        @extend %flex-row-center;
+        margin: 0px 40px;
+        height: 50px;
+
+    }
+
+    /**
+     * Блок уведомлений
+     */
+    .notification-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: inherit;
+        border-radius: var(--main-border-radius);
+        padding: var(--header-element-padding);
+
+        &:hover {
+
+            .notifications {
+                background-color: var(--header-background-active);
+                cursor: pointer;
+            }
+
+            .sub-menu {
+                display: block;
+
+                article {
+                    color: var(--main-color-text);
+                }
+            }
+        }
+
+        /**
+         * main container, icon
+         */
+        .notifications {
+            @extend %flex-row-center;
+            justify-content: center;
+
+            height: inherit;
+            border-radius: var(--main-border-radius);
+            padding: var(--header-element-padding);
+
+
+            .icon-header-notification {
+                height: 24px;
+                width: 24px;
+                @include img-block-mask('#{$main_path_to_resources}/notifications_24.svg', var(--main-icon-color));
+            }
+
+            &::after {
+                display: none;
+                position: relative;
+                top: -10px;
+                right: 4px;
+                width: 24px;
+                height: 20px;
+                border-radius: 50%;
+
+                padding-top: 5px;
+                text-align: center;
+
+                content: attr(value);
+                color: white;
+                font-size: 10pt;
+                font-weight: bold;
+                background-color: var(--main-color);
+            }
+        }
+
+        /**
+         * Sub-menu
+         */
+        .sub-menu {
+            display: none;
+            position: fixed;
+            top: 56px;
+            width: 300px;
+            max-height: 420px;
+            margin: 4px 0px;
+            margin-left: -40px;
+            overflow-y: auto;
+
+            article {
+                display: flex;
+                flex-direction: column;
+                padding: 12px 12px;
+                margin: 4px 12px;
+                border-bottom: solid 1px #d8d8d8;
+                border-radius: var(--main-border-radius);
+                color: var(--main-soft-text);
+
+                h4 {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: 4px;
+
+                    p {
+                        time {
+                            font-size: 10px;
+                            margin-left: 8px;
+                            color: inherit;
+
+                            &::before {
+                                content: '[ ';
+                            }
+
+                            &::after {
+                                content: ' ]';
+                            }
+                        }
+                    }
+
+                    menu {
+                        display: flex;
+                        height: 28px;
+
+                        button {
+                            display: none;
+                            border: none;
+                            border-radius: var(--main-border-radius);
+                            background-color: transparent;
+                            padding: 4px 8px;
+
+                            &:hover {
+                                cursor: pointer;
+                                background-color: var(--header-background-active);
+                            }
+                        }
+
+                        button.check {
+                            .icon-check {
+                                width: 20px;
+                                height: 20px;
+                                @include img-block-mask('#{$main_path_to_resources}/check_FILL0_wght300_GRAD0_opsz24.svg', var(--main-icon-color));
+                            }
+                        }
+                    }
+                }
+
+                @include reset-a-effects();
+                a {
+                    overflow: hidden;
+                    max-height: 40px;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: var(--header-background-active);
+                    }
+                }
+            }
+
+            article.__push {
+                display: flex !important;
+                position: sticky;
+                top: 0px;
+                background-color: var(--header-background-active);
+                color: var(--main-color-text);
+
+                menu button.check:hover {
+                    .icon-check {
+                        @include img-block-mask('#{$main_path_to_resources}/check_FILL0_wght300_GRAD0_opsz24.svg', var(--main-color));
+                    }
+                }
+
+                button.check {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    /**
+     * Блок управления аккаунтом
+     */
+    .account-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        height: inherit;
+        border-radius: var(--main-border-radius);
+        padding: var(--header-element-padding);
+
+
+        &:hover {
+            background-color: var(--header-background-active);
+            cursor: pointer;
+
+
+            .sub-menu {
+                display: block;
+            }
+        }
+
+        .sub-menu {
+            display: none;
+            margin: 4px 0px;
+            position: fixed;
+            top: 56px;
+            width: 168px;
+            margin-left: -8px;
+
+            menu {
+                max-height: 200px;
+
+                li {
+                    padding: 10px 8px;
+                }
+            }
+        }
+
+        .account-block-main {
+            @extend %flex-row-center;
+
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: var(--main-border-radius);
+                margin-right: 12px;
+                background-size: contain;
+                @include box-shadow(0px 0px 10px -0px rgba(34, 60, 80, 0.2));
+            }
+
+            .account-name {
+                @extend %flex-row-center;
+                justify-content: center;
+
+
+                span {
+                    width: 84px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .icon-triangle {
+                    width: 20px;
+                    height: 20px;
+                    transform: rotate(180deg);
+                    @include img-block-mask('#{$main_path_to_resources}/change_history_20.svg', var(--main-icon-color));
+                }
+            }
+        }
+
+    }
+
+    section.control-panel {
+        @extend %flex-row-center;
+        visibility: hidden;
+
+
+        .logo {
+            width: 50px;
+            height: 50px;
+
+
+            i {
+                width: inherit;
+                height: inherit;
+                float: left;
+                background-color: rgb(214, 255, 118);
+                border-radius: 50%;
+            }
+        }
+    }
+
+}

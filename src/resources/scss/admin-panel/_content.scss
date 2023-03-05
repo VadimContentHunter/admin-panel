@@ -1,0 +1,148 @@
+.content-wrapper{
+    flex-grow: 1;
+    padding: 32px 4%;
+    background-color: var(--main-content-color);
+    overflow: auto;
+
+    h2 {
+        position: sticky;
+        top: var(--header-height);
+    }
+
+    .items-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(var(--item-container-column-size), 1fr));
+        gap: 32px;
+        justify-content: center;
+        margin: auto;
+
+        .container-base-style {
+            padding: 20px;
+            @include box-shadow(0px 5px 10px 2px rgba(34, 60, 80, 0.2));
+            border-radius: var(--main-border-radius);
+            background-color: #ffffff;
+        }
+
+        .container-one {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .panel-header {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 8px;
+                @include reset-a-effects(var(--header-text-color));
+
+                h4 {
+                    color: var(--header-text-color);
+                    font-size: 16px;
+                }
+
+                a.icon-panel {
+                    display: flex;
+                    align-items: center;
+                    height: 32px;
+                    width: 32px;
+                    border: 2px solid var(--main-icon-color);
+                    border-radius: var(--main-border-radius);
+                    justify-content: center;
+                    @include img-block-mask('#{$main_path_to_resources}/edit_FILL1_24.svg', var(--main-icon-color));
+
+                    &:hover {
+                        border-color: var(--main-color);
+                        cursor: pointer;
+
+                        i {
+                            background-color: var(--main-color);
+                        }
+                    }
+                }
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+
+                ul {
+                    list-style: none;
+                    display: flex;
+                    flex-direction: column;
+
+                    li {
+                        display: flex;
+                        flex-direction: column;
+
+                        label {
+                            color: var(--main-soft-text);
+                            font-size: 13px;
+                            margin-top: 12px;
+                            margin-bottom: 8px;
+                        }
+
+                        input {
+                            padding: 4px 12px;
+                            outline: none;
+                            border: none;
+                            border-radius: var(--main-border-radius);
+                            color: var(--main-color-text);
+                            font-size: 16px;
+                            background-color: var(--header-background-active);
+                            margin-bottom: 8px;
+
+                            &::placeholder {
+                                font-size: 13px;
+                                color: var(--header-text-color);
+                            }
+                        }
+
+                        output {
+                            display: none;
+                            // visibility: hidden;
+                            margin-bottom: 20px;
+                            font-size: 13px;
+                            color: var(--main-color);
+
+                            &::before {
+                                content: '*** ';
+                            }
+                        }
+                    }
+                }
+
+                .panel-footer {
+                    display: none;
+                    // display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                    border-top: var(--header-border-bottom);
+
+                    button {
+                        padding: 8px 12px;
+                        border: none;
+                        border-radius: var(--main-border-radius);
+                        color: var(--main-color-text);
+                        font-size: 16px;
+                        background-color: var(--header-background-active);
+                        margin-top: 16px;
+
+                        &:hover {
+                            color: #ffffff;
+                            background-color: var(--main-color);
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        .container-2 {
+            grid-column: span 3;
+            height: 500px;
+        }
+    }
+}

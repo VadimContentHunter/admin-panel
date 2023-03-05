@@ -31,7 +31,7 @@ class Routing
     {
         foreach ($this->routes as $key => $route) {
             if (preg_match($route->getPattern(), $current_url, $matches)) {
-                if (!empty($matches)) {
+                if (empty($matches)) {
                     echo 'Страница не найдена!';
                     return;
                 }

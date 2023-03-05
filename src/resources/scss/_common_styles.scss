@@ -1,0 +1,71 @@
+$main_path_to_resources: 'http://admin-panel-layout/src/resources';
+
+:root {
+    --main-logo-color: #949494;
+    --main-color: #D44137;
+    --main-border-radius: 8px;
+    --main-color-text: #444444;
+    --main-content-color: #F9F9FD;
+    --main-soft-text: #949494;
+    --main-icon-color: #949494;
+    --header-height: 68px;
+    --header-border-bottom: 2px solid #f1f1f1;
+    --header-background-color: #ffffff;
+    --header-element-padding: 4px 8px 4px 8px;
+    --header-text-color: #6F6F6F;
+    --header-background-active: #f3f3f3;
+    --sidebar-panel-width: 256px;
+    --sidebar-font-size: 13px;
+    --item-container-column-size: 80px;
+}
+
+@mixin box-shadow($property) {
+    -webkit-box-shadow: $property;
+    -moz-box-shadow: $property;
+    box-shadow: $property;
+}
+
+@mixin reset-a-effects($color: inherit) {
+    a:active,
+    a:hover,
+    a:visited,
+    a:hover,
+    a {
+        outline: none;
+        text-decoration: none;
+        color: $color;
+    }
+}
+
+@mixin img-block-mask($path, $color) {
+    i {
+        display: block;
+        width: inherit;
+        height: inherit;
+        background: $color;
+        -webkit-mask: url($path);
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask: url($path);
+        mask-repeat: no-repeat;
+        mask-size: contain;
+    }
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background-color: #f3f3f3;
+    border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #c9c9c9;
+    border-radius: 8px;
+}
+
+body {
+    font-family: "Roboto", "Helvetica", "Arial", "sans-serifsans-serif";
+}
