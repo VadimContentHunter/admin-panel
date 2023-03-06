@@ -56,7 +56,7 @@ class User extends ActiveRecord implements IUser
 
     public function setPasswordHash(string $password): IUser
     {
-        $this->passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $this->passwordHash = self::composePasswordHash($password);
         return $this;
     }
 
@@ -72,7 +72,7 @@ class User extends ActiveRecord implements IUser
 
     public function getPasswordHash(): string
     {
-        return $this->passwordHash;
+        return $this->passwordHash ?? '';
     }
 
     public function validateByEmailAndPassword(): bool
@@ -84,6 +84,12 @@ class User extends ActiveRecord implements IUser
     public static function getTableName(): string
     {
         return 'users';
+    }
+
+    public static function composePasswordHash(string $password): string
+    {
+        return hash('SHA256', 'a$2'.$password);
+        // return password_hash($password, PASSWORD_DEFAULT);
     }
 
     public static function selectByEmailAndPassword(string $email, string $password_hash): ?IUser
@@ -105,6 +111,28 @@ class User extends ActiveRecord implements IUser
             ->setClassName(self::class)
             ->addParameter(':email', $email)
             ->addParameter(':password_hash', $password_hash)
+            ->send()[0] ?? null;
+
+        return $objects instanceof User ? $objects : null;
+    }
+
+    public static function selectByEmail(string $email): ?IUser
+    {
+        if (self::createTable() !== false) {
+            return null;
+        }
+
+        $db = new DB();
+        $objects = $db->singleRequest()
+            ->singleQuery(
+                (new DataMySQLQueryBuilder())
+                    ->select()
+                        ->addField('*')
+                        ->from(self::getTableName())
+                            ->where('email=:email')
+            )
+            ->setClassName(self::class)
+            ->addParameter(':email', $email)
             ->send()[0] ?? null;
 
         return $objects instanceof User ? $objects : null;
