@@ -6,6 +6,7 @@ $js_begin_body_paths ??= [];
 $js_after_body_paths ??= [];
 
 $login_action ??= '';
+$sing_in_action ??= '';
 $email ??= '';
 $password ??= '';
 $head ??= '';
@@ -29,12 +30,12 @@ $head ??= '';
                 <ul>
                     <li>
                         <label >Электронная почта</label>
-                        <input type="email" name="email" placeholder="Введите электронную почту" value="<?= $email ?>">
+                        <input type="email" name="from_user_email" placeholder="Введите электронную почту" value="<?= $email ?>">
                         <output name="result_email"></output>
                     </li>
                     <li>
                         <label >Пароль</label>
-                        <input type="password" name="password" placeholder="Введите пароль" value="<?= $password ?>">
+                        <input type="password" name="from_user_password" placeholder="Введите пароль" value="<?= $password ?>">
                         <output name="result_password"></output>
                     </li>
                 </ul>
@@ -53,26 +54,26 @@ $head ??= '';
             <div class="panel-header">
                 <h4>Зарегистрироваться</h4>
             </div>
-            <form>
+            <form action='<?= $sing_in_action ?>'>
                 <ul>
                     <li>
                         <label >Имя пользователя</label>
-                        <input type="text" name="login" placeholder="Введите имя пользователя">
+                        <input type="text" name="from_user_name" placeholder="Введите имя пользователя">
                         <output name="result_login"></output>
                     </li>
                     <li>
                         <label >Электронная почта</label>
-                        <input type="email" name="email" placeholder="Введите электронную почту">
+                        <input type="email" name="from_user_email" placeholder="Введите электронную почту">
                         <output name="result_email"></output>
                     </li>
                     <li>
                         <label >Пароль</label>
-                        <input type="password" name="password" placeholder="Введите пароль">
+                        <input type="password" name="from_user_password" placeholder="Введите пароль">
                         <output name="result_password"></output>
                     </li>
                     <li>
                         <label >Повторите пароль</label>
-                        <input type="password" name="confirm_password" placeholder="Повторите пароль">
+                        <input type="password" name="from_user_confirm_password" placeholder="Повторите пароль">
                         <output name="result_confirm_password"></output>
                     </li>
                 </ul>
@@ -134,6 +135,40 @@ $head ??= '';
                 if(typeof response_data?.data?.redirect !== 'undefined'){
                     location= response_data.data.redirect;
                 }
+            }
+        )
+    });
+
+    setClickHandlerOnForm('#container_register > form', (elem_form) => {
+        serverRequest(
+            elem_form.getAttribute('action'),
+            (new FormData(elem_form)),
+            function (response_data) {
+
+                if(typeof response_data?.message !== 'undefined' && response_data?.message !== ''){
+                    alert(response_data.message ?? '');
+                }
+
+                if(typeof response_data?.data === 'object'){
+                    const data = response_data.data;
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key) && typeof data[key] === 'string') {
+                            const message = data[key] ?? '';
+
+                            let elem_output = elem_form.querySelector('output[name="' + key + '"]') ?? null;
+                            if (elem_output === null) {
+                                throw new Error('Error!');
+                            }
+
+                            elem_output.innerHTML = message;
+                            elem_output.style.display = 'block';
+                        }
+                    }
+                }
+
+                // if(typeof response_data?.data?.redirect !== 'undefined'){
+                //     location= response_data.data.redirect;
+                // }
             }
         )
     });

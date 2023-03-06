@@ -10,13 +10,13 @@ namespace vadimcontenthunter\AdminPanel\services;
  */
 class AdminPanelSetting
 {
-    public static string $dbName = '';
+    public static string $dbName = 'db_admin_panel';
 
-    public static string $dbHost = '';
+    public static string $dbHost = '127.0.0.1';
 
-    public static string $dbUser = '';
+    public static string $dbUser = 'mytest';
 
-    public static string $dbPassword = '';
+    public static string $dbPassword = 'mytest';
 
     public static string $dbType = 'mysql';
 

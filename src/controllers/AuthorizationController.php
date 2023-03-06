@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\controllers;
 
+use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
 
@@ -28,14 +29,17 @@ class AuthorizationController
      */
     public function view(array $parameters): void
     {
-        $page_title = 'login';
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/login-page/login-page.css'));
         $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/main_functions.js'));
         $this->renderAdminPage->render(
             'login-page.php',
-            ['page_title' => $page_title]
+            [
+                'page_title' => 'login',
+                'login_action' => Helper::getCurrentHostUrl() . '/admin/GET/users',
+                'sing_in_action' => Helper::getCurrentHostUrl() . '/admin/POST/users',
+            ]
         );
     }
 }
