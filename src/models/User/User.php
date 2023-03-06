@@ -19,16 +19,10 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
 class User extends ActiveRecord implements IUser
 {
     protected string $name;
-
     protected string $email;
-
     protected string $passwordHash;
-
-    public function __construct(
-        ?string $name = null,
-        ?string $email = null,
-        ?string $password = null,
-    ) {
+    public function __construct(?string $name = null, ?string $email = null, ?string $password = null,)
+    {
         if ($name !== null) {
             $this->setName($name);
         }
@@ -88,8 +82,7 @@ class User extends ActiveRecord implements IUser
 
     public static function composePasswordHash(string $password): string
     {
-        return hash('SHA256', 'a$2'.$password);
-        // return password_hash($password, PASSWORD_DEFAULT);
+        return hash('SHA256', 'a$2' . $password);
     }
 
     public static function selectByEmailAndPassword(string $email, string $password_hash): ?IUser
@@ -100,19 +93,16 @@ class User extends ActiveRecord implements IUser
 
         $db = new DB();
         $objects = $db->singleRequest()
-            ->singleQuery(
-                (new DataMySQLQueryBuilder())
+            ->singleQuery((new DataMySQLQueryBuilder())
                     ->select()
                         ->addField('*')
                         ->from(self::getTableName())
                             ->where('email=:email')
-                            ->and('password_hash=:password_hash')
-            )
+                            ->and('password_hash=:password_hash'))
             ->setClassName(self::class)
             ->addParameter(':email', $email)
             ->addParameter(':password_hash', $password_hash)
             ->send()[0] ?? null;
-
         return $objects instanceof User ? $objects : null;
     }
 
@@ -124,17 +114,14 @@ class User extends ActiveRecord implements IUser
 
         $db = new DB();
         $objects = $db->singleRequest()
-            ->singleQuery(
-                (new DataMySQLQueryBuilder())
+            ->singleQuery((new DataMySQLQueryBuilder())
                     ->select()
                         ->addField('*')
                         ->from(self::getTableName())
-                            ->where('email=:email')
-            )
+                            ->where('email=:email'))
             ->setClassName(self::class)
             ->addParameter(':email', $email)
             ->send()[0] ?? null;
-
         return $objects instanceof User ? $objects : null;
     }
 
@@ -143,8 +130,7 @@ class User extends ActiveRecord implements IUser
         if (!self::isTableName()) {
             $db = new DB();
             $db->singleRequest()
-                ->singleQuery(
-                    (new TableMySQLQueryBuilder())
+                ->singleQuery((new TableMySQLQueryBuilder())
                         ->create(self::getTableName())
                             ->addField('id', FieldDataType::INT, [
                                 FieldAttributes::AUTO_INCREMENT,
@@ -159,10 +145,8 @@ class User extends ActiveRecord implements IUser
                             ])
                             ->addField('password_hash', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
-                            ])
-                )
+                            ]))
                 ->send();
-
             return true;
         }
         return false;
