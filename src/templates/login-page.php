@@ -122,14 +122,8 @@ $head ??= '';
             elem_form.getAttribute('action'),
             (new FormData(elem_form)),
             function (response_data) {
-                let elem_output = elem_form.querySelector('output[name="result_email"]') ?? null;
-                if (elem_output === null) {
-                    throw new Error('Error!');
-                }
-
-                if(typeof response_data?.message !== 'undefined' && response_data.message !== ''){
-                    elem_output.innerHTML = response_data.message ?? '';
-                    elem_output.style.display = 'block';
+                if(typeof response_data?.message !== 'undefined' && response_data?.message !== ''){
+                    alert(response_data.message ?? '');
                 }
 
                 if(typeof response_data?.data?.redirect !== 'undefined'){

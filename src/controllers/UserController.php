@@ -25,7 +25,7 @@ class UserController
         if (!$user) {
             unset($_SESSION["ss_user_email"]);
             unset($_SESSION["ss_user_password_hash"]);
-        }else{
+        } else {
             $_SESSION["ss_user_email"] = $user->getEmail();
             $_SESSION["ss_user_password_hash"] = $user->getPasswordHash();
         }
@@ -110,22 +110,30 @@ class UserController
                 'Не удалось зарегистрироваться.'
             );
         } else {
-            $user = new User($user_name, $user_email, $user_password);
-            $user->insertObjectToDb();
-            $_SESSION["ss_user_email"] = $user->getEmail();
-            $_SESSION["ss_user_password_hash"] = $user->getPasswordHash();
+            if (User::selectByEmail($user_email) === null) {
+                $user = new User($user_name, $user_email, $user_password);
+                $user->insertObjectToDb();
+                $_SESSION["ss_user_email"] = $user->getEmail();
+                $_SESSION["ss_user_password_hash"] = $user->getPasswordHash();
 
-            $response = new ResponseTypeData(
-                true,
-                1,
-                [
-                    'redirect' => Helper::getCurrentHostUrl() . '/admin'
-                ],
-                'Пользователь добавлен.'
-            );
+                $response = new ResponseTypeData(
+                    true,
+                    0,
+                    [
+                        'redirect' => Helper::getCurrentHostUrl() . '/admin'
+                    ],
+                    'Пользователь добавлен.'
+                );
+            } else {
+                $response = new ResponseTypeData(
+                    false,
+                    1,
+                    [],
+                    'Пользователь уже существует.'
+                );
+            }
         }
 
-        $json = $response->getResponse()->getJsonFormat();
         echo $response->getResponse()->getJsonFormat();
     }
 }
