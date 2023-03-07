@@ -25,4 +25,6 @@ interface IUser
     public function validateByEmailAndPassword(): bool;
 
     public static function selectByEmailAndPassword(string $email, string $password): ?IUser;
+
+    public static function selectByEmail(string $email): ?IUser;
 }
