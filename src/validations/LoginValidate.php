@@ -43,7 +43,7 @@ class LoginValidate implements IValidation
      */
     protected function saveOutput(?string $output_key = null, ?string $output_message = null): void
     {
-        if($output_key === null && $output_message === null) {
+        if ($output_key === null && $output_message === null) {
             return;
         }
 
