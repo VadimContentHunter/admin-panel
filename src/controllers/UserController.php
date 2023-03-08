@@ -16,21 +16,16 @@ use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeData;
  */
 class UserController
 {
-    public function getUserObjBySession(): ?IUser
+    public static function getUserObjBySession(): ?IUser
     {
-        $user_email = $_SESSION["ss_user_email"] ?? '';
-        $user_password_hash = $_SESSION["ss_user_password_hash"] ?? '';
-
-        $user = User::selectByEmailAndPassword($user_email, $user_password_hash);
-
+        $user = User::createObjectFromSession();
+        $user = User::selectByEmailAndPassword($user->getEmail(), $user->getPasswordHash());
         if (!$user) {
-            unset($_SESSION["ss_user_email"]);
-            unset($_SESSION["ss_user_password_hash"]);
-        } else {
-            $_SESSION["ss_user_email"] = $user->getEmail();
-            $_SESSION["ss_user_password_hash"] = $user->getPasswordHash();
+            User::deleteSessionData();
+            return null;
         }
 
+        $user->setSessionFromObject();
         return $user;
     }
 
@@ -46,12 +41,10 @@ class UserController
         $user = User::selectByEmailAndPassword($user_email, $user_password_hash);
 
         if (!$user) {
-            unset($_SESSION["ss_user_email"]);
-            unset($_SESSION["ss_user_password_hash"]);
+            User::deleteSessionData();
             $response = new ResponseTypeData(false, 1, message: 'Ошибка: Неправильный логин или пароль.');
         } else {
-            $_SESSION["ss_user_email"] = $user->getEmail();
-            $_SESSION["ss_user_password_hash"] = $user->getPasswordHash();
+            $user->setSessionFromObject();
             $response = new ResponseTypeData(true, 0, [
                 'redirect' => Helper::getCurrentHostUrl() . '/admin'
             ]);
@@ -85,10 +78,10 @@ class UserController
         }
 
         if ($userLoginValidate->hasValidating()) {
-            $user = new User($user_name, $user_email, $user_password);
+            $user = new User($user_name, $user_email);
+            $user->setPasswordHashFromPassword($user_password);
             $user->insertObjectToDb();
-            $_SESSION["ss_user_email"] = $user->getEmail();
-            $_SESSION["ss_user_password_hash"] = $user->getPasswordHash();
+            $user->setSessionFromObject();
             $response->setSuccess(true);
             $response->setMessage('Пользователь добавлен.');
         } else {
