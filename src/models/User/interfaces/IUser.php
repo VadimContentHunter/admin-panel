@@ -24,6 +24,12 @@ interface IUser
 
     public function validateByEmailAndPassword(): bool;
 
+    public function setSessionFromObject(): void;
+
+    public static function deleteSessionData(): void;
+
+    public static function createObjectFromSession(?string $name = null): IUser;
+
     public static function selectByEmailAndPassword(string $email, string $password): ?IUser;
 
     public static function selectByEmail(string $email): ?IUser;

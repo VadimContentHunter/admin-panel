@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\models\User;
 
 use vadimcontenthunter\MyDB\DB;
+use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
+use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DataMySQLQueryBuilder\DataMySQLQueryBuilder;
@@ -18,10 +20,10 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
  */
 class User extends ActiveRecord implements IUser
 {
-    protected string $name;
-    protected string $email;
-    protected string $passwordHash;
-    public function __construct(?string $name = null, ?string $email = null, ?string $password = null,)
+    protected string $name = '';
+    protected string $email = '';
+    protected string $passwordHash = '';
+    public function __construct(?string $name = null, ?string $email = null, ?string $password_hash = null,)
     {
         if ($name !== null) {
             $this->setName($name);
@@ -31,9 +33,15 @@ class User extends ActiveRecord implements IUser
             $this->setEmail($email);
         }
 
-        if ($password !== null) {
-            $this->setPasswordHash($password);
+        if ($password_hash !== null) {
+            $this->setPasswordHash($password_hash);
         }
+    }
+
+    public function __set($name, $value)
+    {
+        $camelCaseName = 'set' . ObjectMap::underscoreToCamelCase($name, false);
+        $this->$camelCaseName($value);
     }
 
     public function setName(string $name): IUser
@@ -48,7 +56,13 @@ class User extends ActiveRecord implements IUser
         return $this;
     }
 
-    public function setPasswordHash(string $password): IUser
+    public function setPasswordHash(string $password_hash): IUser
+    {
+        $this->passwordHash = $password_hash;
+        return $this;
+    }
+
+    public function setPasswordHashFromPassword(string $password): IUser
     {
         $this->passwordHash = self::composePasswordHash($password);
         return $this;
@@ -66,13 +80,34 @@ class User extends ActiveRecord implements IUser
 
     public function getPasswordHash(): string
     {
-        return $this->passwordHash ?? '';
+        return $this->passwordHash;
     }
 
     public function validateByEmailAndPassword(): bool
     {
         $object = self::selectByEmailAndPassword($this->getEmail(), $this->getPasswordHash());
         return $object instanceof User ? true : false;
+    }
+
+    public function setSessionFromObject(): void
+    {
+        $_SESSION["ss_user_email"] = $this->getEmail();
+        $_SESSION["ss_user_password_hash"] = $this->getPasswordHash();
+    }
+
+    public static function deleteSessionData(): void
+    {
+        unset($_SESSION["ss_user_email"]);
+        unset($_SESSION["ss_user_password_hash"]);
+    }
+
+    public static function createObjectFromSession(?string $name = null): IUser
+    {
+        return new User(
+            $name,
+            $_SESSION["ss_user_email"] ?? '',
+            $_SESSION["ss_user_password_hash"] ?? '',
+        );
     }
 
     public static function getTableName(): string

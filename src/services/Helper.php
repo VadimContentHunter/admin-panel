@@ -12,7 +12,7 @@ class Helper
 {
     /**
      * Url: https://example.com/category/page?sort=asc
-     * Result: https://example.com/
+     * Result: https://example.com
      */
     public static function getCurrentHostUrl(): string
     {
