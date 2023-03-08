@@ -38,7 +38,7 @@ class User extends ActiveRecord implements IUser
         }
     }
 
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value): void
     {
         $camelCaseName = 'set' . ObjectMap::underscoreToCamelCase($name, false);
         $this->$camelCaseName($value);

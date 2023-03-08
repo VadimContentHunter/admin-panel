@@ -15,7 +15,9 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\AdminPageUiFactory;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -73,14 +75,14 @@ class MainController
         exit;
     }
 
-    protected function settingContentContainer(ContentContainerUi $contentContainer): void
+    protected function settingContentContainer(IContentContainerUi $contentContainer): void
     {
         $contentContainer->addContent(
             (new ContentItemUi('Test Content'))
         );
     }
 
-    protected function settingSiteBarUi(SitebarUi $sitebarUi): void
+    protected function settingSiteBarUi(ISitebarUi $sitebarUi): void
     {
         $sitebarUi->addMenuMainItem(
             (new MainItemUi('Dashboard', Helper::getCurrentHostUrl(), activated: true))
