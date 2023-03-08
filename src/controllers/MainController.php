@@ -6,7 +6,9 @@ namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
+use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Header\HeaderUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\SitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
@@ -23,6 +25,8 @@ class MainController
 {
     protected RenderAdminPage $renderAdminPage;
 
+    protected IUser $user;
+
     public function __construct()
     {
         $this->renderAdminPage = new RenderAdminPage(
@@ -36,26 +40,37 @@ class MainController
      */
     public function view(array $parameters): void
     {
-        $page_title = 'Admin Panel';
-        $user_name = $parameters['user_name'] ?? 'Test';
-        $user_icon_path = AdminPanelSetting::getPathToResources('img/profile.png');
-        $logo_path = 'icon-panel';
-        $content_title = 'None';
+        $this->setAccessToUser(Helper::getCurrentHostUrl() . '/admin/login');
 
-        $headerUi = new HeaderUi($user_name, $user_icon_path);
-        $sitebarUi = new SitebarUi($logo_path);
-        $contentContainer = new ContentContainerUi($content_title);
+        $adminPageUi = new AdminPageUiFactory(
+            $this->user->getName(),
+            AdminPanelSetting::getPathToResources('img/profile.png'),
+            'icon-panel',
+            'None'
+        );
 
-        $this->settingSiteBarUi($sitebarUi);
-        $this->settingContentContainer($contentContainer);
+        $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
+        $this->settingContentContainer($adminPageUi->getContentComponent());
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
         $this->renderAdminPage->renderPageUiComponent(
             'admin-panel-page.php',
-            (new AdminPageUiFactory($headerUi, $sitebarUi, $contentContainer)),
-            ['page_title' => $page_title]
+            $adminPageUi,
+            ['page_title' => 'Admin Panel']
         );
+    }
+
+    protected function setAccessToUser(string $url): void
+    {
+        $temp = UserController::getUserObjBySession();
+        if ($temp instanceof IUser) {
+            $this->user = $temp;
+            return;
+        }
+
+        header('Location: ' . $url);
+        exit;
     }
 
     protected function settingContentContainer(ContentContainerUi $contentContainer): void
