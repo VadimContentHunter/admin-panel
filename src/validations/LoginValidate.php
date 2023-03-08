@@ -61,12 +61,6 @@ class LoginValidate implements IValidation
      */
     protected function saveOutputArray(array $output = []): void
     {
-        foreach ($output as $output_key => $output_message) {
-            if (is_string($output_key) || is_string($output_message)) {
-                throw new AdminPanelException("Error, data is not of type string.");
-            }
-        }
-
         $this->result += $output;
     }
 
