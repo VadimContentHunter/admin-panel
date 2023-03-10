@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\views\UiComponents\Content;
+namespace vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers;
 
+use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentItemUi;
 
 /**
@@ -14,7 +15,8 @@ class ContentItemUi implements IContentItemUi
 {
     public function __construct(
         protected string $title,
-        protected string $description = ''
+        protected string $description = '',
+        protected string $pathToTemplates = ''
     ) {
     }
 
@@ -26,7 +28,7 @@ class ContentItemUi implements IContentItemUi
     public function getHtml(): string
     {
         return <<<HTML
-            <section class="container-base-style container-one">
+            <section class="container-base-style container-one" style="grid-column: span {$this->getGridColumnCount()}">
                 <div class="panel-header">
                     <h4>Личные данные</h4>
                     <a class="icon-panel">
@@ -62,5 +64,11 @@ class ContentItemUi implements IContentItemUi
                 </form>
             </section>
         HTML;
+    }
+
+    public function setPathToTemplates(string $path_to_templates): IContentItemUi
+    {
+        $this->pathToTemplates = $path_to_templates;
+        return $this;
     }
 }

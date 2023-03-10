@@ -13,10 +13,11 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Header\HeaderUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\SitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\AdminPageUiFactory;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\DashboardContentUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -48,7 +49,8 @@ class MainController
             $this->user->getName(),
             AdminPanelSetting::getPathToResources('img/profile.png'),
             'icon-panel',
-            'None'
+            'None',
+            AdminPanelSetting::getPathToTemplates(),
         );
 
         $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
@@ -78,7 +80,7 @@ class MainController
     protected function settingContentContainer(IContentContainerUi $contentContainer): void
     {
         $contentContainer->addContent(
-            (new ContentItemUi('Test Content'))
+            (new DashboardContentUi('Test Content'))
         );
     }
 
