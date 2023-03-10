@@ -80,7 +80,7 @@ class MainController
     protected function settingContentContainer(IContentContainerUi $contentContainer): void
     {
         $contentContainer->addContent(
-            (new DashboardContentUi('Test Content'))
+            (new DashboardContentUi('Dashboard'))
         );
     }
 

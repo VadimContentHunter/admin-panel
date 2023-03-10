@@ -82,7 +82,7 @@ header{
                 display: block;
 
                 article {
-                    color: var(--main-color-text);
+                    color: var(--main-text-color);
                 }
             }
         }
@@ -213,7 +213,7 @@ header{
                 position: sticky;
                 top: 0px;
                 background-color: var(--header-background-active);
-                color: var(--main-color-text);
+                color: var(--main-text-color);
 
                 menu button.check:hover {
                     .icon-check {

@@ -45,7 +45,7 @@ main {
                     outline: none;
                     border: none;
                     border-radius: var(--main-border-radius);
-                    color: var(--main-color-text);
+                    color: var(--main-text-color);
                     font-size: 16px;
                     background-color: var(--header-background-active);
                     margin-bottom: 8px;
@@ -97,7 +97,7 @@ main {
             padding: 8px 12px;
             border: none;
             border-radius: var(--main-border-radius);
-            color: var(--main-color-text);
+            color: var(--main-text-color);
             font-size: 16px;
             background-color: var(--header-background-active);
             margin-top: 16px;
@@ -129,7 +129,7 @@ main {
             color: var(--main-logo-color);
 
             span {
-                color: var(--main-color-text);
+                color: var(--main-text-color);
                 text-decoration: underline;
             }
 
