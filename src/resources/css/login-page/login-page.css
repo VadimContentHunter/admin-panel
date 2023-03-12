@@ -2,9 +2,12 @@
   --main-logo-color: #949494;
   --main-color: #D44137;
   --main-border-radius: 8px;
-  --main-color-text: #444444;
+  --main-text-color: #636363;
+  --main-text-header-color: #6F6F6F;
+  --main-text-header-2-color: #6F6F6F;
   --main-content-color: #F9F9FD;
-  --icon-color: #949494;
+  --main-soft-text: #949494;
+  --main-icon-color: #949494;
   --header-height: 68px;
   --header-border-bottom: 2px solid #f1f1f1;
   --header-background-color: #ffffff;
@@ -86,7 +89,7 @@ main form > ul li input {
   outline: none;
   border: none;
   border-radius: var(--main-border-radius);
-  color: var(--main-color-text);
+  color: var(--main-text-color);
   font-size: 16px;
   background-color: var(--header-background-active);
   margin-bottom: 8px;
@@ -96,7 +99,7 @@ main form > ul li input::placeholder {
   color: var(--header-text-color);
 }
 main form > ul li output {
-  display: none;
+  display: block;
   margin-bottom: 20px;
   font-size: 13px;
   color: var(--main-color);
@@ -121,17 +124,17 @@ main .panel-footer-form {
   justify-content: center;
   align-items: flex-end;
 }
-main .panel-footer-form input[type="submit"] {
+main .panel-footer-form button {
   width: 100%;
   padding: 8px 12px;
   border: none;
   border-radius: var(--main-border-radius);
-  color: var(--main-color-text);
+  color: var(--main-text-color);
   font-size: 16px;
   background-color: var(--header-background-active);
   margin-top: 16px;
 }
-main .panel-footer-form input[type="submit"]:hover {
+main .panel-footer-form button:hover {
   color: #ffffff;
   background-color: var(--main-color);
   cursor: pointer;
@@ -153,7 +156,7 @@ main .panel-footer a {
   color: var(--main-logo-color);
 }
 main .panel-footer a span {
-  color: var(--main-color-text);
+  color: var(--main-text-color);
   text-decoration: underline;
 }
 main .panel-footer a:hover {

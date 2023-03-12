@@ -21,8 +21,9 @@ $header-menu-indent: -8px;
 @import '../common_styles';
 @import 'header';
 @import 'sidebar';
-@import '_menu';
+@import 'menu';
 @import 'content';
+@import './containers/dashboard_container';
 
 .main-block {
     display: flex;

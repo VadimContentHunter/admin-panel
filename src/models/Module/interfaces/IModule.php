@@ -14,7 +14,7 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  */
 interface IModule
 {
-    public static function initializeObject(?string $title, int $status = StatusCode::ON, ?string $path_config = null): IModule;
+    public static function initializeObject(string $title = '', int $status = StatusCode::ON, ?string $path_config = null): IModule;
 
     public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule;
 
@@ -34,6 +34,8 @@ interface IModule
      */
     public function setPathConfig(string $path_config = null): IModule;
 
+    public function setPathModule(?string $path_module = null): IModule;
+
     public function getTitle(): string;
 
     public function getStatus(): int;
@@ -48,6 +50,8 @@ interface IModule
     public function getData(): array;
 
     public function getPathConfig(): string;
+
+    public function getPathModule(): string;
 
     public function getAdminContentUi(): IContentContainerUi;
 

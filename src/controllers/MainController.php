@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
+use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
@@ -13,10 +14,11 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Header\HeaderUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\SitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\AdminPageUiFactory;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\DashboardContentUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -48,11 +50,13 @@ class MainController
             $this->user->getName(),
             AdminPanelSetting::getPathToResources('img/profile.png'),
             'icon-panel',
-            'None'
+            'None',
+            AdminPanelSetting::getPathToTemplates(),
         );
 
+        $this->settingModule($parameters, $adminPageUi);
         $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
-        $this->settingContentContainer($adminPageUi->getContentComponent());
+        // $this->settingContentContainer($adminPageUi->getContentComponent());
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
@@ -75,11 +79,27 @@ class MainController
         exit;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    protected function settingModule(array $parameters, AdminPageUiFactory $adminPageUi): void
+    {
+        if ($parameters['modules'] && is_array($parameters['modules'])) {
+            foreach ($parameters['modules'] as $key => $module) {
+                if ($module instanceof Module) {
+                    if ($module->getTitle() === 'TextModule') {
+                        $adminPageUi->setContentComponent($module->getAdminContentUi());
+                    }
+                }
+            }
+        }
+    }
+
     protected function settingContentContainer(IContentContainerUi $contentContainer): void
     {
-        $contentContainer->addContent(
-            (new ContentItemUi('Test Content'))
-        );
+        // $contentContainer->addContent(
+        //     (new DashboardContentUi('Dashboard'))
+        // );
     }
 
     protected function settingSiteBarUi(ISitebarUi $sitebarUi): void

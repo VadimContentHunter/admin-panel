@@ -19,6 +19,12 @@ abstract class ActiveRecord
 {
     protected ?int $id = null;
 
+    public function __set(string $name, mixed $value): void
+    {
+        $camelCaseName = 'set' . ObjectMap::underscoreToCamelCase($name, false);
+        $this->$camelCaseName($value);
+    }
+
     public function setId(int $id): static
     {
         return $this;
