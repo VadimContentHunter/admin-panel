@@ -74,7 +74,7 @@ class ModuleTest extends TestCase
                     . '"param2":"value2",'
                     . '"param3":"value3"},'
                     . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->pathConfig) . '",'
-                    . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__.'\\fakes') . '"}';
+                    . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__ . '\\fakes') . '"}';
 
         $this->moduleFake->setPathConfig($this->pathConfig)
                             ->initializeJsonConfig();
