@@ -29,13 +29,25 @@ abstract class Module extends ActiveRecord implements IModule
 
     protected ?string $pathConfig = null;
 
+    protected ?string $pathModule = null;
+
     final public function __construct()
     {
     }
 
-    protected static function getDefaultPathConfig(): string
+    protected static function getDefaultPathModule(): string
     {
-        return __DIR__ . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
+        $reflection = new \ReflectionClass(static::class);
+        $class_name = $reflection->getShortName();
+        $file_name = $reflection->getFileName();
+        $path_to_module = preg_replace('~[\\\/]' . $class_name . '\.php$~u', '', $file_name);
+        return is_string($path_to_module) ? $path_to_module : throw new AdminPanelException('Error, invalid file path.');
+    }
+
+    protected static function getDefaultPathConfig(?string $path_module = null): string
+    {
+        $file_config = ($path_module ?? self::getDefaultPathModule()) . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
+        return $file_config;
     }
 
     /**
@@ -139,6 +151,22 @@ abstract class Module extends ActiveRecord implements IModule
         return $this;
     }
 
+    /**
+     * @param null|string $path_module null - лежит в текущей директории
+     */
+    public function setPathModule(?string $path_module = null): IModule
+    {
+        $this->pathModule = $path_module ?? self::getDefaultPathConfig();
+        return $this;
+    }
+
+    public function initializeTitle(): IModule
+    {
+        $reflection = new \ReflectionClass(static::class);
+        $this->title = $reflection->getShortName();
+        return $this;
+    }
+
     public function getTitle(): string
     {
         return $this->title;
@@ -169,6 +197,11 @@ abstract class Module extends ActiveRecord implements IModule
     public function getPathConfig(): string
     {
         return $this->pathConfig ?? self::getDefaultPathConfig();
+    }
+
+    public function getPathModule(): string
+    {
+        return $this->pathModule ?? self::getDefaultPathModule();
     }
 
     abstract public function getAdminContentUi(): IContentContainerUi;
