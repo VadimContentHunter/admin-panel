@@ -35,8 +35,15 @@ abstract class Module extends ActiveRecord implements IModule
     {
     }
 
+    /**
+     * @throws AdminPanelException
+     */
     protected static function getDefaultPathModule(): string
     {
+        if (strcmp(static::class, self::class) === 0) {
+            throw new AdminPanelException('Error Incorrect class specified.');
+        }
+
         $reflection = new \ReflectionClass(static::class);
         $class_name = $reflection->getShortName();
         $file_name = $reflection->getFileName();
@@ -53,10 +60,18 @@ abstract class Module extends ActiveRecord implements IModule
     /**
      * @throws AdminPanelException
      */
-    public static function initializeObject(?string $title = null, int $status = StatusCode::ON, ?string $path_config = null): IModule
+    public static function initializeObject(string $title = '', int $status = StatusCode::ON, ?string $path_config = null, ?string $path_module = null): IModule
     {
-        if ($title === null) {
-            $title = self::initializeObjectFromModuleConfig()->getTitle();
+        if (strcmp(static::class, self::class) === 0) {
+            throw new AdminPanelException('Error Incorrect class specified.');
+        }
+
+        if ($title === '') {
+            try {
+                $title = self::initializeObjectFromModuleConfig()->getTitle();
+            } catch (\Exception $e) {
+                $title = self::initializeTitle();
+            }
         }
 
         $object = self::selectByField('title', $title)[0] ?? null;
@@ -65,6 +80,7 @@ abstract class Module extends ActiveRecord implements IModule
             $object->setTitle($title);
             $object->setStatus($status);
             $object->setPathConfig($path_config);
+            $object->setPathModule($path_module);
             $object->insertObjectToDb();
 
             $object = self::selectByField('title', $title)[0] ?? null;
@@ -82,6 +98,10 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule
     {
+        if (strcmp(static::class, self::class) === 0) {
+            throw new AdminPanelException('Error Incorrect class specified.');
+        }
+
         $dataFromFile = file_get_contents(self::getDefaultPathConfig());
         if (!is_string($dataFromFile)) {
             throw new AdminPanelException("Error failed to read file.");
@@ -156,15 +176,18 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setPathModule(?string $path_module = null): IModule
     {
-        $this->pathModule = $path_module ?? self::getDefaultPathConfig();
+        $this->pathModule = $path_module ?? self::getDefaultPathModule();
         return $this;
     }
 
-    public function initializeTitle(): IModule
+    protected static function initializeTitle(): string
     {
+        if (strcmp(static::class, self::class) === 0) {
+            throw new AdminPanelException('Error class does not exist.');
+        }
+
         $reflection = new \ReflectionClass(static::class);
-        $this->title = $reflection->getShortName();
-        return $this;
+        return $reflection->getShortName();
     }
 
     public function getTitle(): string
@@ -218,6 +241,7 @@ abstract class Module extends ActiveRecord implements IModule
         $temp->status = $this->getStatus();
         $temp->data = $this->getData();
         $temp->pathConfig = $path;
+        $temp->pathModule = $this->getPathModule();
 
         $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
 
@@ -253,6 +277,10 @@ abstract class Module extends ActiveRecord implements IModule
                                 FieldAttributes::NOT_NULL
                             ])
                             ->addField('path_config', FieldDataType::getTypeVarchar(80), [
+                                FieldAttributes::NOT_NULL,
+                                FieldAttributes::UNIQUE
+                            ])
+                            ->addField('path_module', FieldDataType::getTypeVarchar(80), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
                             ])

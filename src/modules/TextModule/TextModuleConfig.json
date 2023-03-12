@@ -2,5 +2,6 @@
     "title": "TextModule",
     "status": 100,
     "data": [],
-    "pathConfig": ""
+    "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule\\TextModuleConfig.json",
+    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule"
 }

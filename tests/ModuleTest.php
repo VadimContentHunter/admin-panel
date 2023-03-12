@@ -24,11 +24,11 @@ class ModuleTest extends TestCase
 {
     protected ModuleFake $moduleFake;
 
-    protected string $path;
+    protected string $pathConfig;
 
     protected function setUp(): void
     {
-        $this->path = __DIR__ . '\\ModuleFakeConfig.json';
+        $this->pathConfig = __DIR__ . '\\ModuleFakeConfig.json';
 
         $this->moduleFake = new ModuleFake();
         $this->moduleFake->setTitle('Test Module')
@@ -62,7 +62,7 @@ class ModuleTest extends TestCase
 
     protected function tearDown(): void
     {
-        unlink($this->path);
+        unlink($this->pathConfig);
         ModuleFake::dropTable();
     }
 
@@ -73,12 +73,13 @@ class ModuleTest extends TestCase
                     . '"data":{"param1":"value1",'
                     . '"param2":"value2",'
                     . '"param3":"value3"},'
-                    . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->path) . '"}';
+                    . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->pathConfig) . '",'
+                    . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__.'\\fakes') . '"}';
 
-        $this->moduleFake->setPathConfig($this->path)
+        $this->moduleFake->setPathConfig($this->pathConfig)
                             ->initializeJsonConfig();
 
-        $actual = file_get_contents($this->path);
+        $actual = file_get_contents($this->pathConfig);
 
         $this->assertEquals($expected, $actual);
     }
@@ -92,7 +93,8 @@ class ModuleTest extends TestCase
     {
         ModuleFake::createTable();
 
-        $this->moduleFake->setPathConfig($this->path)->initializeJsonConfig();
+        $this->moduleFake->setPathConfig($this->pathConfig);
+        $this->moduleFake->setPathModule($this->moduleFake->getPathModule());
         $this->moduleFake->insertObjectToDb();
 
         $obj = ModuleFake::selectByField('title', $this->moduleFake->getTitle())[0] ?? null;
@@ -108,7 +110,8 @@ class ModuleTest extends TestCase
     public function test_initializeObject_shouldCreateAnObject(): void
     {
         ModuleFake::createTable();
+        $obj = ModuleFake::initializeObject('Test initializeObject');
         $this->assertInstanceOf(ModuleFake::class, ModuleFake::initializeObject('Test initializeObject'));
-        unlink($this->path);
+        unlink($obj->getPathConfig());
     }
 }

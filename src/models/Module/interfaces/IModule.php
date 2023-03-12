@@ -14,7 +14,7 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  */
 interface IModule
 {
-    public static function initializeObject(?string $title, int $status = StatusCode::ON, ?string $path_config = null): IModule;
+    public static function initializeObject(string $title = '', int $status = StatusCode::ON, ?string $path_config = null): IModule;
 
     public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule;
 
