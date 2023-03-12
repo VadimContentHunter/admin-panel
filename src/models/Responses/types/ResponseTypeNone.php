@@ -21,6 +21,7 @@ class ResponseTypeNone extends AResponseType
         $this->response->setSuccess($success);
         $this->response->setMessage($message ?? '');
         $this->response->setCode($code);
+        $this->response->setType($this->getType());
     }
 
 
@@ -31,6 +32,6 @@ class ResponseTypeNone extends AResponseType
 
     public function getType(): string
     {
-        return 'html';
+        return 'none';
     }
 }

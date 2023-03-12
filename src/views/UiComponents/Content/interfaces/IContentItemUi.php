@@ -12,5 +12,6 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface IContentItemUi extends IBaseUiComponent
 {
+    public function setPathToTemplates(string $path_to_templates): IContentItemUi;
     public function getGridColumnCount(): int;
 }

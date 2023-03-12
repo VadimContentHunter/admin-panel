@@ -12,7 +12,7 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleI
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-interface ISitebarUi
+interface ISitebarUi extends IBaseUiComponent
 {
     public function setLogo(string $logo_path): ISitebarUi;
 

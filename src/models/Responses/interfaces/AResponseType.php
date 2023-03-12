@@ -22,16 +22,19 @@ abstract class AResponseType
 
     public function setSuccess(bool $success): AResponseType
     {
+        $this->response->setSuccess($success);
         return $this;
     }
 
     public function setMessage(string $message): AResponseType
     {
+        $this->response->setMessage($message);
         return $this;
     }
 
     public function setCode(int $code): AResponseType
     {
+        $this->response->setCode($code);
         return $this;
     }
 }

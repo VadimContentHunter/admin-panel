@@ -10,7 +10,7 @@ namespace vadimcontenthunter\AdminPanel\routing\interfaces;
  */
 interface IRoute
 {
-    public function setUrl(string $url): IRoute;
+    public function setPattern(string $url): IRoute;
 
     public function setClassName(string $class_name): IRoute;
 
@@ -21,7 +21,7 @@ interface IRoute
      */
     public function setParameters(array $parameters): IRoute;
 
-    public function getUrl(): string;
+    public function getPattern(): string;
 
     public function getClassName(): string;
 

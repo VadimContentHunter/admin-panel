@@ -104,6 +104,7 @@ class Response implements IResponse
         $object->message = $this->getMessage();
         $object->code = $this->getCode();
         $object->data = $this->getDataJson();
+        $object->type = $this->getType();
 
         $json = json_encode($object);
         if (!is_string($json)) {

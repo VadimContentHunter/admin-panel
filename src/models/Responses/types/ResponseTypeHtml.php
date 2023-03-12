@@ -22,6 +22,7 @@ class ResponseTypeHtml extends AResponseType
         $this->response->setMessage($message ?? '');
         $this->response->setCode($code);
         $this->response->setData([$uiComponent->getHtml()]);
+        $this->response->setType($this->getType());
     }
 
     public function setUiComponent(IBaseUiComponent $uiComponent): ResponseTypeHtml

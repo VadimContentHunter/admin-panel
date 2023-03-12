@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories;
 
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\HeaderUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\SitebarUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IHeaderUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
@@ -15,11 +18,22 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\interfac
  */
 class AdminPageUiFactory implements IAdminPageUiFactory
 {
+    protected IHeaderUi $headerUi;
+
+    protected ISitebarUi $sidebarUi;
+
+    protected IContentContainerUi $contentUi;
+
     public function __construct(
-        protected IHeaderUi $headerUi,
-        protected ISitebarUi $sidebarUi,
-        protected IContentContainerUi $contentUi
+        string $user_name,
+        string $user_icon_path,
+        string $site_logo_path,
+        string $content_title,
+        protected string $templatesPath,
     ) {
+        $this->headerUi = new HeaderUi($user_name, $user_icon_path);
+        $this->sidebarUi = new SitebarUi($site_logo_path);
+        $this->contentUi = new ContentContainerUi($content_title, $templatesPath);
     }
 
     public function setContentComponent(IContentContainerUi $objContentUi): IAdminPageUiFactory

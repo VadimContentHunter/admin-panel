@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\tests\fakes;
 
 use vadimcontenthunter\AdminPanel\models\Module\Module;
+use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
@@ -16,6 +17,6 @@ class ModuleFake extends Module
 {
     public function getAdminContentUi(): IContentContainerUi
     {
-        return new ContentContainerUi('ModuleFake');
+        return new ContentContainerUi('ModuleFake', AdminPanelSetting::getPathToTemplates());
     }
 }

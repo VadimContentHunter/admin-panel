@@ -21,6 +21,12 @@ class ObjectMap
         return strtolower(preg_replace('~(?<!^)[A-Z]~', '_$0', $source) ?? '');
     }
 
+    public static function underscoreToCamelCase(string $source, bool $first_char_small = true): string
+    {
+        $camelCaseName = str_replace('_', '', ucwords($source, '_'));
+        return $first_char_small ? lcfirst($camelCaseName) : $camelCaseName;
+    }
+
     /**
      * @return string[]
      */
