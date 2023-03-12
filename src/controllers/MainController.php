@@ -79,6 +79,9 @@ class MainController
         exit;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     protected function settingModule(array $parameters, AdminPageUiFactory $adminPageUi): void
     {
         if ($parameters['modules'] && is_array($parameters['modules'])) {
@@ -94,9 +97,9 @@ class MainController
 
     protected function settingContentContainer(IContentContainerUi $contentContainer): void
     {
-        $contentContainer->addContent(
-            (new DashboardContentUi('Dashboard'))
-        );
+        // $contentContainer->addContent(
+        //     (new DashboardContentUi('Dashboard'))
+        // );
     }
 
     protected function settingSiteBarUi(ISitebarUi $sitebarUi): void

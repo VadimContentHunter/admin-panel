@@ -47,7 +47,7 @@ abstract class Module extends ActiveRecord implements IModule
         $reflection = new \ReflectionClass(static::class);
         $class_name = $reflection->getShortName();
         $file_name = $reflection->getFileName();
-        $path_to_module = preg_replace('~[\\\/]' . $class_name . '\.php$~u', '', $file_name);
+        $path_to_module = preg_replace('~[\\\/]' . $class_name . '\.php$~u', '', $file_name ?:  throw new AdminPanelException('Error, invalid file path.'));
         return is_string($path_to_module) ? $path_to_module : throw new AdminPanelException('Error, invalid file path.');
     }
 

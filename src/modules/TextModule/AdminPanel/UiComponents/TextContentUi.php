@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\TextModule\AdminPanel\UiComponents;
 
+use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentItemUi;
 
 /**
@@ -35,7 +36,7 @@ class TextContentUi implements IContentItemUi
             $template = ob_get_contents();
         ob_end_clean();
 
-        return $template;
+        return $template ?: throw new AdminPanelException('Error, unable to write template.');
     }
 
     public function setPathToTemplates(string $path_to_templates): IContentItemUi

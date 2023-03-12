@@ -13,6 +13,7 @@ use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\controllers\MainController;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\controllers\AuthorizationController;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\DatabaseMySQLQueryBuilder\DatabaseMySQLQueryBuilder;
 
@@ -25,10 +26,13 @@ class AdminPanelAPI
     protected Routing $routing;
 
     /**
-     * @var Module[]
+     * @var IModule[]
      */
     protected array $modules = [];
 
+    /**
+     * @var mixed[]
+     */
     protected array $parameters = [];
 
     public function __construct(bool $autoConnect = true)
@@ -95,6 +99,9 @@ class AdminPanelAPI
         return $this;
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function start(string $current_url, array $parameters = []): void
     {
         $this->parameters += $parameters;
