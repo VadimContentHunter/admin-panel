@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
+use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
@@ -53,8 +54,9 @@ class MainController
             AdminPanelSetting::getPathToTemplates(),
         );
 
+        $this->settingModule($parameters, $adminPageUi);
         $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
-        $this->settingContentContainer($adminPageUi->getContentComponent());
+        // $this->settingContentContainer($adminPageUi->getContentComponent());
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
@@ -75,6 +77,19 @@ class MainController
 
         header('Location: ' . $url);
         exit;
+    }
+
+    protected function settingModule(array $parameters, AdminPageUiFactory $adminPageUi): void
+    {
+        if ($parameters['modules'] && is_array($parameters['modules'])) {
+            foreach ($parameters['modules'] as $key => $module) {
+                if ($module instanceof Module) {
+                    if ($module->getTitle() === 'TextModule') {
+                        $adminPageUi->setContentComponent($module->getAdminContentUi());
+                    }
+                }
+            }
+        }
     }
 
     protected function settingContentContainer(IContentContainerUi $contentContainer): void

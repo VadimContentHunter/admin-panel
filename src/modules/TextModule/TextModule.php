@@ -18,7 +18,7 @@ class TextModule extends Module
 {
     public function getAdminContentUi(): IContentContainerUi
     {
-        $contentContainer = new ContentContainerUi('', Helper::getCurrentHostUrl() . '/src/modules');
+        $contentContainer = new ContentContainerUi('', $this->getPathModule() . '/AdminPanel/templates');
         $contentContainer->addContent(
             (new TextContentUi('Dashboard'))
         );
