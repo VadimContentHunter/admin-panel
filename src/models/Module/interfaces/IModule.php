@@ -36,6 +36,10 @@ interface IModule
 
     public function setPathModule(?string $path_module = null): IModule;
 
+    public function setLastModifiedDateTime(string $data_time): IModule;
+
+    public function setFormatDateTime(string $format): IModule;
+
     public function getTitle(): string;
 
     public function getStatus(): int;
@@ -52,6 +56,10 @@ interface IModule
     public function getPathConfig(): string;
 
     public function getPathModule(): string;
+
+    public function getLastModifiedDateTime(): string;
+
+    public function getFormatDateTime(): string;
 
     public function getAdminContentUi(): IContentContainerUi;
 

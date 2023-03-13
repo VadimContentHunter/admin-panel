@@ -3,5 +3,7 @@
     "status": 100,
     "data": [],
     "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule\\TextModuleConfig.json",
-    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule"
+    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule",
+    "lastModifiedDateTime": "2023-03-13 21:23:31",
+    "formatDateTime": "Y-m-d H:i:s"
 }

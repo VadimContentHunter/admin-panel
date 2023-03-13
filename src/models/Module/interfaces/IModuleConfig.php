@@ -17,4 +17,6 @@ interface IModuleConfig
     public function getDefaultPathConfig(?string $path_module = null): string;
 
     public function getDefaultPathModule(): string;
+
+    public function initializeJsonConfig(IModule $module): IModuleConfig;
 }

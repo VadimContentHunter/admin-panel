@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module;
 
+use DateTime;
+use DateTimeImmutable;
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
@@ -34,7 +36,12 @@ abstract class Module extends ActiveRecord implements IModule
 
     protected ?string $pathModule = null;
 
-    // protected string $lastModifiedDateTime;
+    protected string $lastModifiedDateTime = '';
+
+    protected string $formatDateTime = 'Y-m-d H:i:s';
+
+    #[NotInDb]
+    protected DateTime $dataTime;
 
     #[NotInDb]
     protected IModuleConfig $moduleConfig;
@@ -42,10 +49,13 @@ abstract class Module extends ActiveRecord implements IModule
     abstract public function getAdminContentUi(): IContentContainerUi;
 
     final public function __construct(
-        ?IModuleConfig $moduleConfig = null
+        ?IModuleConfig $moduleConfig = null,
+        #[NotInDb]
+        DateTime $dataTime = new DateTime()
     ) {
         $this->moduleConfig = $moduleConfig ?? new ModuleConfig(static::class);
         $this->status = StatusCode::ON;
+        $this->dataTime = $dataTime;
     }
 
     /**
@@ -69,6 +79,8 @@ abstract class Module extends ActiveRecord implements IModule
             $object->setData($this->getData());
             $object->setPathConfig($this->pathConfig);
             $object->setPathModule($this->pathModule);
+            $object->setLastModifiedDateTime($this->dataTime->format($this->getFormatDateTime()));
+            $object->setFormatDateTime($this->formatDateTime);
             $object->insertObjectToDb();
 
             $object = self::selectByField('title', $this->title)[0] ?? null;
@@ -93,6 +105,8 @@ abstract class Module extends ActiveRecord implements IModule
         $this->setData($object->getData());
         $this->setPathConfig($object->getPathConfig());
         $this->setPathModule($object->getPathModule());
+        $this->setLastModifiedDateTime($object->getLastModifiedDateTime());
+        $this->setFormatDateTime($object->getFormatDateTime());
 
         return $this;
     }
@@ -109,15 +123,7 @@ abstract class Module extends ActiveRecord implements IModule
 
     public function initializeJsonConfig(): IModule
     {
-        $temp = new \stdClass();
-        $temp->title = $this->getTitle();
-        $temp->status = $this->getStatus();
-        $temp->data = $this->getData();
-        $temp->pathConfig = $this->getPathConfig();
-        $temp->pathModule = $this->getPathModule();
-
-        $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
-        file_put_contents($temp->pathConfig, $json, LOCK_EX);
+        $this->moduleConfig->initializeJsonConfig($this);
         return $this;
     }
 
@@ -160,6 +166,18 @@ abstract class Module extends ActiveRecord implements IModule
     public function setPathModule(?string $path_module = null): IModule
     {
         $this->pathModule = $path_module ?? $this->moduleConfig->getDefaultPathModule();
+        return $this;
+    }
+
+    public function setLastModifiedDateTime(string $data_time): IModule
+    {
+        $this->lastModifiedDateTime = $data_time;
+        return $this;
+    }
+
+    public function setFormatDateTime(string $format): IModule
+    {
+        $this->formatDateTime = $format;
         return $this;
     }
 
@@ -207,6 +225,16 @@ abstract class Module extends ActiveRecord implements IModule
         return $this->pathModule ?? $this->moduleConfig->getDefaultPathModule();
     }
 
+    public function getLastModifiedDateTime(): string
+    {
+        return $this->lastModifiedDateTime;
+    }
+
+    public function getFormatDateTime(): string
+    {
+        return $this->formatDateTime;
+    }
+
     public static function getTableName(): string
     {
         return 'modules';
@@ -241,6 +269,12 @@ abstract class Module extends ActiveRecord implements IModule
                             ->addField('path_module', FieldDataType::getTypeVarchar(80), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
+                            ])
+                            ->addField('last_modified_date_time', FieldDataType::DATETIME, [
+                                FieldAttributes::NOT_NULL
+                            ])
+                            ->addField('format_date_time', FieldDataType::TEXT, [
+                                FieldAttributes::NOT_NULL
                             ])
                 )
                 ->send();

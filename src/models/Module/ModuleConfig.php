@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module;
 
+use DateTime;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
@@ -15,7 +16,8 @@ use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
 class ModuleConfig implements IModuleConfig
 {
     public function __construct(
-        protected string $className
+        protected string $className,
+        protected DateTime $dataTime = new DateTime()
     ) {
         if (!$this->checkClassName($this->className)) {
             throw new AdminPanelException('Error Incorrect class specified.');
@@ -68,6 +70,8 @@ class ModuleConfig implements IModuleConfig
             || $arrDataForObject['title']
             || $arrDataForObject['status']
             || $arrDataForObject['pathConfig']
+            || $arrDataForObject['lastModifiedDateTime']
+            || $arrDataForObject['formatDateTime']
         ) {
             throw new AdminPanelException("Error Incorrect data received from file.");
         }
@@ -81,6 +85,8 @@ class ModuleConfig implements IModuleConfig
             !is_string($arrDataForObject['title'])
             || !is_numeric($arrDataForObject['status'])
             || !is_string($arrDataForObject['pathConfig'])
+            || !is_string($arrDataForObject['lastModifiedDateTime'])
+            || !is_string($arrDataForObject['formatDateTime'])
         ) {
             throw new AdminPanelException("Error Incorrect type for the parameter. Must be a string.");
         }
@@ -90,6 +96,24 @@ class ModuleConfig implements IModuleConfig
         $object->setStatus((int) $arrDataForObject['status']);
         $object->setData($data);
         $object->setPathConfig($arrDataForObject['pathConfig']);
+        $object->setLastModifiedDateTime($arrDataForObject['lastModifiedDateTime']);
+        $object->setFormatDateTime($arrDataForObject['formatDateTime']);
         return $object;
+    }
+
+    public function initializeJsonConfig(IModule $module): IModuleConfig
+    {
+        $temp = new \stdClass();
+        $temp->title = $module->getTitle();
+        $temp->status = $module->getStatus();
+        $temp->data = $module->getData();
+        $temp->pathConfig = $module->getPathConfig();
+        $temp->pathModule = $module->getPathModule();
+        $temp->lastModifiedDateTime = $module->getLastModifiedDateTime();
+        $temp->formatDateTime = $module->getFormatDateTime();
+
+        $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
+        file_put_contents($temp->pathConfig, $json, LOCK_EX);
+        return $this;
     }
 }

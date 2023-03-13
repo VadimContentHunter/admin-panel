@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\tests;
 
 use PDO;
+use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 use vadimcontenthunter\MyDB\DB;
 use PHPUnit\Framework\Attributes\Depends;
@@ -14,6 +16,7 @@ use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\tests\fakes\ModuleFake;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
+use vadimcontenthunter\AdminPanel\models\Module\ModuleConfig;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 
 /**
@@ -24,13 +27,21 @@ class ModuleTest extends TestCase
 {
     protected ModuleFake $moduleFake;
 
+    protected DateTime $dataTime;
+
     protected string $pathConfig;
 
     protected function setUp(): void
     {
         $this->pathConfig = __DIR__ . '\\ModuleFakeConfig.json';
 
-        $this->moduleFake = new ModuleFake();
+        $this->dataTime = new DateTime();
+        $this->dataTime->setDate(2023, 3, 13);
+        $this->dataTime->setTime(19, 51, 24);
+        $this->moduleFake = new ModuleFake(
+            (new ModuleConfig(ModuleFake::class, $this->dataTime)),
+            $this->dataTime
+        );
         $this->moduleFake->setTitle('Test Module')
                             ->setStatus(StatusCode::ON)
                             ->setData([
@@ -72,10 +83,15 @@ class ModuleTest extends TestCase
                     . '"status":100,'
                     . '"data":{"param1":"value1",'
                     . '"param2":"value2",'
-                    . '"param3":"value3"},'
+                    . '"param3":"value3"'
+                    . '},'
                     . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->pathConfig) . '",'
-                    . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__ . '\\fakes') . '"}';
+                    . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__ . '\\fakes') . '",'
+                    . '"lastModifiedDateTime":"' . $this->dataTime->format('Y-m-d H:i:s') . '",'
+                    . '"formatDateTime":"' . 'Y-m-d H:i:s'
+                    . '"}';
 
+        $this->moduleFake->setLastModifiedDateTime($this->dataTime->format('Y-m-d H:i:s'));
         $this->moduleFake->setPathConfig($this->pathConfig)
                             ->initializeJsonConfig();
 
@@ -93,6 +109,7 @@ class ModuleTest extends TestCase
     {
         ModuleFake::createTable();
 
+        $this->moduleFake->setLastModifiedDateTime($this->dataTime->format('Y-m-d H:i:s'));
         $this->moduleFake->setPathConfig($this->pathConfig);
         $this->moduleFake->setPathModule($this->moduleFake->getPathModule());
         $this->moduleFake->insertObjectToDb();
