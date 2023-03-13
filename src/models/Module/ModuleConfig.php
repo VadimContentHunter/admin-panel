@@ -15,6 +15,9 @@ use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
  */
 class ModuleConfig implements IModuleConfig
 {
+    /**
+     * @throws AdminPanelException
+     */
     public function __construct(
         protected string $className,
         protected DateTime $dataTime = new DateTime()
@@ -41,6 +44,10 @@ class ModuleConfig implements IModuleConfig
      */
     public function getDefaultPathModule(): string
     {
+        if (!class_exists($this->className)) {
+            throw new AdminPanelException('Error, Incorrect class specified.');
+        }
+
         $reflection = new \ReflectionClass($this->className);
         $class_name = $reflection->getShortName();
         $file_name = $reflection->getFileName();
@@ -57,6 +64,9 @@ class ModuleConfig implements IModuleConfig
         return $file_config;
     }
 
+    /**
+     * @throws AdminPanelException
+     */
     public function initializeObjectFromModuleConfig(?string $path_config = null): IModule
     {
         $dataFromFile = file_get_contents(self::getDefaultPathConfig());
@@ -92,6 +102,11 @@ class ModuleConfig implements IModuleConfig
         }
 
         $object = new $this->className();
+
+        if (!($object instanceof IModule)) {
+            throw new AdminPanelException("Error failed to read file.");
+        }
+
         $object->setTitle($arrDataForObject['title']);
         $object->setStatus((int) $arrDataForObject['status']);
         $object->setData($data);

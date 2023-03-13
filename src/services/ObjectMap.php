@@ -18,13 +18,17 @@ class ObjectMap
 {
     /**
      * @return ReflectionProperty[]
+     *
+     * @throws AdminPanelException
      */
     protected static function getProperties(string|object $class_name_or_object): array
     {
         if (is_string($class_name_or_object) && class_exists($class_name_or_object)) {
             $reflector = new ReflectionClass($class_name_or_object);
-        } else {
+        } elseif (is_object($class_name_or_object)) {
             $reflector = new ReflectionObject($class_name_or_object);
+        } else {
+            throw new AdminPanelException("Error, class or object not found.");
         }
 
         $properties = [];
@@ -56,6 +60,8 @@ class ObjectMap
 
     /**
      * @return string[]
+     *
+     * @throws AdminPanelException
      */
     public static function convertClassPropertiesToDbFormat(string $className): array
     {
