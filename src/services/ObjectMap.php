@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\services;
 
+use ReflectionClass;
+use ReflectionObject;
+use ReflectionProperty;
+use vadimcontenthunter\AdminPanel\services\attributes\NotInDb;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 
 /**
@@ -12,8 +16,31 @@ use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
  */
 class ObjectMap
 {
-    public function __construct()
+    /**
+     * @return ReflectionProperty[]
+     */
+    protected static function getProperties(string|object $class_name_or_object): array
     {
+        if (is_string($class_name_or_object) && class_exists($class_name_or_object)) {
+            $reflector = new ReflectionClass($class_name_or_object);
+        } else {
+            $reflector = new ReflectionObject($class_name_or_object);
+        }
+
+        $properties = [];
+
+        foreach ($reflector->getProperties() as $key => $property) {
+            if (!($property instanceof ReflectionProperty)) {
+                continue;
+            }
+
+            $attributes = $property->getAttributes(NotInDb::class);
+            if (count($attributes) === 0) {
+                $properties[] = $property;
+            }
+        }
+
+        return $properties;
     }
 
     public static function camelCaseToUnderscore(string $source): string
@@ -36,12 +63,11 @@ class ObjectMap
             throw new AdminPanelException("Error, class not found.");
         }
 
-        $reflector = new \ReflectionClass($className);
-        $properties = $reflector->getProperties();
+        $properties = self::getProperties($className);
 
         $mappedProperties = [];
         foreach ($properties as $property) {
-            if (!($property instanceof \ReflectionProperty)) {
+            if (!($property instanceof ReflectionProperty)) {
                 continue;
             }
             $mappedProperties[] = $property->getName();
@@ -55,12 +81,11 @@ class ObjectMap
      */
     public static function convertObjectPropertiesToDbFormat(object $object): array
     {
-        $reflector = new \ReflectionObject($object);
-        $properties = $reflector->getProperties();
+        $properties = self::getProperties($object);
 
         $mappedProperties = [];
         foreach ($properties as $property) {
-            if (!($property instanceof \ReflectionProperty)) {
+            if (!($property instanceof ReflectionProperty)) {
                 continue;
             }
             $propertyName = $property->getName();
