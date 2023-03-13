@@ -8,10 +8,13 @@ use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
+use vadimcontenthunter\AdminPanel\models\Module\ModuleConfig;
+use vadimcontenthunter\AdminPanel\services\attributes\NotInDb;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
+use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 
@@ -31,59 +34,44 @@ abstract class Module extends ActiveRecord implements IModule
 
     protected ?string $pathModule = null;
 
-    final public function __construct()
-    {
+    // protected string $lastModifiedDateTime;
+
+    #[NotInDb]
+    protected IModuleConfig $moduleConfig;
+
+    abstract public function getAdminContentUi(): IContentContainerUi;
+
+    final public function __construct(
+        ?IModuleConfig $moduleConfig = null
+    ) {
+        $this->moduleConfig = $moduleConfig ?? new ModuleConfig(static::class);
+        $this->status = StatusCode::ON;
     }
 
     /**
      * @throws AdminPanelException
      */
-    protected static function getDefaultPathModule(): string
+    public function initializeNewObject(): IModule
     {
-        if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error Incorrect class specified.');
-        }
-
-        $reflection = new \ReflectionClass(static::class);
-        $class_name = $reflection->getShortName();
-        $file_name = $reflection->getFileName();
-        $path_to_module = preg_replace('~[\\\/]' . $class_name . '\.php$~u', '', $file_name ?:  throw new AdminPanelException('Error, invalid file path.'));
-        return is_string($path_to_module) ? $path_to_module : throw new AdminPanelException('Error, invalid file path.');
-    }
-
-    protected static function getDefaultPathConfig(?string $path_module = null): string
-    {
-        $file_config = ($path_module ?? self::getDefaultPathModule()) . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
-        return $file_config;
-    }
-
-    /**
-     * @throws AdminPanelException
-     */
-    public static function initializeObject(string $title = '', int $status = StatusCode::ON, ?string $path_config = null, ?string $path_module = null): IModule
-    {
-        if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error Incorrect class specified.');
-        }
-
-        if ($title === '') {
+        if ($this->title === '') {
             try {
-                $title = self::initializeObjectFromModuleConfig()->getTitle();
+                $this->title = $this->moduleConfig->initializeObjectFromModuleConfig()->getTitle();
             } catch (\Exception $e) {
-                $title = self::initializeTitle();
+                $this->title = self::initializeTitle();
             }
         }
 
-        $object = self::selectByField('title', $title)[0] ?? null;
+        $object = self::selectByField('title', $this->title)[0] ?? null;
         if ($object === null) {
             $object = new static();
-            $object->setTitle($title);
-            $object->setStatus($status);
-            $object->setPathConfig($path_config);
-            $object->setPathModule($path_module);
+            $object->setTitle($this->title);
+            $object->setStatus($this->status);
+            $object->setData($this->getData());
+            $object->setPathConfig($this->pathConfig);
+            $object->setPathModule($this->pathModule);
             $object->insertObjectToDb();
 
-            $object = self::selectByField('title', $title)[0] ?? null;
+            $object = self::selectByField('title', $this->title)[0] ?? null;
             if ($object instanceof IModule) {
                 $object->initializeJsonConfig();
             } else {
@@ -96,46 +84,41 @@ abstract class Module extends ActiveRecord implements IModule
     /**
      * @throws AdminPanelException
      */
-    public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule
+    public function initializeReplaceThisObject(): IModule
+    {
+        $object = $this->initializeNewObject();
+
+        $this->setTitle($object->getTitle());
+        $this->setStatus($object->getStatus());
+        $this->setData($object->getData());
+        $this->setPathConfig($object->getPathConfig());
+        $this->setPathModule($object->getPathModule());
+
+        return $this;
+    }
+
+    protected static function initializeTitle(): string
     {
         if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error Incorrect class specified.');
+            throw new AdminPanelException('Error class does not exist.');
         }
 
-        $dataFromFile = file_get_contents(self::getDefaultPathConfig());
-        if (!is_string($dataFromFile)) {
-            throw new AdminPanelException("Error failed to read file.");
-        }
+        $reflection = new \ReflectionClass(static::class);
+        return $reflection->getShortName();
+    }
 
-        $arrDataForObject = json_decode($dataFromFile, true);
-        if (
-            !is_array($arrDataForObject)
-            || $arrDataForObject['title']
-            || $arrDataForObject['status']
-            || $arrDataForObject['pathConfig']
-        ) {
-            throw new AdminPanelException("Error Incorrect data received from file.");
-        }
+    public function initializeJsonConfig(): IModule
+    {
+        $temp = new \stdClass();
+        $temp->title = $this->getTitle();
+        $temp->status = $this->getStatus();
+        $temp->data = $this->getData();
+        $temp->pathConfig = $this->getPathConfig();
+        $temp->pathModule = $this->getPathModule();
 
-        $data = json_decode($arrDataForObject['data'] ?? '', true);
-        if (!is_array($data)) {
-            throw new AdminPanelException("Error failed to convert module data to array.");
-        }
-
-        if (
-            !is_string($arrDataForObject['title'])
-            || !is_numeric($arrDataForObject['status'])
-            || !is_string($arrDataForObject['pathConfig'])
-        ) {
-            throw new AdminPanelException("Error Incorrect type for the parameter. Must be a string.");
-        }
-
-        $object = new static();
-        $object->setTitle($arrDataForObject['title']);
-        $object->setStatus((int) $arrDataForObject['status']);
-        $object->setData($data);
-        $object->setPathConfig($arrDataForObject['pathConfig']);
-        return $object;
+        $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
+        file_put_contents($temp->pathConfig, $json, LOCK_EX);
+        return $this;
     }
 
     public function setTitle(string $title): IModule
@@ -167,7 +150,7 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setPathConfig(?string $path_config = null): IModule
     {
-        $this->pathConfig = $path_config ?? self::getDefaultPathConfig();
+        $this->pathConfig = $path_config ?? $this->moduleConfig->getDefaultPathConfig();
         return $this;
     }
 
@@ -176,18 +159,8 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setPathModule(?string $path_module = null): IModule
     {
-        $this->pathModule = $path_module ?? self::getDefaultPathModule();
+        $this->pathModule = $path_module ?? $this->moduleConfig->getDefaultPathModule();
         return $this;
-    }
-
-    protected static function initializeTitle(): string
-    {
-        if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error class does not exist.');
-        }
-
-        $reflection = new \ReflectionClass(static::class);
-        return $reflection->getShortName();
     }
 
     public function getTitle(): string
@@ -217,36 +190,21 @@ abstract class Module extends ActiveRecord implements IModule
         return $data;
     }
 
+    /**
+     * @throws AdminPanelException
+     */
     public function getPathConfig(): string
     {
-        return $this->pathConfig ?? self::getDefaultPathConfig();
+        $path = $this->pathConfig ?? $this->moduleConfig->getDefaultPathConfig();
+        if (!preg_match('~.*\.json~u', $path)) {
+            throw new AdminPanelException('Error, the specified module config path is not json');
+        }
+        return $path;
     }
 
     public function getPathModule(): string
     {
-        return $this->pathModule ?? self::getDefaultPathModule();
-    }
-
-    abstract public function getAdminContentUi(): IContentContainerUi;
-
-    public function initializeJsonConfig(): IModule
-    {
-        $path = $this->getPathConfig();
-        if (!preg_match('~.*\.json~u', $path)) {
-            throw new AdminPanelException('Error, the specified module config path is not json');
-        }
-
-        $temp = new \stdClass();
-        $temp->title = $this->getTitle();
-        $temp->status = $this->getStatus();
-        $temp->data = $this->getData();
-        $temp->pathConfig = $path;
-        $temp->pathModule = $this->getPathModule();
-
-        $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
-
-        file_put_contents($path, $json, LOCK_EX);
-        return $this;
+        return $this->pathModule ?? $this->moduleConfig->getDefaultPathModule();
     }
 
     public static function getTableName(): string

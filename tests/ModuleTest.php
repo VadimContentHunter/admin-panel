@@ -110,8 +110,10 @@ class ModuleTest extends TestCase
     public function test_initializeObject_shouldCreateAnObject(): void
     {
         ModuleFake::createTable();
-        $obj = ModuleFake::initializeObject('Test initializeObject');
-        $this->assertInstanceOf(ModuleFake::class, ModuleFake::initializeObject('Test initializeObject'));
+        $module = new ModuleFake();
+        $module->setTitle('Test initializeObject');
+        $obj = $module->initializeReplaceThisObject();
+        $this->assertInstanceOf(ModuleFake::class, $module);
         unlink($obj->getPathConfig());
     }
 }

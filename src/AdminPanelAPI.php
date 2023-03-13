@@ -93,8 +93,7 @@ class AdminPanelAPI
 
     public function addModule(Module $module): AdminPanelAPI
     {
-        $module = $module::initializeObject();
-        $this->modules[] = $module;
+        $this->modules[] = $module->initializeReplaceThisObject();
 
         return $this;
     }
