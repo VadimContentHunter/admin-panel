@@ -41,7 +41,7 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
     public function activateFirstItemMenu(): ISitebarUi
     {
         $menuItem = $this->mainItems[0] ?? $this->moduleItems[0] ?? null;
-        if ($menuItem !== null) {
+        if ($menuItem instanceof IModuleItemUi) {
             $menuItem->setActivateMenuItem(true);
         }
         return $this;

@@ -96,8 +96,6 @@ class MainController
                             $sitebarUi->addMenuMainItem($menuItem);
                         } elseif ($menuItem instanceof IModuleItemUi) {
                             $sitebarUi->addMenuModuleItem($menuItem);
-                        } else {
-                            continue;
                         }
 
                         $module->builderAdminContentUi($contentContainer);

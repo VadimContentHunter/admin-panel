@@ -28,7 +28,7 @@ class AdminPageUiFactory implements IAdminPageUiFactory
         string $user_name,
         string $user_icon_path,
         string $site_logo_path,
-        protected string $templatesPath,
+        protected ?string $templatesPath = null,
         string $content_title = '',
     ) {
         $this->headerUi = new HeaderUi($user_name, $user_icon_path);

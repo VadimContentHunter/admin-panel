@@ -23,7 +23,7 @@ class MainItemUi implements IMainItemUi, IModuleItemUi
     ) {
     }
 
-    public function setActivateMenuItem(bool $flag): IMainItemUi
+    public function setActivateMenuItem(bool $flag): IModuleItemUi
     {
         $this->activated = $flag;
         return $this;
