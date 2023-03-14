@@ -6,12 +6,13 @@ namespace vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class MainItemUi implements IMainItemUi
+class MainItemUi implements IMainItemUi, IModuleItemUi
 {
     public function __construct(
         protected string $title,
@@ -22,14 +23,20 @@ class MainItemUi implements IMainItemUi
     ) {
     }
 
+    public function setActivateMenuItem(bool $flag): IMainItemUi
+    {
+        $this->activated = $flag;
+        return $this;
+    }
+
     public function getRequestContent(): string
     {
         return $this->url ?? (Helper::getCurrentHostUrl() . 'admin/module/' . $this->moduleName);
     }
 
-    private function getStartBlockHtml(): string
+    private function getClassActivated(): string
     {
-        return $this->activated ? '<li class="activated" >' : '<li>';
+        return $this->activated ? 'class="activated"' : '';
     }
 
     private function getIconHtml(): string
@@ -40,7 +47,7 @@ class MainItemUi implements IMainItemUi
     public function getHtml(): string
     {
         return <<<HTML
-            {$this->getStartBlockHtml()}
+            <li {$this->getClassActivated()}>
                 {$this->getIconHtml()}
                 <a>{$this->title}</a>
             </li>

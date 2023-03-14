@@ -16,7 +16,10 @@ use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 
@@ -48,7 +51,7 @@ abstract class Module extends ActiveRecord implements IModule
 
     abstract public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
 
-    abstract public function getMenuItem(IContentContainerUi $contentContainerUi): MainItemUi | ModuleItemUi;
+    abstract public function getMenuItem(): IModuleItemUi;
 
     final public function __construct(
         ?IModuleConfig $moduleConfig = null,

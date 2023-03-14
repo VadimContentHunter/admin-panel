@@ -8,9 +8,8 @@ use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -28,7 +27,7 @@ class TextModule extends Module
         return $this;
     }
 
-    public function getMenuItem(IContentContainerUi $contentContainerUi): MainItemUi | ModuleItemUi
+    public function getMenuItem(): IModuleItemUi
     {
         return new MainItemUi('Текстовый модуль', Helper::getCurrentHostUrl() . '/' . $this->initializeTitle());
     }

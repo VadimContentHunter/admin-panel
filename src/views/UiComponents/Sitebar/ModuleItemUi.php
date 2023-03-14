@@ -22,14 +22,20 @@ class ModuleItemUi implements IModuleItemUi
     ) {
     }
 
+    public function setActivateMenuItem(bool $flag): ModuleItemUi
+    {
+        $this->activated = $flag;
+        return $this;
+    }
+
     public function getRequestContent(): string
     {
         return $this->url ?? (Helper::getCurrentHostUrl() . 'admin/module/' . $this->moduleName);
     }
 
-    private function getStartBlockHtml(): string
+    private function getClassActivated(): string
     {
-        return $this->activated ? '<li class="activated" >' : '<li>';
+        return $this->activated ? 'class="activated"' : '';
     }
 
     private function getIconHtml(): string
@@ -40,7 +46,7 @@ class ModuleItemUi implements IModuleItemUi
     public function getHtml(): string
     {
         return <<<HTML
-            {$this->getStartBlockHtml()}
+            <li {$this->getClassActivated()}>
                 {$this->getIconHtml()}
                 <a>{$this->title}</a>
             </li>

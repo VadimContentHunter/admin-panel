@@ -8,6 +8,7 @@ use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -65,7 +66,7 @@ interface IModule
 
     public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
 
-    public function getMenuItem(IContentContainerUi $contentContainerUi): MainItemUi | ModuleItemUi;
+    public function getMenuItem(): IModuleItemUi;
 
     public function initializeJsonConfig(): IModule;
 }

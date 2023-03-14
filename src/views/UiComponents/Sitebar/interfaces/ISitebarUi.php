@@ -19,4 +19,6 @@ interface ISitebarUi extends IBaseUiComponent
     public function addMenuMainItem(IMainItemUi $main_item): ISitebarUi;
 
     public function addMenuModuleItem(IModuleItemUi $module_item): ISitebarUi;
+
+    public function activateFirstItemMenu(): ISitebarUi;
 }

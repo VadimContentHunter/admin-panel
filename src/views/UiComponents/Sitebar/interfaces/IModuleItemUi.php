@@ -12,5 +12,7 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface IModuleItemUi extends IBaseUiComponent
 {
+    public function setActivateMenuItem(bool $flag): IMainItemUi;
+
     public function getRequestContent(): string;
 }
