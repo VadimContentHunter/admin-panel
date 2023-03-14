@@ -61,7 +61,7 @@ interface IModule
 
     public function getFormatDateTime(): string;
 
-    public function getAdminContentUi(): IContentContainerUi;
+    public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
 
     public function initializeJsonConfig(): IModule;
 }

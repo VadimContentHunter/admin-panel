@@ -19,8 +19,8 @@ class ContentContainerUi implements IContentContainerUi
     private array $contentItems = [];
 
     public function __construct(
-        protected string $title,
         protected string $templatesPath,
+        protected string $title = '',
     ) {
     }
 
@@ -46,5 +46,11 @@ class ContentContainerUi implements IContentContainerUi
             fn (IContentItemUi $objContentItemUi) => $objContentItemUi->getHtml(),
             $this->contentItems
         ));
+    }
+
+    public function setTitle(string $title): IContentContainerUi
+    {
+        $this->title = $title;
+        return $this;
     }
 }

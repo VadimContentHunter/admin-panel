@@ -50,11 +50,11 @@ class MainController
             $this->user->getName(),
             AdminPanelSetting::getPathToResources('img/profile.png'),
             'icon-panel',
-            'None',
             AdminPanelSetting::getPathToTemplates(),
+            'None',
         );
 
-        $this->settingModule($parameters, $adminPageUi);
+        $this->settingModule($parameters, $adminPageUi->getContentComponent());
         $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
         // $this->settingContentContainer($adminPageUi->getContentComponent());
 
@@ -82,13 +82,13 @@ class MainController
     /**
      * @param array<string, mixed> $parameters
      */
-    protected function settingModule(array $parameters, AdminPageUiFactory $adminPageUi): void
+    protected function settingModule(array $parameters, IContentContainerUi $contentContainer): void
     {
         if ($parameters['modules'] && is_array($parameters['modules'])) {
             foreach ($parameters['modules'] as $key => $module) {
                 if ($module instanceof Module) {
                     if ($module->getTitle() === 'TextModule') {
-                        $adminPageUi->setContentComponent($module->getAdminContentUi());
+                        $module->builderAdminContentUi($contentContainer);
                     }
                 }
             }
