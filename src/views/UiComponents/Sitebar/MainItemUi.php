@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar;
 
+use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
 
 /**
@@ -14,10 +15,16 @@ class MainItemUi implements IMainItemUi
 {
     public function __construct(
         protected string $title,
-        protected string $requestContent,
+        protected string $moduleName,
         protected string $iconPath = 'icon-module',
         protected bool $activated = false,
+        protected ?string $url = null
     ) {
+    }
+
+    public function getRequestContent(): string
+    {
+        return $this->url ?? (Helper::getCurrentHostUrl() . 'admin/module/' . $this->moduleName);
     }
 
     private function getStartBlockHtml(): string

@@ -12,4 +12,5 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface IMainItemUi extends IBaseUiComponent
 {
+    public function getRequestContent(): string;
 }

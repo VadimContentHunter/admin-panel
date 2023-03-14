@@ -48,6 +48,8 @@ abstract class Module extends ActiveRecord implements IModule
 
     abstract public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
 
+    abstract public function getMenuItem(IContentContainerUi $contentContainerUi): MainItemUi | ModuleItemUi;
+
     final public function __construct(
         ?IModuleConfig $moduleConfig = null,
         #[NotInDb]

@@ -6,6 +6,8 @@ namespace vadimcontenthunter\AdminPanel\models\Module\interfaces;
 
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -62,6 +64,8 @@ interface IModule
     public function getFormatDateTime(): string;
 
     public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
+
+    public function getMenuItem(IContentContainerUi $contentContainerUi): MainItemUi | ModuleItemUi;
 
     public function initializeJsonConfig(): IModule;
 }
