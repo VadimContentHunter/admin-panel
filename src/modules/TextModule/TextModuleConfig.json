@@ -1,9 +1,11 @@
 {
     "title": "TextModule",
     "status": 100,
-    "data": [],
+    "data": {
+        "title": "TextModule"
+    },
     "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule\\TextModuleConfig.json",
     "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule",
-    "lastModifiedDateTime": "2023-03-13 23:37:09",
+    "lastModifiedDateTime": "2023-03-15 14:53:14",
     "formatDateTime": "Y-m-d H:i:s"
 }

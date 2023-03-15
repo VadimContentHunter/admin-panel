@@ -77,22 +77,29 @@ abstract class Module extends ActiveRecord implements IModule
         }
 
         $object = self::selectByField('title', $this->title)[0] ?? null;
-        if ($object === null) {
+        if (!($object instanceof IModule)) {
             $object = new static();
             $object->setTitle($this->title);
             $object->setStatus($this->status);
             $object->setData($this->getData());
             $object->setPathConfig($this->pathConfig);
             $object->setPathModule($this->pathModule);
-            $object->setLastModifiedDateTime($this->dataTime->format($this->getFormatDateTime()));
+            $object->setLastModifiedDateTime($this->dataTime->getTimestamp());
             $object->setFormatDateTime($this->formatDateTime);
             $object->insertObjectToDb();
-
-            $object = self::selectByField('title', $this->title)[0] ?? null;
-            if ($object instanceof IModule) {
-                $object->initializeJsonConfig();
-            } else {
-                throw new AdminPanelException('Error, unable to convert data from json format');
+            $this->moduleConfig->writeDataDbToJsonConfig($this->title, $object);
+        } else {
+            $object_data_time = new DateTime($object->getLastModifiedDateTime());
+            if ($this->moduleConfig->hasFileChanged($object->getPathConfig(), $object_data_time->getTimestamp())) {
+                $module = $this->moduleConfig->initializeObjectFromModuleConfig($object->getPathConfig());
+                $object->setData($module->getData());
+                $object->setLastModifiedDateTime($this->moduleConfig->getDataTimeConfigJson($object->getPathConfig()));
+                if ($object instanceof ActiveRecord) {
+                    $object->updateObjectToDbById();
+                    $this->moduleConfig->writeDataDbToJsonConfig($this->title, $object);
+                } else {
+                    throw new AdminPanelException('Error the object does not have an ActiveRecord class in the descendant tree.');
+                }
             }
         }
         return $object;
@@ -174,9 +181,15 @@ abstract class Module extends ActiveRecord implements IModule
         return $this;
     }
 
-    public function setLastModifiedDateTime(string $data_time): IModule
+    public function setLastModifiedDateTime(string|int $data_time): IModule
     {
-        $this->lastModifiedDateTime = $data_time;
+        if(is_string($data_time)){
+            $this->dataTime = new DateTime($data_time);
+        }else{
+            $this->dataTime->setTimestamp($data_time);
+        }
+
+        $this->lastModifiedDateTime = $this->dataTime->format($this->getFormatDateTime());
         return $this;
     }
 

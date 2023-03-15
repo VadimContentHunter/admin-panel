@@ -39,7 +39,7 @@ interface IModule
 
     public function setPathModule(?string $path_module = null): IModule;
 
-    public function setLastModifiedDateTime(string $data_time): IModule;
+    public function setLastModifiedDateTime(string|int $data_time): IModule;
 
     public function setFormatDateTime(string $format): IModule;
 

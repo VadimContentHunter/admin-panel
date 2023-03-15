@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module;
 
-use DateTime;
+use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
@@ -19,8 +19,7 @@ class ModuleConfig implements IModuleConfig
      * @throws AdminPanelException
      */
     public function __construct(
-        protected string $className,
-        protected DateTime $dataTime = new DateTime()
+        protected string $className
     ) {
         if (!$this->checkClassName($this->className)) {
             throw new AdminPanelException('Error Incorrect class specified.');
@@ -37,6 +36,26 @@ class ModuleConfig implements IModuleConfig
             return true;
         }
         return false;
+    }
+
+    /**
+     * @throws AdminPanelException
+     */
+    public function getDataTimeConfigJson(string $path_config): int
+    {
+        if (!file_exists($path_config)) {
+            throw new AdminPanelException('Error, file does not exist.');
+        }
+        $file_data_time = filemtime($path_config);
+        return $file_data_time;
+    }
+
+    /**
+     * @throws AdminPanelException
+     */
+    public function hasFileChanged(string $path_config, int $date_time): bool
+    {
+        return $date_time < $this->getDataTimeConfigJson($path_config) ? true : false;
     }
 
     /**
@@ -77,24 +96,31 @@ class ModuleConfig implements IModuleConfig
         $arrDataForObject = json_decode($dataFromFile, true);
         if (
             !is_array($arrDataForObject)
-            || $arrDataForObject['title']
-            || $arrDataForObject['status']
-            || $arrDataForObject['pathConfig']
-            || $arrDataForObject['lastModifiedDateTime']
-            || $arrDataForObject['formatDateTime']
+            || !$arrDataForObject['title']
+            || !$arrDataForObject['status']
+            || !$arrDataForObject['pathConfig']
+            || !$arrDataForObject['pathModule']
+            || !$arrDataForObject['lastModifiedDateTime']
+            || !$arrDataForObject['formatDateTime']
         ) {
             throw new AdminPanelException("Error Incorrect data received from file.");
         }
 
-        $data = json_decode($arrDataForObject['data'] ?? '', true);
-        if (!is_array($data)) {
-            throw new AdminPanelException("Error failed to convert module data to array.");
+        $data = [];
+        if (is_array($arrDataForObject['data'])) {
+            $data = $arrDataForObject['data'];
+        } elseif (is_string($arrDataForObject['data'] ??= '')) {
+            $data = json_decode($arrDataForObject['data'], true);
+            if (!is_array($data)) {
+                throw new AdminPanelException("Error failed to convert module data to array.");
+            }
         }
 
         if (
             !is_string($arrDataForObject['title'])
             || !is_numeric($arrDataForObject['status'])
             || !is_string($arrDataForObject['pathConfig'])
+            || !is_string($arrDataForObject['pathModule'])
             || !is_string($arrDataForObject['lastModifiedDateTime'])
             || !is_string($arrDataForObject['formatDateTime'])
         ) {
@@ -111,6 +137,7 @@ class ModuleConfig implements IModuleConfig
         $object->setStatus((int) $arrDataForObject['status']);
         $object->setData($data);
         $object->setPathConfig($arrDataForObject['pathConfig']);
+        $object->setPathModule($arrDataForObject['pathModule']);
         $object->setLastModifiedDateTime($arrDataForObject['lastModifiedDateTime']);
         $object->setFormatDateTime($arrDataForObject['formatDateTime']);
         return $object;
@@ -127,8 +154,20 @@ class ModuleConfig implements IModuleConfig
         $temp->lastModifiedDateTime = $module->getLastModifiedDateTime();
         $temp->formatDateTime = $module->getFormatDateTime();
 
-        $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
+        $json = json_encode($temp, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents($temp->pathConfig, $json, LOCK_EX);
+        return $this;
+    }
+
+    public function writeDataDbToJsonConfig(string $title, ActiveRecord $object): IModuleConfig
+    {
+        $object = $object::selectByField('title', $title)[0] ?? null;
+        if ($object instanceof IModule) {
+            $object->initializeJsonConfig();
+        } else {
+            throw new AdminPanelException('Error, unable to convert data from json format');
+        }
+
         return $this;
     }
 }

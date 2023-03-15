@@ -39,7 +39,7 @@ class ModuleTest extends TestCase
         $this->dataTime->setDate(2023, 3, 13);
         $this->dataTime->setTime(19, 51, 24);
         $this->moduleFake = new ModuleFake(
-            (new ModuleConfig(ModuleFake::class, $this->dataTime)),
+            (new ModuleConfig(ModuleFake::class)),
             $this->dataTime
         );
         $this->moduleFake->setTitle('Test Module')
@@ -132,5 +132,11 @@ class ModuleTest extends TestCase
         $obj = $module->initializeReplaceThisObject();
         $this->assertInstanceOf(ModuleFake::class, $module);
         unlink($obj->getPathConfig());
+    }
+
+    public function test_app(): void
+    {
+        $data_time = new DateTime($this->dataTime->format('Y-m-d H:i:s'));
+        $this->assertTrue(true);
     }
 }
