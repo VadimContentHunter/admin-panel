@@ -120,8 +120,6 @@ abstract class Module extends ActiveRecord implements IModule
                     $object->setLastModifiedDateTime($this->moduleConfig->getDataTimeConfigJson($object->getPathConfig()));
                     if ($object instanceof ActiveRecord) {
                         $object->updateObjectToDbById();
-                    } else {
-                        throw new AdminPanelException('Error the object does not have an ActiveRecord class in the descendant tree.');
                     }
 
                     if ($object instanceof IModule) {
@@ -186,7 +184,7 @@ abstract class Module extends ActiveRecord implements IModule
     {
         if ($name === '') {
             $this->name = $this::initializeName();
-        }else{
+        } else {
             $this->name = $name;
         }
         return $this;
@@ -196,7 +194,7 @@ abstract class Module extends ActiveRecord implements IModule
     {
         if ($alias === '') {
             $this->alias = $this::initializeName();
-        }else{
+        } else {
             $this->alias = $alias;
         }
 

@@ -31,6 +31,6 @@ class ModuleFake extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new MainItemUi('Текстовый модуль', Helper::getCurrentHostUrl() . '/' . $this->initializeTitle());
+        return new MainItemUi('Текстовый модуль', $this->getName());
     }
 }

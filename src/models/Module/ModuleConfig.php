@@ -47,6 +47,9 @@ class ModuleConfig implements IModuleConfig
             throw new AdminPanelException('Error, file does not exist.');
         }
         $file_data_time = filemtime($path_config);
+        if (!is_integer($file_data_time)) {
+            throw new AdminPanelException('Error, unable to get file date and time.');
+        }
         return $file_data_time;
     }
 
