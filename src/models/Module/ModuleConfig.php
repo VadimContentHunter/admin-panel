@@ -30,8 +30,8 @@ class ModuleConfig implements IModuleConfig
     {
         if (
             class_exists($class_name)
-            && is_subclass_of($class_name, Module::class)
-            && strcmp($class_name, Module::class) !== 0
+            && is_subclass_of($class_name, IModule::class)
+            && strcmp($class_name, IModule::class) !== 0
         ) {
             return true;
         }
@@ -96,7 +96,8 @@ class ModuleConfig implements IModuleConfig
         $arrDataForObject = json_decode($dataFromFile, true);
         if (
             !is_array($arrDataForObject)
-            || !$arrDataForObject['title']
+            || !$arrDataForObject['name']
+            || !$arrDataForObject['alias']
             || !$arrDataForObject['status']
             || !$arrDataForObject['pathConfig']
             || !$arrDataForObject['pathModule']
@@ -117,7 +118,8 @@ class ModuleConfig implements IModuleConfig
         }
 
         if (
-            !is_string($arrDataForObject['title'])
+            !is_string($arrDataForObject['name'])
+            || !is_string($arrDataForObject['alias'])
             || !is_numeric($arrDataForObject['status'])
             || !is_string($arrDataForObject['pathConfig'])
             || !is_string($arrDataForObject['pathModule'])
@@ -133,7 +135,8 @@ class ModuleConfig implements IModuleConfig
             throw new AdminPanelException("Error failed to read file.");
         }
 
-        $object->setTitle($arrDataForObject['title']);
+        $object->setName($arrDataForObject['name']);
+        $object->setAlias($arrDataForObject['alias']);
         $object->setStatus((int) $arrDataForObject['status']);
         $object->setData($data);
         $object->setPathConfig($arrDataForObject['pathConfig']);
@@ -146,7 +149,8 @@ class ModuleConfig implements IModuleConfig
     public function initializeJsonConfig(IModule $module): IModuleConfig
     {
         $temp = new \stdClass();
-        $temp->title = $module->getTitle();
+        $temp->alias = $module->getAlias();
+        $temp->name = $module->getName();
         $temp->status = $module->getStatus();
         $temp->data = $module->getData();
         $temp->pathConfig = $module->getPathConfig();
@@ -155,13 +159,13 @@ class ModuleConfig implements IModuleConfig
         $temp->formatDateTime = $module->getFormatDateTime();
 
         $json = json_encode($temp, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        file_put_contents($temp->pathConfig, $json, LOCK_EX);
+        file_put_contents($module->getPathConfig(), $json, LOCK_EX);
         return $this;
     }
 
-    public function writeDataDbToJsonConfig(string $title, ActiveRecord $object): IModuleConfig
+    public function writeDataDbToJsonConfig(string $name, ActiveRecord $object): IModuleConfig
     {
-        $object = $object::selectByField('title', $title)[0] ?? null;
+        $object = $object::selectByField('name', $name)[0] ?? null;
         if ($object instanceof IModule) {
             $object->initializeJsonConfig();
         } else {

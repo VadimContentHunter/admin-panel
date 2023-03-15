@@ -89,7 +89,7 @@ class MainController
         if ($parameters['modules'] && is_array($parameters['modules'])) {
             foreach ($parameters['modules'] as $key => $module) {
                 if ($module instanceof Module) {
-                    if ($module->getTitle() === 'TextModule') {
+                    if ($module->getName() === 'TextModule') {
                         $menuItem = $module->getMenuItem();
 
                         if ($menuItem instanceof IMainItemUi) {

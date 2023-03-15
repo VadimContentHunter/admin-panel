@@ -42,7 +42,8 @@ class ModuleTest extends TestCase
             (new ModuleConfig(ModuleFake::class)),
             $this->dataTime
         );
-        $this->moduleFake->setTitle('Test Module')
+        $this->moduleFake->setAlias('Test Module')
+                            ->setName('ModuleFake')
                             ->setStatus(StatusCode::ON)
                             ->setData([
                                 'param1' => 'value1',
@@ -79,21 +80,43 @@ class ModuleTest extends TestCase
 
     public function test_initializeJsonConfig_shouldCreateJsonFileBasedOnObject(): void
     {
-        $expected = '{"title":"Test Module",'
-                    . '"status":100,'
-                    . '"data":{"param1":"value1",'
-                    . '"param2":"value2",'
-                    . '"param3":"value3"'
-                    . '},'
-                    . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->pathConfig) . '",'
-                    . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__ . '\\fakes') . '",'
-                    . '"lastModifiedDateTime":"' . $this->dataTime->format('Y-m-d H:i:s') . '",'
-                    . '"formatDateTime":"' . 'Y-m-d H:i:s'
-                    . '"}';
+        $temp = new \stdClass();
+        $temp->alias = "Test Module";
+        $temp->name = "ModuleFake";
+        $temp->status = 100;
+        $temp->data = [
+            "param1" => "value1",
+            "param2" => "value2",
+            "param3" => "value3"
+        ];
+        $temp->pathConfig = preg_replace('~[\\\]+~', '\\\\', $this->pathConfig);
+        $temp->pathModule = preg_replace('~[\\\]+~', '\\\\', __DIR__ . '\\fakes');
+        $temp->lastModifiedDateTime = $this->dataTime->format('Y-m-d H:i:s');
+        $temp->formatDateTime = 'Y-m-d H:i:s';
+
+        $json = json_encode($temp, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        file_put_contents(__DIR__ . '/test_initializeJsonConfig.json', $json, LOCK_EX);
+
+        $expected = file_get_contents(__DIR__ . '/test_initializeJsonConfig.json');
+
+        unlink(__DIR__ . '/test_initializeJsonConfig.json');
+
+        // $expected = '{"alias":"Test Module",'
+        //             . '"name":"ModuleFake",'
+        //             . '"status":100,'
+        //             . '"data":{"param1":"value1",'
+        //             . '"param2":"value2",'
+        //             . '"param3":"value3"'
+        //             . '},'
+        //             . '"pathConfig":"' . preg_replace('~[\\\]+~', '\\\\\\', $this->pathConfig) . '",'
+        //             . '"pathModule":"' . preg_replace('~[\\\]+~', '\\\\\\', __DIR__ . '\\fakes') . '",'
+        //             . '"lastModifiedDateTime":"' . $this->dataTime->format('Y-m-d H:i:s') . '",'
+        //             . '"formatDateTime":"' . 'Y-m-d H:i:s'
+        //             . '"}';
 
         $this->moduleFake->setLastModifiedDateTime($this->dataTime->format('Y-m-d H:i:s'));
-        $this->moduleFake->setPathConfig($this->pathConfig)
-                            ->initializeJsonConfig();
+        $this->moduleFake->setPathConfig($this->pathConfig);
+        $this->moduleFake->initializeJsonConfig();
 
         $actual = file_get_contents($this->pathConfig);
 
@@ -114,7 +137,7 @@ class ModuleTest extends TestCase
         $this->moduleFake->setPathModule($this->moduleFake->getPathModule());
         $this->moduleFake->insertObjectToDb();
 
-        $obj = ModuleFake::selectByField('title', $this->moduleFake->getTitle())[0] ?? null;
+        $obj = ModuleFake::selectByField('path_config', $this->moduleFake->getPathConfig())[0] ?? null;
         $actual = null;
 
         if ($obj instanceof IModule) {
@@ -128,7 +151,7 @@ class ModuleTest extends TestCase
     {
         ModuleFake::createTable();
         $module = new ModuleFake();
-        $module->setTitle('Test initializeObject');
+        $module->setAlias('Test initializeObject');
         $obj = $module->initializeReplaceThisObject();
         $this->assertInstanceOf(ModuleFake::class, $module);
         unlink($obj->getPathConfig());

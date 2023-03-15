@@ -20,6 +20,7 @@ class TextModule extends Module
 {
     public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule
     {
+        $contentContainerUi->setTitle($this->getAlias());
         $contentContainerUi->addContent(
             (new TextContentUi('Dashboard'))
         );
@@ -29,6 +30,6 @@ class TextModule extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new MainItemUi('Текстовый модуль', Helper::getCurrentHostUrl() . '/' . $this->initializeTitle());
+        return new MainItemUi($this->getAlias(), $this->getName());
     }
 }

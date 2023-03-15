@@ -29,7 +29,16 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
  */
 abstract class Module extends ActiveRecord implements IModule
 {
-    protected string $title = '';
+    /**
+     * Название не связанное с Названием файла и класса для модуля.
+     * Может быть такой же как и поле name
+     */
+    protected string $alias = '';
+
+    /**
+     * Название модуля, которое соответствует названию класса и файла Модуля
+     */
+    protected string $name = '';
 
     protected int $status = StatusCode::ERROR;
 
@@ -68,18 +77,30 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function initializeNewObject(): IModule
     {
-        if ($this->title === '') {
-            try {
-                $this->title = $this->moduleConfig->initializeObjectFromModuleConfig()->getTitle();
-            } catch (\Exception $e) {
-                $this->title = self::initializeTitle();
+        try {
+            $moduleJson = $this->moduleConfig->initializeObjectFromModuleConfig();
+            if ($this->name === '') {
+                $this->setName($moduleJson->getName());
+            }
+
+            if ($this->alias === '') {
+                $this->setAlias($moduleJson->getAlias());
+            }
+            $this->pathConfig = $moduleJson->getPathConfig();
+        } catch (\Exception $e) {
+            if ($this->name === '') {
+                $this->name = $this::initializeName();
+            }
+            if ($this->alias === '') {
+                $this->alias = $this::initializeName();
             }
         }
 
-        $object = self::selectByField('title', $this->title)[0] ?? null;
+        $object = self::selectByField('name', $this->name)[0] ?? null;
         if (!($object instanceof IModule)) {
             $object = new static();
-            $object->setTitle($this->title);
+            $object->setName($this->name);
+            $object->setAlias($this->alias);
             $object->setStatus($this->status);
             $object->setData($this->getData());
             $object->setPathConfig($this->pathConfig);
@@ -87,18 +108,25 @@ abstract class Module extends ActiveRecord implements IModule
             $object->setLastModifiedDateTime($this->dataTime->getTimestamp());
             $object->setFormatDateTime($this->formatDateTime);
             $object->insertObjectToDb();
-            $this->moduleConfig->writeDataDbToJsonConfig($this->title, $object);
+            $this->moduleConfig->writeDataDbToJsonConfig($this->name, $object);
         } else {
-            $object_data_time = new DateTime($object->getLastModifiedDateTime());
-            if ($this->moduleConfig->hasFileChanged($object->getPathConfig(), $object_data_time->getTimestamp())) {
-                $module = $this->moduleConfig->initializeObjectFromModuleConfig($object->getPathConfig());
-                $object->setData($module->getData());
-                $object->setLastModifiedDateTime($this->moduleConfig->getDataTimeConfigJson($object->getPathConfig()));
-                if ($object instanceof ActiveRecord) {
-                    $object->updateObjectToDbById();
-                    $this->moduleConfig->writeDataDbToJsonConfig($this->title, $object);
-                } else {
-                    throw new AdminPanelException('Error the object does not have an ActiveRecord class in the descendant tree.');
+            if (!file_exists($object->getPathConfig())) {
+                $object->initializeJsonConfig();
+            } else {
+                $object_data_time = new DateTime($object->getLastModifiedDateTime());
+                if ($this->moduleConfig->hasFileChanged($object->getPathConfig(), $object_data_time->getTimestamp())) {
+                    $module = $this->moduleConfig->initializeObjectFromModuleConfig($object->getPathConfig());
+                    $object->copyData($module);
+                    $object->setLastModifiedDateTime($this->moduleConfig->getDataTimeConfigJson($object->getPathConfig()));
+                    if ($object instanceof ActiveRecord) {
+                        $object->updateObjectToDbById();
+                    } else {
+                        throw new AdminPanelException('Error the object does not have an ActiveRecord class in the descendant tree.');
+                    }
+
+                    if ($object instanceof IModule) {
+                        $this->moduleConfig->writeDataDbToJsonConfig($this->name, $object);
+                    }
                 }
             }
         }
@@ -112,7 +140,8 @@ abstract class Module extends ActiveRecord implements IModule
     {
         $object = $this->initializeNewObject();
 
-        $this->setTitle($object->getTitle());
+        $this->setName($object->getName());
+        $this->setAlias($object->getAlias());
         $this->setStatus($object->getStatus());
         $this->setData($object->getData());
         $this->setPathConfig($object->getPathConfig());
@@ -123,7 +152,7 @@ abstract class Module extends ActiveRecord implements IModule
         return $this;
     }
 
-    protected static function initializeTitle(): string
+    protected static function initializeName(): string
     {
         if (strcmp(static::class, self::class) === 0) {
             throw new AdminPanelException('Error class does not exist.');
@@ -139,9 +168,38 @@ abstract class Module extends ActiveRecord implements IModule
         return $this;
     }
 
-    public function setTitle(string $title): IModule
+    public function copyData(IModule $module): IModule
     {
-        $this->title = $title;
+        $this->setName($module->getName());
+        $this->setAlias($module->getAlias());
+        $this->setStatus($module->getStatus());
+        $this->setData($module->getData());
+        $this->setPathConfig($module->getPathConfig());
+        $this->setPathModule($module->getPathModule());
+        $this->setLastModifiedDateTime($module->getLastModifiedDateTime());
+        $this->setFormatDateTime($module->getFormatDateTime());
+
+        return $this;
+    }
+
+    public function setName(string $name): IModule
+    {
+        if ($name === '') {
+            $this->name = $this::initializeName();
+        }else{
+            $this->name = $name;
+        }
+        return $this;
+    }
+
+    public function setAlias(string $alias): IModule
+    {
+        if ($alias === '') {
+            $this->alias = $this::initializeName();
+        }else{
+            $this->alias = $alias;
+        }
+
         return $this;
     }
 
@@ -183,9 +241,9 @@ abstract class Module extends ActiveRecord implements IModule
 
     public function setLastModifiedDateTime(string|int $data_time): IModule
     {
-        if(is_string($data_time)){
+        if (is_string($data_time)) {
             $this->dataTime = new DateTime($data_time);
-        }else{
+        } else {
             $this->dataTime->setTimestamp($data_time);
         }
 
@@ -199,9 +257,14 @@ abstract class Module extends ActiveRecord implements IModule
         return $this;
     }
 
-    public function getTitle(): string
+    public function getName(): string
     {
-        return $this->title;
+        return $this->name;
+    }
+
+    public function getAlias(): string
+    {
+        return $this->alias;
     }
 
     public function getStatus(): int
@@ -270,7 +333,10 @@ abstract class Module extends ActiveRecord implements IModule
                                 FieldAttributes::AUTO_INCREMENT,
                                 FieldAttributes::PRIMARY_KEY
                             ])
-                            ->addField('title', FieldDataType::getTypeVarchar(80), [
+                            ->addField('alias', FieldDataType::getTypeVarchar(80), [
+                                FieldAttributes::NOT_NULL
+                            ])
+                            ->addField('name', FieldDataType::getTypeVarchar(80), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
                             ])
