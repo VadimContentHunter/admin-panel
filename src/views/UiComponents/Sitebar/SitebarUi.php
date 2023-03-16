@@ -38,13 +38,13 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
         ));
     }
 
-    public function activateFirstItemMenu(): ISitebarUi
+    public function activateFirstItemMenu(): IModuleItemUi|null
     {
         $menuItem = $this->mainItems[0] ?? $this->moduleItems[0] ?? null;
         if ($menuItem instanceof IModuleItemUi) {
             $menuItem->setActivateMenuItem(true);
         }
-        return $this;
+        return $menuItem;
     }
 
     private function getModuleItemsHtml(): string

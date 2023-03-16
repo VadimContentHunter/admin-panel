@@ -86,11 +86,16 @@ class MainController
      */
     protected function settingModule(array $parameters, ISitebarUi $sitebarUi, IContentContainerUi $contentContainer): void
     {
+        $is_first_elem = true;
         if ($parameters['modules'] && is_array($parameters['modules'])) {
             foreach ($parameters['modules'] as $key => $module) {
                 if ($module instanceof Module) {
+                    $menuItem = $module->getMenuItem();
                     if ($module->getName() === 'TextModule') {
-                        $menuItem = $module->getMenuItem();
+                        if($is_first_elem){
+                            $menuItem->setActivateMenuItem(true);
+                            $module->builderAdminContentUi($contentContainer);
+                        }
 
                         if ($menuItem instanceof IMainItemUi) {
                             $sitebarUi->addMenuMainItem($menuItem);
@@ -98,13 +103,19 @@ class MainController
                             $sitebarUi->addMenuModuleItem($menuItem);
                         }
 
-                        $module->builderAdminContentUi($contentContainer);
+                    }else{
+                        if($is_first_elem){
+                            $menuItem->setActivateMenuItem(true);
+                            $module->builderAdminContentUi($contentContainer);
+                        }
+
+                        $sitebarUi->addMenuModuleItem($menuItem);
                     }
+
+                    $is_first_elem = false;
                 }
             }
         }
-
-        $sitebarUi->activateFirstItemMenu();
     }
 
     protected function settingContentContainer(IContentContainerUi $contentContainer): void
