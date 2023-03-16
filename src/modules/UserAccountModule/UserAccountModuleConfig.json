@@ -1,0 +1,10 @@
+{
+    "alias": "UserAccountModule",
+    "name": "UserAccountModule",
+    "status": 100,
+    "data": [],
+    "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\UserAccountModule\\UserAccountModuleConfig.json",
+    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\UserAccountModule",
+    "lastModifiedDateTime": "2023-03-16 17:24:13",
+    "formatDateTime": "Y-m-d H:i:s"
+}

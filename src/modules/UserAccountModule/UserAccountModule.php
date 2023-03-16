@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\modules\TextModule;
+namespace vadimcontenthunter\AdminPanel\modules\UserAccountModule;
 
-use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
@@ -16,13 +15,13 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class TextModule extends Module
+class UserAccountModule extends Module
 {
     public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule
     {
         $contentContainerUi->setTitle($this->getAlias());
         $contentContainerUi->addContent(
-            (new TextContentUi($this->getAlias()))
+            (new ContentItemUi($this->getAlias()))
         );
 
         return $this;
@@ -30,6 +29,6 @@ class TextModule extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new MainItemUi($this->getAlias(), $this->getName());
+        return new ModuleItemUi($this->getAlias(), $this->getName());
     }
 }

@@ -2,11 +2,9 @@
     "alias": "Текстовый модуль",
     "name": "TextModule",
     "status": 100,
-    "data": {
-        "title": "TextModule 2"
-    },
+    "data": [],
     "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule\\TextModuleConfig.json",
     "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule",
-    "lastModifiedDateTime": "2023-03-15 22:34:10",
+    "lastModifiedDateTime": "2023-03-16 17:24:13",
     "formatDateTime": "Y-m-d H:i:s"
 }
