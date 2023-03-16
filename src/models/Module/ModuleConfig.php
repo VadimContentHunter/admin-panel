@@ -8,6 +8,7 @@ use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
+use vadimcontenthunter\AdminPanel\exceptions\ModuleConfig\ReadFileException;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -87,13 +88,15 @@ class ModuleConfig implements IModuleConfig
     }
 
     /**
+     * @throws ReadFileException
      * @throws AdminPanelException
      */
-    public function initializeObjectFromModuleConfig(?string $path_config = null): IModule
+    public function initializeObjectFromModuleConfig(?string $path_config = null, ?string $path_module = null): IModule
     {
-        $dataFromFile = file_get_contents(self::getDefaultPathConfig());
+        $path_config = $path_config ?? self::getDefaultPathConfig($path_module);
+        $dataFromFile = file_get_contents($path_config);
         if (!is_string($dataFromFile)) {
-            throw new AdminPanelException("Error failed to read file.");
+            throw new ReadFileException("Error failed to read file.");
         }
 
         $arrDataForObject = json_decode($dataFromFile, true);

@@ -14,7 +14,7 @@ use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
  */
 interface IModuleConfig
 {
-    public function initializeObjectFromModuleConfig(?string $path_config = null): IModule;
+    public function initializeObjectFromModuleConfig(?string $path_config = null, ?string $path_module = null): IModule;
 
     public function getDefaultPathConfig(?string $path_module = null): string;
 

@@ -19,6 +19,7 @@ use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
+use vadimcontenthunter\AdminPanel\exceptions\ModuleConfig\ReadFileException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
@@ -78,7 +79,7 @@ abstract class Module extends ActiveRecord implements IModule
     public function initializeNewObject(): IModule
     {
         try {
-            $moduleJson = $this->moduleConfig->initializeObjectFromModuleConfig();
+            $moduleJson = $this->moduleConfig->initializeObjectFromModuleConfig($this->pathConfig, $this->pathModule);
             if ($this->name === '') {
                 $this->setName($moduleJson->getName());
             }
@@ -87,7 +88,7 @@ abstract class Module extends ActiveRecord implements IModule
                 $this->setAlias($moduleJson->getAlias());
             }
             $this->pathConfig = $moduleJson->getPathConfig();
-        } catch (\Exception $e) {
+        } catch (ReadFileException $e) {
             if ($this->name === '') {
                 $this->name = $this::initializeName();
             }
@@ -344,11 +345,11 @@ abstract class Module extends ActiveRecord implements IModule
                             ->addField('data', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
-                            ->addField('path_config', FieldDataType::getTypeVarchar(80), [
+                            ->addField('path_config', FieldDataType::getTypeVarchar(500), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
                             ])
-                            ->addField('path_module', FieldDataType::getTypeVarchar(80), [
+                            ->addField('path_module', FieldDataType::getTypeVarchar(500), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
                             ])
