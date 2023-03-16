@@ -94,6 +94,11 @@ class ModuleConfig implements IModuleConfig
     public function initializeObjectFromModuleConfig(?string $path_config = null, ?string $path_module = null): IModule
     {
         $path_config = $path_config ?? self::getDefaultPathConfig($path_module);
+
+        if (!file_exists($path_config)) {
+            throw new ReadFileException("Error file does not exist.");
+        }
+
         $dataFromFile = file_get_contents($path_config);
         if (!is_string($dataFromFile)) {
             throw new ReadFileException("Error failed to read file.");
