@@ -92,7 +92,7 @@ class MainController
                 if ($module instanceof Module) {
                     $menuItem = $module->getMenuItem();
                     if ($module->getName() === 'TextModule') {
-                        if($is_first_elem){
+                        if ($is_first_elem) {
                             $menuItem->setActivateMenuItem(true);
                             $module->builderAdminContentUi($contentContainer);
                         }
@@ -102,9 +102,8 @@ class MainController
                         } elseif ($menuItem instanceof IModuleItemUi) {
                             $sitebarUi->addMenuModuleItem($menuItem);
                         }
-
-                    }else{
-                        if($is_first_elem){
+                    } else {
+                        if ($is_first_elem) {
                             $menuItem->setActivateMenuItem(true);
                             $module->builderAdminContentUi($contentContainer);
                         }

@@ -169,13 +169,9 @@ class ModuleConfig implements IModuleConfig
         $temp->data = $module->getData();
         $temp->pathConfig = $module->getPathConfig();
         $temp->pathModule = $module->getPathModule();
-        // $temp->lastModifiedDateTime = $module->getLastModifiedDateTime();
-        // $temp->formatDateTime = $module->getFormatDateTime();
 
         $json = json_encode($temp, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents($module->getPathConfig(), $json, LOCK_EX);
-
-        
 
         return $this;
     }

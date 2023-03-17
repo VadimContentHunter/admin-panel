@@ -112,7 +112,6 @@ abstract class Module extends ActiveRecord implements IModule
             $file_data_time = $this->moduleConfig->getDataTimeConfigJson($object->getPathConfig());
             $object->setLastModifiedDateTime($file_data_time);
             $object->insertObjectToDb();
-
         } else {
             if (!file_exists($object->getPathConfig())) {
                 $object->initializeJsonConfig();
