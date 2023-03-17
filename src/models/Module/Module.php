@@ -106,10 +106,13 @@ abstract class Module extends ActiveRecord implements IModule
             $object->setData($this->getData());
             $object->setPathConfig($this->pathConfig);
             $object->setPathModule($this->pathModule);
-            $object->setLastModifiedDateTime($this->dataTime->getTimestamp());
             $object->setFormatDateTime($this->formatDateTime);
+            $object->initializeJsonConfig();
+
+            $file_data_time = $this->moduleConfig->getDataTimeConfigJson($object->getPathConfig());
+            $object->setLastModifiedDateTime($file_data_time);
             $object->insertObjectToDb();
-            $this->moduleConfig->writeDataDbToJsonConfig($this->name, $object);
+
         } else {
             if (!file_exists($object->getPathConfig())) {
                 $object->initializeJsonConfig();
@@ -118,13 +121,11 @@ abstract class Module extends ActiveRecord implements IModule
                 if ($this->moduleConfig->hasFileChanged($object->getPathConfig(), $object_data_time->getTimestamp())) {
                     $module = $this->moduleConfig->initializeObjectFromModuleConfig($object->getPathConfig());
                     $object->copyData($module);
-                    $object->setLastModifiedDateTime($this->moduleConfig->getDataTimeConfigJson($object->getPathConfig()));
+
+                    $file_data_time = $this->moduleConfig->getDataTimeConfigJson($object->getPathConfig());
+                    $object->setLastModifiedDateTime($file_data_time);
                     if ($object instanceof ActiveRecord) {
                         $object->updateObjectToDbById();
-                    }
-
-                    if ($object instanceof IModule) {
-                        $this->moduleConfig->writeDataDbToJsonConfig($this->name, $object);
                     }
                 }
             }

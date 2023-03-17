@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module;
 
+use DateTime;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
@@ -51,6 +52,8 @@ class ModuleConfig implements IModuleConfig
         if (!is_integer($file_data_time)) {
             throw new AdminPanelException('Error, unable to get file date and time.');
         }
+
+        $d = date('Y-m-d H:i:s', $file_data_time);
         return $file_data_time;
     }
 
@@ -112,8 +115,8 @@ class ModuleConfig implements IModuleConfig
             || !$arrDataForObject['status']
             || !$arrDataForObject['pathConfig']
             || !$arrDataForObject['pathModule']
-            || !$arrDataForObject['lastModifiedDateTime']
-            || !$arrDataForObject['formatDateTime']
+            // || !$arrDataForObject['lastModifiedDateTime']
+            // || !$arrDataForObject['formatDateTime']
         ) {
             throw new AdminPanelException("Error Incorrect data received from file.");
         }
@@ -134,8 +137,8 @@ class ModuleConfig implements IModuleConfig
             || !is_numeric($arrDataForObject['status'])
             || !is_string($arrDataForObject['pathConfig'])
             || !is_string($arrDataForObject['pathModule'])
-            || !is_string($arrDataForObject['lastModifiedDateTime'])
-            || !is_string($arrDataForObject['formatDateTime'])
+            // || !is_string($arrDataForObject['lastModifiedDateTime'])
+            // || !is_string($arrDataForObject['formatDateTime'])
         ) {
             throw new AdminPanelException("Error Incorrect type for the parameter. Must be a string.");
         }
@@ -152,8 +155,8 @@ class ModuleConfig implements IModuleConfig
         $object->setData($data);
         $object->setPathConfig($arrDataForObject['pathConfig']);
         $object->setPathModule($arrDataForObject['pathModule']);
-        $object->setLastModifiedDateTime($arrDataForObject['lastModifiedDateTime']);
-        $object->setFormatDateTime($arrDataForObject['formatDateTime']);
+        // $object->setLastModifiedDateTime($arrDataForObject['lastModifiedDateTime']);
+        // $object->setFormatDateTime($arrDataForObject['formatDateTime']);
         return $object;
     }
 
@@ -166,11 +169,14 @@ class ModuleConfig implements IModuleConfig
         $temp->data = $module->getData();
         $temp->pathConfig = $module->getPathConfig();
         $temp->pathModule = $module->getPathModule();
-        $temp->lastModifiedDateTime = $module->getLastModifiedDateTime();
-        $temp->formatDateTime = $module->getFormatDateTime();
+        // $temp->lastModifiedDateTime = $module->getLastModifiedDateTime();
+        // $temp->formatDateTime = $module->getFormatDateTime();
 
         $json = json_encode($temp, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents($module->getPathConfig(), $json, LOCK_EX);
+
+        
+
         return $this;
     }
 

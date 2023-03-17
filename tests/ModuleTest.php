@@ -91,8 +91,8 @@ class ModuleTest extends TestCase
         ];
         $temp->pathConfig = preg_replace('~[\\\]+~', '\\\\', $this->pathConfig);
         $temp->pathModule = preg_replace('~[\\\]+~', '\\\\', __DIR__ . '\\fakes');
-        $temp->lastModifiedDateTime = $this->dataTime->format('Y-m-d H:i:s');
-        $temp->formatDateTime = 'Y-m-d H:i:s';
+        // $temp->lastModifiedDateTime = $this->dataTime->format('Y-m-d H:i:s');
+        // $temp->formatDateTime = 'Y-m-d H:i:s';
 
         $json = json_encode($temp, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         file_put_contents(__DIR__ . '/test_initializeJsonConfig.json', $json, LOCK_EX);
