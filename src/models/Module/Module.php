@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module;
 
+use DateTime;
+use DateTimeImmutable;
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
+use vadimcontenthunter\AdminPanel\models\Module\ModuleConfig;
+use vadimcontenthunter\AdminPanel\services\attributes\NotInDb;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
+use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModuleConfig;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
+use vadimcontenthunter\AdminPanel\exceptions\ModuleConfig\ReadFileException;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
 
@@ -21,7 +30,16 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
  */
 abstract class Module extends ActiveRecord implements IModule
 {
-    protected string $title = '';
+    /**
+     * Название не связанное с Названием файла и класса для модуля.
+     * Может быть такой же как и поле name
+     */
+    protected string $alias = '';
+
+    /**
+     * Название модуля, которое соответствует названию класса и файла Модуля
+     */
+    protected string $name = '';
 
     protected int $status = StatusCode::ERROR;
 
@@ -31,116 +49,156 @@ abstract class Module extends ActiveRecord implements IModule
 
     protected ?string $pathModule = null;
 
-    final public function __construct()
-    {
+    protected string $lastModifiedDateTime = '';
+
+    protected string $formatDateTime = 'Y-m-d H:i:s';
+
+    #[NotInDb]
+    protected DateTime $dataTime;
+
+    #[NotInDb]
+    protected IModuleConfig $moduleConfig;
+
+    abstract public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
+
+    abstract public function getMenuItem(): IModuleItemUi;
+
+    final public function __construct(
+        ?IModuleConfig $moduleConfig = null,
+        #[NotInDb]
+        DateTime $dataTime = new DateTime()
+    ) {
+        $this->moduleConfig = $moduleConfig ?? new ModuleConfig(static::class);
+        $this->status = StatusCode::ON;
+        $this->dataTime = $dataTime;
     }
 
     /**
      * @throws AdminPanelException
      */
-    protected static function getDefaultPathModule(): string
+    public function initializeNewObject(): IModule
+    {
+        try {
+            $moduleJson = $this->moduleConfig->initializeObjectFromModuleConfig($this->pathConfig, $this->pathModule);
+            if ($this->name === '') {
+                $this->setName($moduleJson->getName());
+            }
+
+            if ($this->alias === '') {
+                $this->setAlias($moduleJson->getAlias());
+            }
+            $this->pathConfig = $moduleJson->getPathConfig();
+        } catch (ReadFileException $e) {
+            if ($this->name === '') {
+                $this->name = $this::initializeName();
+            }
+            if ($this->alias === '') {
+                $this->alias = $this::initializeName();
+            }
+        }
+
+        $object = self::selectByField('name', $this->name)[0] ?? null;
+        if (!($object instanceof IModule)) {
+            $object = new static();
+            $object->setName($this->name);
+            $object->setAlias($this->alias);
+            $object->setStatus($this->status);
+            $object->setData($this->getData());
+            $object->setPathConfig($this->pathConfig);
+            $object->setPathModule($this->pathModule);
+            $object->setFormatDateTime($this->formatDateTime);
+            $object->initializeJsonConfig();
+
+            $file_data_time = $this->moduleConfig->getDataTimeConfigJson($object->getPathConfig());
+            $object->setLastModifiedDateTime($file_data_time);
+            $object->insertObjectToDb();
+        } else {
+            if (!file_exists($object->getPathConfig())) {
+                $object->initializeJsonConfig();
+            } else {
+                $object_data_time = new DateTime($object->getLastModifiedDateTime());
+                if ($this->moduleConfig->hasFileChanged($object->getPathConfig(), $object_data_time->getTimestamp())) {
+                    $module = $this->moduleConfig->initializeObjectFromModuleConfig($object->getPathConfig());
+                    $object->copyData($module);
+
+                    $file_data_time = $this->moduleConfig->getDataTimeConfigJson($object->getPathConfig());
+                    $object->setLastModifiedDateTime($file_data_time);
+                    if ($object instanceof ActiveRecord) {
+                        $object->updateObjectToDbById();
+                    }
+                }
+            }
+        }
+        return $object;
+    }
+
+    /**
+     * @throws AdminPanelException
+     */
+    public function initializeReplaceThisObject(): IModule
+    {
+        $object = $this->initializeNewObject();
+
+        $this->setName($object->getName());
+        $this->setAlias($object->getAlias());
+        $this->setStatus($object->getStatus());
+        $this->setData($object->getData());
+        $this->setPathConfig($object->getPathConfig());
+        $this->setPathModule($object->getPathModule());
+        $this->setLastModifiedDateTime($object->getLastModifiedDateTime());
+        $this->setFormatDateTime($object->getFormatDateTime());
+
+        return $this;
+    }
+
+    protected static function initializeName(): string
     {
         if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error Incorrect class specified.');
+            throw new AdminPanelException('Error class does not exist.');
         }
 
         $reflection = new \ReflectionClass(static::class);
-        $class_name = $reflection->getShortName();
-        $file_name = $reflection->getFileName();
-        $path_to_module = preg_replace('~[\\\/]' . $class_name . '\.php$~u', '', $file_name ?:  throw new AdminPanelException('Error, invalid file path.'));
-        return is_string($path_to_module) ? $path_to_module : throw new AdminPanelException('Error, invalid file path.');
+        return $reflection->getShortName();
     }
 
-    protected static function getDefaultPathConfig(?string $path_module = null): string
+    public function initializeJsonConfig(): IModule
     {
-        $file_config = ($path_module ?? self::getDefaultPathModule()) . '\\' . (preg_replace('~.*[\\\/](\w+)~u', '${1}', static::class . 'Config.json') ?? '');
-        return $file_config;
+        $this->moduleConfig->initializeJsonConfig($this);
+        return $this;
     }
 
-    /**
-     * @throws AdminPanelException
-     */
-    public static function initializeObject(string $title = '', int $status = StatusCode::ON, ?string $path_config = null, ?string $path_module = null): IModule
+    public function copyData(IModule $module): IModule
     {
-        if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error Incorrect class specified.');
-        }
+        $this->setName($module->getName());
+        $this->setAlias($module->getAlias());
+        $this->setStatus($module->getStatus());
+        $this->setData($module->getData());
+        $this->setPathConfig($module->getPathConfig());
+        $this->setPathModule($module->getPathModule());
+        $this->setLastModifiedDateTime($module->getLastModifiedDateTime());
+        $this->setFormatDateTime($module->getFormatDateTime());
 
-        if ($title === '') {
-            try {
-                $title = self::initializeObjectFromModuleConfig()->getTitle();
-            } catch (\Exception $e) {
-                $title = self::initializeTitle();
-            }
-        }
-
-        $object = self::selectByField('title', $title)[0] ?? null;
-        if ($object === null) {
-            $object = new static();
-            $object->setTitle($title);
-            $object->setStatus($status);
-            $object->setPathConfig($path_config);
-            $object->setPathModule($path_module);
-            $object->insertObjectToDb();
-
-            $object = self::selectByField('title', $title)[0] ?? null;
-            if ($object instanceof IModule) {
-                $object->initializeJsonConfig();
-            } else {
-                throw new AdminPanelException('Error, unable to convert data from json format');
-            }
-        }
-        return $object;
+        return $this;
     }
 
-    /**
-     * @throws AdminPanelException
-     */
-    public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule
+    public function setName(string $name): IModule
     {
-        if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error Incorrect class specified.');
+        if ($name === '') {
+            $this->name = $this::initializeName();
+        } else {
+            $this->name = $name;
         }
-
-        $dataFromFile = file_get_contents(self::getDefaultPathConfig());
-        if (!is_string($dataFromFile)) {
-            throw new AdminPanelException("Error failed to read file.");
-        }
-
-        $arrDataForObject = json_decode($dataFromFile, true);
-        if (
-            !is_array($arrDataForObject)
-            || $arrDataForObject['title']
-            || $arrDataForObject['status']
-            || $arrDataForObject['pathConfig']
-        ) {
-            throw new AdminPanelException("Error Incorrect data received from file.");
-        }
-
-        $data = json_decode($arrDataForObject['data'] ?? '', true);
-        if (!is_array($data)) {
-            throw new AdminPanelException("Error failed to convert module data to array.");
-        }
-
-        if (
-            !is_string($arrDataForObject['title'])
-            || !is_numeric($arrDataForObject['status'])
-            || !is_string($arrDataForObject['pathConfig'])
-        ) {
-            throw new AdminPanelException("Error Incorrect type for the parameter. Must be a string.");
-        }
-
-        $object = new static();
-        $object->setTitle($arrDataForObject['title']);
-        $object->setStatus((int) $arrDataForObject['status']);
-        $object->setData($data);
-        $object->setPathConfig($arrDataForObject['pathConfig']);
-        return $object;
+        return $this;
     }
 
-    public function setTitle(string $title): IModule
+    public function setAlias(string $alias): IModule
     {
-        $this->title = $title;
+        if ($alias === '') {
+            $this->alias = $this::initializeName();
+        } else {
+            $this->alias = $alias;
+        }
+
         return $this;
     }
 
@@ -167,7 +225,7 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setPathConfig(?string $path_config = null): IModule
     {
-        $this->pathConfig = $path_config ?? self::getDefaultPathConfig();
+        $this->pathConfig = $path_config ?? $this->moduleConfig->getDefaultPathConfig();
         return $this;
     }
 
@@ -176,23 +234,36 @@ abstract class Module extends ActiveRecord implements IModule
      */
     public function setPathModule(?string $path_module = null): IModule
     {
-        $this->pathModule = $path_module ?? self::getDefaultPathModule();
+        $this->pathModule = $path_module ?? $this->moduleConfig->getDefaultPathModule();
         return $this;
     }
 
-    protected static function initializeTitle(): string
+    public function setLastModifiedDateTime(string|int $data_time): IModule
     {
-        if (strcmp(static::class, self::class) === 0) {
-            throw new AdminPanelException('Error class does not exist.');
+        if (is_string($data_time)) {
+            $this->dataTime = new DateTime($data_time);
+        } else {
+            $this->dataTime->setTimestamp($data_time);
         }
 
-        $reflection = new \ReflectionClass(static::class);
-        return $reflection->getShortName();
+        $this->lastModifiedDateTime = $this->dataTime->format($this->getFormatDateTime());
+        return $this;
     }
 
-    public function getTitle(): string
+    public function setFormatDateTime(string $format): IModule
     {
-        return $this->title;
+        $this->formatDateTime = $format;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getAlias(): string
+    {
+        return $this->alias;
     }
 
     public function getStatus(): int
@@ -217,36 +288,31 @@ abstract class Module extends ActiveRecord implements IModule
         return $data;
     }
 
+    /**
+     * @throws AdminPanelException
+     */
     public function getPathConfig(): string
     {
-        return $this->pathConfig ?? self::getDefaultPathConfig();
+        $path = $this->pathConfig ?? $this->moduleConfig->getDefaultPathConfig();
+        if (!preg_match('~.*\.json~u', $path)) {
+            throw new AdminPanelException('Error, the specified module config path is not json');
+        }
+        return $path;
     }
 
     public function getPathModule(): string
     {
-        return $this->pathModule ?? self::getDefaultPathModule();
+        return $this->pathModule ?? $this->moduleConfig->getDefaultPathModule();
     }
 
-    abstract public function getAdminContentUi(): IContentContainerUi;
-
-    public function initializeJsonConfig(): IModule
+    public function getLastModifiedDateTime(): string
     {
-        $path = $this->getPathConfig();
-        if (!preg_match('~.*\.json~u', $path)) {
-            throw new AdminPanelException('Error, the specified module config path is not json');
-        }
+        return $this->lastModifiedDateTime;
+    }
 
-        $temp = new \stdClass();
-        $temp->title = $this->getTitle();
-        $temp->status = $this->getStatus();
-        $temp->data = $this->getData();
-        $temp->pathConfig = $path;
-        $temp->pathModule = $this->getPathModule();
-
-        $json = json_encode($temp, JSON_UNESCAPED_UNICODE);
-
-        file_put_contents($path, $json, LOCK_EX);
-        return $this;
+    public function getFormatDateTime(): string
+    {
+        return $this->formatDateTime;
     }
 
     public static function getTableName(): string
@@ -266,7 +332,10 @@ abstract class Module extends ActiveRecord implements IModule
                                 FieldAttributes::AUTO_INCREMENT,
                                 FieldAttributes::PRIMARY_KEY
                             ])
-                            ->addField('title', FieldDataType::getTypeVarchar(80), [
+                            ->addField('alias', FieldDataType::getTypeVarchar(80), [
+                                FieldAttributes::NOT_NULL
+                            ])
+                            ->addField('name', FieldDataType::getTypeVarchar(80), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
                             ])
@@ -276,13 +345,19 @@ abstract class Module extends ActiveRecord implements IModule
                             ->addField('data', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
-                            ->addField('path_config', FieldDataType::getTypeVarchar(80), [
+                            ->addField('path_config', FieldDataType::getTypeVarchar(500), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
                             ])
-                            ->addField('path_module', FieldDataType::getTypeVarchar(80), [
+                            ->addField('path_module', FieldDataType::getTypeVarchar(500), [
                                 FieldAttributes::NOT_NULL,
                                 FieldAttributes::UNIQUE
+                            ])
+                            ->addField('last_modified_date_time', FieldDataType::DATETIME, [
+                                FieldAttributes::NOT_NULL
+                            ])
+                            ->addField('format_date_time', FieldDataType::TEXT, [
+                                FieldAttributes::NOT_NULL
                             ])
                 )
                 ->send();

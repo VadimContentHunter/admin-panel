@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar;
 
+use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 
 /**
@@ -14,15 +15,27 @@ class ModuleItemUi implements IModuleItemUi
 {
     public function __construct(
         protected string $title,
-        protected string $requestContent,
+        protected string $moduleName,
         protected string $iconPath = 'icon-module',
         protected bool $activated = false,
+        protected ?string $url = null
     ) {
     }
 
-    private function getStartBlockHtml(): string
+    public function setActivateMenuItem(bool $flag): ModuleItemUi
     {
-        return $this->activated ? '<li class="activated" >' : '<li>';
+        $this->activated = $flag;
+        return $this;
+    }
+
+    public function getRequestContent(): string
+    {
+        return $this->url ?? (Helper::getCurrentHostUrl() . 'admin/module/' . $this->moduleName);
+    }
+
+    private function getClassActivated(): string
+    {
+        return $this->activated ? 'class="activated"' : '';
     }
 
     private function getIconHtml(): string
@@ -33,7 +46,7 @@ class ModuleItemUi implements IModuleItemUi
     public function getHtml(): string
     {
         return <<<HTML
-            {$this->getStartBlockHtml()}
+            <li {$this->getClassActivated()}>
                 {$this->getIconHtml()}
                 <a>{$this->title}</a>
             </li>

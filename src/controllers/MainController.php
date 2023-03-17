@@ -11,6 +11,8 @@ use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Header\HeaderUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\SitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
@@ -50,12 +52,12 @@ class MainController
             $this->user->getName(),
             AdminPanelSetting::getPathToResources('img/profile.png'),
             'icon-panel',
-            'None',
             AdminPanelSetting::getPathToTemplates(),
+            'None',
         );
 
-        $this->settingModule($parameters, $adminPageUi);
-        $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
+        $this->settingModule($parameters, $adminPageUi->getSidebarComponent(), $adminPageUi->getContentComponent());
+        // $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
         // $this->settingContentContainer($adminPageUi->getContentComponent());
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
@@ -82,14 +84,34 @@ class MainController
     /**
      * @param array<string, mixed> $parameters
      */
-    protected function settingModule(array $parameters, AdminPageUiFactory $adminPageUi): void
+    protected function settingModule(array $parameters, ISitebarUi $sitebarUi, IContentContainerUi $contentContainer): void
     {
+        $is_first_elem = true;
         if ($parameters['modules'] && is_array($parameters['modules'])) {
             foreach ($parameters['modules'] as $key => $module) {
                 if ($module instanceof Module) {
-                    if ($module->getTitle() === 'TextModule') {
-                        $adminPageUi->setContentComponent($module->getAdminContentUi());
+                    $menuItem = $module->getMenuItem();
+                    if ($module->getName() === 'TextModule') {
+                        if ($is_first_elem) {
+                            $menuItem->setActivateMenuItem(true);
+                            $module->builderAdminContentUi($contentContainer);
+                        }
+
+                        if ($menuItem instanceof IMainItemUi) {
+                            $sitebarUi->addMenuMainItem($menuItem);
+                        } elseif ($menuItem instanceof IModuleItemUi) {
+                            $sitebarUi->addMenuModuleItem($menuItem);
+                        }
+                    } else {
+                        if ($is_first_elem) {
+                            $menuItem->setActivateMenuItem(true);
+                            $module->builderAdminContentUi($contentContainer);
+                        }
+
+                        $sitebarUi->addMenuModuleItem($menuItem);
                     }
+
+                    $is_first_elem = false;
                 }
             }
         }

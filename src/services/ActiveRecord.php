@@ -258,7 +258,7 @@ abstract class ActiveRecord
 
         foreach ($mapProperties as $property_name => $property_value) {
             $parameter = ':field_' . $property_name;
-            if (self::getId() !== null) {
+            if (self::getId() === null) {
                 throw new AdminPanelException('Database update error, id not specified.');
             }
 

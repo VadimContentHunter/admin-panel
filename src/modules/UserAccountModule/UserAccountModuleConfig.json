@@ -1,0 +1,8 @@
+{
+    "alias": "UserAccountModule",
+    "name": "UserAccountModule",
+    "status": 100,
+    "data": [],
+    "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\UserAccountModule\\UserAccountModuleConfig.json",
+    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\UserAccountModule"
+}

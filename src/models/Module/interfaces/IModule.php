@@ -6,6 +6,9 @@ namespace vadimcontenthunter\AdminPanel\models\Module\interfaces;
 
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -14,11 +17,23 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  */
 interface IModule
 {
-    public static function initializeObject(string $title = '', int $status = StatusCode::ON, ?string $path_config = null): IModule;
+    public function initializeNewObject(): IModule;
 
-    public static function initializeObjectFromModuleConfig(?string $path_config = null): IModule;
+    public function initializeReplaceThisObject(): IModule;
 
-    public function setTitle(string $title): IModule;
+    public function initializeJsonConfig(): IModule;
+
+    public function copyData(IModule $module): IModule;
+
+    /**
+     * Название модуля, которое соответствует названию класса и файла Модуля
+     */
+    public function setName(string $name): IModule;
+
+    /**
+     * Устанавливает Название не связанное с Названием файла и класса для модуля.
+     */
+    public function setAlias(string $alias): IModule;
 
     public function setStatus(int $status): IModule;
 
@@ -36,7 +51,13 @@ interface IModule
 
     public function setPathModule(?string $path_module = null): IModule;
 
-    public function getTitle(): string;
+    public function setLastModifiedDateTime(string|int $data_time): IModule;
+
+    public function setFormatDateTime(string $format): IModule;
+
+    public function getName(): string;
+
+    public function getAlias(): string;
 
     public function getStatus(): int;
 
@@ -53,7 +74,11 @@ interface IModule
 
     public function getPathModule(): string;
 
-    public function getAdminContentUi(): IContentContainerUi;
+    public function getLastModifiedDateTime(): string;
 
-    public function initializeJsonConfig(): IModule;
+    public function getFormatDateTime(): string;
+
+    public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
+
+    public function getMenuItem(): IModuleItemUi;
 }

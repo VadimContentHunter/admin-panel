@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\modules\TextModule\AdminPanel\UiComponents;
+namespace vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers;
 
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentItemUi;
@@ -17,7 +17,7 @@ class TextContentUi implements IContentItemUi
         protected string $title,
         protected string $description = '',
         protected string $pathToTemplates = '',
-        protected string $templateName = 'text-container-content-ui.php'
+        protected string $templateName = 'UiComponents/text-container-content-ui.php'
     ) {
     }
 

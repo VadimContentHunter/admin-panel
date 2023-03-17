@@ -28,12 +28,12 @@ class AdminPageUiFactory implements IAdminPageUiFactory
         string $user_name,
         string $user_icon_path,
         string $site_logo_path,
-        string $content_title,
-        protected string $templatesPath,
+        protected ?string $templatesPath = null,
+        string $content_title = '',
     ) {
         $this->headerUi = new HeaderUi($user_name, $user_icon_path);
         $this->sidebarUi = new SitebarUi($site_logo_path);
-        $this->contentUi = new ContentContainerUi($content_title, $templatesPath);
+        $this->contentUi = new ContentContainerUi($templatesPath, $content_title);
     }
 
     public function setContentComponent(IContentContainerUi $objContentUi): IAdminPageUiFactory

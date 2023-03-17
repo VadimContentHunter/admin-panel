@@ -18,12 +18,12 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
     /**
      * @var array<IMainItemUi>
      */
-    protected array $mainItems;
+    protected array $mainItems = [];
 
     /**
      * @var array<IModuleItemUi>
      */
-    protected array $moduleItems;
+    protected array $moduleItems = [];
 
     public function __construct(
         protected string $logoPath,
@@ -36,6 +36,15 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
             fn (IMainItemUi $objMainItemUi) => $objMainItemUi->getHtml(),
             $this->mainItems
         ));
+    }
+
+    public function activateFirstItemMenu(): IModuleItemUi|null
+    {
+        $menuItem = $this->mainItems[0] ?? $this->moduleItems[0] ?? null;
+        if ($menuItem instanceof IModuleItemUi) {
+            $menuItem->setActivateMenuItem(true);
+        }
+        return $menuItem;
     }
 
     private function getModuleItemsHtml(): string
