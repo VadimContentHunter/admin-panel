@@ -34,6 +34,11 @@ class RenderAdminPage
      */
     protected array $jsAfterBodyPaths = [];
 
+    /**
+     * @var string[]
+     */
+    protected array $html_scripts_after_body = [];
+
     public function __construct(
         protected string $templatesPath,
         protected string $templateHeadName,
@@ -56,6 +61,7 @@ class RenderAdminPage
         $js_head_paths = $this->jsHeadPaths;
         $js_begin_body_paths = $this->jsBeginBodyPaths;
         $js_after_body_paths = $this->jsAfterBodyPaths;
+        $html_scripts_after_body = $this->html_scripts_after_body;
 
         ob_start();
             include $this->templatesPath . '/' . $this->templateHeadName;
@@ -83,6 +89,7 @@ class RenderAdminPage
         $js_head_paths = $this->jsHeadPaths;
         $js_begin_body_paths = $this->jsBeginBodyPaths;
         $js_after_body_paths = $this->jsAfterBodyPaths;
+        $html_scripts_after_body = $this->html_scripts_after_body;
 
         ob_start();
             include $this->templatesPath . '/' . $this->templateHeadName;
@@ -138,6 +145,25 @@ class RenderAdminPage
             throw new AdminPanelException("Error, file not found or not js.");
         }
         $this->jsAfterBodyPaths[] = $path_file;
+        return $this;
+    }
+
+    public function addHtmlScript(string $template_file_name): RenderAdminPage
+    {
+        ob_start();
+            include $this->templatesPath . '/scripts/' . $template_file_name;
+            $js_content = ob_get_contents();
+        ob_end_clean();
+
+        if (!is_string($js_content)) {
+            $js_content = '';
+        }
+
+        // if (!preg_match('~<script\s.*>.*</script>~u', $js_content)) {
+        //     throw new AdminPanelException("Error, file not found.");
+        // }
+
+        $this->html_scripts_after_body[] = $js_content;
         return $this;
     }
 }

@@ -40,7 +40,7 @@ class ModuleItemUi implements IModuleItemUi
 
     public function getRequestContent(): string
     {
-        return $this->url ?? AdminPanelSetting::getModuleUrl($this->moduleName);
+        return $this->url ?? AdminPanelSetting::getModuleUrl($this->moduleName) . '/GET/content';
     }
 
     /**

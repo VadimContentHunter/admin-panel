@@ -62,6 +62,8 @@ class MainController
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
+        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/main_functions.js'));
+        $this->renderAdminPage->addHtmlScript('control_menu_item.php');
         $this->renderAdminPage->renderPageUiComponent(
             'admin-panel-page.php',
             $adminPageUi,
