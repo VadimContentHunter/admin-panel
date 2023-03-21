@@ -46,6 +46,8 @@ class AdminPanelAPI
         $this->routing->addRoute('~^admin/login$~', AuthorizationController::class, 'view');
         $this->routing->addRoute('~^admin/GET/users$~', UserController::class, 'loginUser');
         $this->routing->addRoute('~^admin/POST/users$~', UserController::class, 'registerUser');
+        $this->routing->addRoute('~^admin/module/UserAccountModule/GET/content$~', UserController::class, 'settingUser');
+        $this->routing->addRoute('~^admin/module/TextModule/GET/content$~', MainController::class, 'getInfo');
     }
 
     public function createConnectToDb(): AdminPanelAPI
