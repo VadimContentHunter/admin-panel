@@ -14,5 +14,7 @@ interface IModuleItemUi extends IBaseUiComponent
 {
     public function setActivateMenuItem(bool $flag): IModuleItemUi;
 
+    public function setPathToTemplates(string $path_to_templates): IModuleItemUi;
+
     public function getRequestContent(): string;
 }

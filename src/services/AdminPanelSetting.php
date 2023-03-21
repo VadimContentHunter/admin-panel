@@ -20,6 +20,11 @@ class AdminPanelSetting
 
     public static string $dbType = 'mysql';
 
+    public static function getModuleUrl(string $module_name): string
+    {
+        return Helper::getCurrentHostUrl() . 'admin/module/' . $module_name;
+    }
+
     public static function getPathToResources(?string $resource_name = null): string
     {
         return Helper::getCurrentHostUrl() . '/src/resources' . ($resource_name !== null ? '/' . $resource_name : '');
