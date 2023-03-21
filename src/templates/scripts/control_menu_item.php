@@ -3,5 +3,5 @@
 ?>
 
 <script>
-    controlMenuItem('.sidebar menu > li:not(.activated)');
+    controlMenuItem('.sidebar menu > li', '.content-wrapper > .items-container');
 </script>

@@ -125,8 +125,45 @@ async function serverRequest(url, body_data, responseHandler) {
     return response_data;
 }
 
-function controlMenuItem(selector) {
+function setContent(selector, content) {
+    if(!checkString(selector, 'selector', 'setContent')) {
+        return;
+    };
+    if(!checkString(content, 'content', 'setContent')) {
+        return;
+    };
+
+    let container = document.querySelector(selector) ?? null;
+    if (container === null) {
+        console.log('Error > setContent > selector not found!');
+        return;
+    }
+
+    container.innerHTML = content;
+}
+
+function sidebarUpdate(selector) {
     if(!checkString(selector, 'selector', 'controlMenuItem')) {
+        return;
+    };
+
+    let sidebar = document.querySelector(selector) ?? null;
+    if (sidebar === null) {
+        console.log('Error > sidebarUpdate > selector not found!');
+        return;
+    }
+
+    let menu_items = sidebar.querySelectorAll('menu > li.activated');
+    menu_items.forEach(function (item) {
+        item.classList.remove('activated');
+    });
+}
+
+function controlMenuItem(selector, selector_container) {
+    if(!checkString(selector, 'selector', 'controlMenuItem')) {
+        return;
+    };
+    if(!checkString(selector_container, 'selector_container', 'controlMenuItem')) {
         return;
     };
 
@@ -145,15 +182,22 @@ function controlMenuItem(selector) {
             }
 
             if (tag_data.hasAttribute('value')) {
-                item.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    serverRequest(
-                        tag_data.getAttribute('value'),
-                        {},
-                        (data_packet) => {
-                            console.log(data_packet);
-                        }
-                    )
+                item.addEventListener('click', (e) => {
+                    if (!item.classList.contains('activated')) {
+                        e.preventDefault();
+                        sidebarUpdate('.sidebar');
+                        setContent(selector_container, '');
+
+                        serverRequest(
+                            tag_data.getAttribute('value'),
+                            {},
+                            (data_packet) => {
+                                setContent(selector_container, data_packet.data[0] ?? '');
+                                console.log(data_packet);
+                            }
+                        )
+                        item.classList.add('activated');
+                    }
                 });
             }
         } // end function
