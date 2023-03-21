@@ -52,6 +52,7 @@ class MainItemUi implements IMainItemUi
         $item_class = $this->iconPath;
         $item_text = $this->title;
         $item_activated = $this->activated;
+        $request_url = $this->getRequestContent();
 
         ob_start();
             include $this->pathToTemplates . '/' . $this->templateName;

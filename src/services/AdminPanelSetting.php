@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\services;
 
+use vadimcontenthunter\AdminPanel\services\Helper;
+
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
@@ -22,7 +24,7 @@ class AdminPanelSetting
 
     public static function getModuleUrl(string $module_name): string
     {
-        return Helper::getCurrentHostUrl() . 'admin/module/' . $module_name;
+        return Helper::getCurrentHostUrl() . '/admin/module/' . $module_name;
     }
 
     public static function getPathToResources(?string $resource_name = null): string
