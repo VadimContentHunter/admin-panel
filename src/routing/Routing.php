@@ -18,9 +18,12 @@ class Routing
      */
     protected array $routes = [];
 
-    public function addRoute(string $pattern, string $class_name, string $method_name): Routing
+    /**
+     * @param mixed[] $parameters
+     */
+    public function addRoute(string $pattern, string $class_name, string $method_name, array $parameters = []): Routing
     {
-        $this->routes[] = new Route($pattern, $class_name, $method_name);
+        $this->routes[] = new Route($pattern, $class_name, $method_name, $parameters);
         return $this;
     }
 
@@ -38,6 +41,7 @@ class Routing
 
                 unset($matches[0]);
                 $parameters += $matches;
+                $parameters += $route->getParameters();
 
                 $class_name = $route->getClassName();
                 $method_name = $route->getMethodName();
