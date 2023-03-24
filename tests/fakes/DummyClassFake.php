@@ -10,7 +10,7 @@ use vadimcontenthunter\AdminPanel\services\attributes\NotInDb;
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class DummyClass
+class DummyClassFake
 {
     private string $foo;
     private string $bar;
