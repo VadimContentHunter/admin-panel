@@ -52,4 +52,18 @@ class Routing
             }
         }
     }
+
+    /**
+     * @param mixed[] $parameters
+     */
+    public function searchByPattern(string $pattern): IRoute|null
+    {
+        foreach ($this->routes as $key => $route) {
+            if (preg_match('~' . $pattern . '~u', $route->getPattern())) {
+                return $route;
+            }
+        }
+
+        return null;
+    }
 }
