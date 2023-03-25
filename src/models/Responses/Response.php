@@ -24,7 +24,7 @@ class Response implements IResponse
     /**
      * @var mixed[]
      */
-    public array $data;
+    public array $data = [];
 
     public function setSuccess(bool $success): IResponse
     {
