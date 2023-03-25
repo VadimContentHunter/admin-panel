@@ -7,6 +7,7 @@ namespace vadimcontenthunter\AdminPanel\models\Module;
 use DateTime;
 use DateTimeImmutable;
 use vadimcontenthunter\MyDB\DB;
+use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\services\ObjectMap;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
@@ -62,6 +63,8 @@ abstract class Module extends ActiveRecord implements IModule
     abstract public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
 
     abstract public function getMenuItem(): IModuleItemUi;
+
+    abstract public function getRoutingForModule(array $parameters): Routing;
 
     final public function __construct(
         ?IModuleConfig $moduleConfig = null,
@@ -313,6 +316,19 @@ abstract class Module extends ActiveRecord implements IModule
     public function getFormatDateTime(): string
     {
         return $this->formatDateTime;
+    }
+
+    /**
+     * @param IModule[] $modules
+     */
+    public static function searchByName(array $modules, string $name): IModule|null
+    {
+        foreach ($modules as $key => $module) {
+            if ($module instanceof IModule && $module->getName() == $name) {
+                return $module;
+            }
+        }
+        return null;
     }
 
     public static function getTableName(): string
