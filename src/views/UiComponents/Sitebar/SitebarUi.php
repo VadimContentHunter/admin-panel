@@ -27,6 +27,7 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
 
     public function __construct(
         protected string $logoPath,
+        protected ?string $templatesPath = null
     ) {
     }
 
@@ -77,13 +78,19 @@ class SitebarUi implements IBaseUiComponent, ISitebarUi
 
     public function addMenuMainItem(IMainItemUi $main_item): ISitebarUi
     {
-        $this->mainItems[] = $main_item;
+        if ($this->templatesPath !== null) {
+            $main_item->setPathToTemplates($this->templatesPath);
+            $this->mainItems[] = $main_item;
+        }
         return $this;
     }
 
     public function addMenuModuleItem(IModuleItemUi $module_item): ISitebarUi
     {
-        $this->moduleItems[] = $module_item;
+        if ($this->templatesPath !== null) {
+            $module_item->setPathToTemplates($this->templatesPath);
+            $this->moduleItems[] = $module_item;
+        }
         return $this;
     }
 

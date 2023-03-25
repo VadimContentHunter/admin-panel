@@ -4,6 +4,7 @@ $css_paths ??= [];
 $js_head_paths ??= [];
 $js_begin_body_paths ??= [];
 $js_after_body_paths ??= [];
+$html_scripts_after_body ??= [];
 
 $sidebar ??= '';
 $header ??= '';
@@ -33,4 +34,9 @@ $head ??= '';
         <script src="<?= $path ?>"></script>
     <?php endforeach; ?>
 </body>
+
+<?php foreach ($html_scripts_after_body as $fragment) : ?>
+    <?= $fragment ?>
+<?php endforeach; ?>
+
 </html>

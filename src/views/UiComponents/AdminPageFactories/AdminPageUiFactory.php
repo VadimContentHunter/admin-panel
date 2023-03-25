@@ -32,7 +32,7 @@ class AdminPageUiFactory implements IAdminPageUiFactory
         string $content_title = '',
     ) {
         $this->headerUi = new HeaderUi($user_name, $user_icon_path);
-        $this->sidebarUi = new SitebarUi($site_logo_path);
+        $this->sidebarUi = new SitebarUi($site_logo_path, $templatesPath);
         $this->contentUi = new ContentContainerUi($templatesPath, $content_title);
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\models\Module\interfaces;
 
+use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
@@ -81,4 +82,14 @@ interface IModule
     public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
 
     public function getMenuItem(): IModuleItemUi;
+
+    /**
+     * @param array<string, string> $parameters
+     */
+    public function getRoutingForModule(array $parameters): Routing;
+
+    /**
+     * @param IModule[] $modules
+     */
+    public static function searchByName(array $modules, string $name): IModule|null;
 }

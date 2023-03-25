@@ -85,6 +85,9 @@
                 // border-right: 2px solid var(--main-color);
                 background-color: var(--header-background-active);
                 // background-color: var(--header-background-active);
+                &:hover {
+                    cursor: default;
+                }
             }
         }
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\tests\fakes;
 
+use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
@@ -32,5 +33,11 @@ class ModuleFake extends Module
     public function getMenuItem(): IModuleItemUi
     {
         return new MainItemUi('Текстовый модуль', $this->getName());
+    }
+
+    public function getRoutingForModule(array $parameters): Routing
+    {
+        $routing = new Routing();
+        return $routing;
     }
 }

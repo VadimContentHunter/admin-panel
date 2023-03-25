@@ -460,6 +460,9 @@ header section.control-panel .logo i {
 .main-block section.sidebar section > menu li.activated {
   background-color: var(--header-background-active);
 }
+.main-block section.sidebar section > menu li.activated:hover {
+  cursor: default;
+}
 .main-block section.sidebar section.modules-items {
   overflow-y: hidden;
   margin-bottom: 20px;

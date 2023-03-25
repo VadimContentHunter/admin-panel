@@ -18,9 +18,12 @@ class Routing
      */
     protected array $routes = [];
 
-    public function addRoute(string $pattern, string $class_name, string $method_name): Routing
+    /**
+     * @param mixed[] $parameters
+     */
+    public function addRoute(string $pattern, string $class_name, string $method_name, array $parameters = []): Routing
     {
-        $this->routes[] = new Route($pattern, $class_name, $method_name);
+        $this->routes[] = new Route($pattern, $class_name, $method_name, $parameters);
         return $this;
     }
 
@@ -31,13 +34,9 @@ class Routing
     {
         foreach ($this->routes as $key => $route) {
             if (preg_match($route->getPattern(), $current_url, $matches)) {
-                if (empty($matches)) {
-                    echo 'Страница не найдена!';
-                    return;
-                }
-
                 unset($matches[0]);
                 $parameters += $matches;
+                $parameters += $route->getParameters();
 
                 $class_name = $route->getClassName();
                 $method_name = $route->getMethodName();
@@ -47,5 +46,18 @@ class Routing
                 return;
             }
         }
+
+        echo 'Страница не найдена!';
+    }
+
+    public function searchByPattern(string $url): IRoute|null
+    {
+        foreach ($this->routes as $key => $route) {
+            if (preg_match($route->getPattern(), $url)) {
+                return $route;
+            }
+        }
+
+        return null;
     }
 }

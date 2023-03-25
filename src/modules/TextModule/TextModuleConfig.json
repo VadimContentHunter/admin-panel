@@ -2,9 +2,7 @@
     "alias": "Текстовый модуль",
     "name": "TextModule",
     "status": 100,
-    "data": {
-        "title": "TextModule"
-    },
+    "data": [],
     "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule\\TextModuleConfig.json",
     "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule"
 }
