@@ -3,5 +3,5 @@
 ?>
 
 <script>
-    controlMenuItem('.sidebar menu > li', '.content-wrapper > .items-container');
+    controlMenuItem('.sidebar menu > li', '.content-wrapper');
 </script>
