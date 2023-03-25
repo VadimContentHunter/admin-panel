@@ -15,7 +15,7 @@ class ChatGptRoutingTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testController = new class{
+        $this->testController = new class {
             public function testMethod(): void
             {
                 echo 'completed.';

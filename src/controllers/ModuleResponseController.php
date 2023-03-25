@@ -18,15 +18,18 @@ use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
  */
 class ModuleResponseController
 {
-    public function response($parameters): void
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function response(array $parameters): void
     {
         $response = new ResponseTypeNone(false, 1, 'error: module name not found!');
 
         if (
             $parameters['modules']
-            && is_array($parameters['modules'])
             && $parameters['module_name']
             && $parameters['route']
+            && is_array($parameters['modules'])
         ) {
             $module = Module::searchByName($parameters['modules'], $parameters['module_name']);
             if ($module instanceof Module) {

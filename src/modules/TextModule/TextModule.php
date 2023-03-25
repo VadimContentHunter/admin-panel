@@ -37,7 +37,7 @@ class TextModule extends Module
     }
 
     /**
-     * @param array<string,string> $parameters
+     * @param array<string, mixed> $parameters
      */
     public function getRoutingForModule(array $parameters): Routing
     {
@@ -47,7 +47,7 @@ class TextModule extends Module
     }
 
     /**
-     * @param array<string,string> $parameters
+     * @param array<string, mixed> $parameters
      */
     public function getContent(array $parameters): AResponseType|null
     {
