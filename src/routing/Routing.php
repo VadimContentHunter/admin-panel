@@ -50,13 +50,10 @@ class Routing
         echo 'Страница не найдена!';
     }
 
-    /**
-     * @param mixed[] $parameters
-     */
-    public function searchByPattern(string $pattern): IRoute|null
+    public function searchByPattern(string $url): IRoute|null
     {
         foreach ($this->routes as $key => $route) {
-            if (preg_match('~' . $pattern . '~u', $route->getPattern())) {
+            if (preg_match($route->getPattern(), $url)) {
                 return $route;
             }
         }
