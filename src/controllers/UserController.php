@@ -6,6 +6,7 @@ namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\User\User;
+use vadimcontenthunter\AdminPanel\views\RenderResponse;
 use vadimcontenthunter\AdminPanel\validations\LoginValidate;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeData;
@@ -50,7 +51,8 @@ class UserController
             ]);
         }
 
-        echo $response->getResponse()->getJsonFormat();
+        $renderResponse = new RenderResponse($response);
+        $renderResponse->render();
     }
 
     /**
@@ -88,6 +90,7 @@ class UserController
             $response->setData($userLoginValidate->getResult());
         }
 
-        echo $response->getResponse()->getJsonFormat();
+        $renderResponse = new RenderResponse($response);
+        $renderResponse->render();
     }
 }
