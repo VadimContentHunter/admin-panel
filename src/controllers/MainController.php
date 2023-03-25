@@ -6,21 +6,17 @@ namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
+use vadimcontenthunter\AdminPanel\views\RenderResponse;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Header\HeaderUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\SitebarUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;
+use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\AdminPageUiFactory;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\DashboardContentUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -46,7 +42,7 @@ class MainController
      */
     public function view(array $parameters): void
     {
-        $this->setAccessToUser(Helper::getCurrentHostUrl() . '/admin/login');
+        $this->user = $this::setAccessToUser(Helper::getCurrentHostUrl() . '/admin/login');
 
         $adminPageUi = new AdminPageUiFactory(
             $this->user->getName(),
@@ -71,12 +67,11 @@ class MainController
         );
     }
 
-    protected function setAccessToUser(string $url): void
+    public static function setAccessToUser(string $url): IUser
     {
-        $temp = UserController::getUserObjBySession();
-        if ($temp instanceof IUser) {
-            $this->user = $temp;
-            return;
+        $user = UserController::getUserObjBySession();
+        if ($user instanceof IUser) {
+            return$user;
         }
 
         header('Location: ' . $url);
@@ -119,63 +114,15 @@ class MainController
         }
     }
 
-    protected function settingContentContainer(IContentContainerUi $contentContainer): void
+    public static function getAdminPageUiFactory(IUser $user): AdminPageUiFactory
     {
-        // $contentContainer->addContent(
-        //     (new DashboardContentUi('Dashboard'))
-        // );
-    }
-
-    protected function settingSiteBarUi(ISitebarUi $sitebarUi): void
-    {
-        $sitebarUi->addMenuMainItem(
-            (new MainItemUi('Dashboard', Helper::getCurrentHostUrl(), activated: true))
-        )
-        ->addMenuMainItem(
-            (new MainItemUi('Управление пользователями', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuMainItem(
-            (new MainItemUi('Настройки доступа', Helper::getCurrentHostUrl()))
+        $adminPageUi = new AdminPageUiFactory(
+            $user->getName(),
+            AdminPanelSetting::getPathToResources('img/profile.png'),
+            'icon-panel',
+            AdminPanelSetting::getPathToTemplates(),
+            'None',
         );
-
-        $sitebarUi->addMenuModuleItem(
-            (new ModuleItemUi('Module 1', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 2', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 3', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 4', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 5', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 6', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 7', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 8', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 9', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 10', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 11', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 12', Helper::getCurrentHostUrl()))
-        )
-        ->addMenuModuleItem(
-            (new ModuleItemUi('Module 13', Helper::getCurrentHostUrl()))
-        );
+        return $adminPageUi;
     }
 }
