@@ -10,9 +10,6 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-interface IAccountItemUi extends IBaseUiComponent
+interface IControlItemUi extends IBaseUiComponent
 {
-    public function setTitle(string $title): IHeaderUi;
-
-    public function setRequestUrl(string $url): IHeaderUi;
 }
