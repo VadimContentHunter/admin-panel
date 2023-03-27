@@ -12,6 +12,8 @@ use vadimcontenthunter\AdminPanel\controllers\UserController;
 use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\AccountItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\NotificationItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
@@ -44,13 +46,7 @@ class MainController
     {
         $this->user = $this::setAccessToUser(Helper::getCurrentHostUrl() . '/admin/login');
 
-        $adminPageUi = new AdminPageUiFactory(
-            $this->user->getName(),
-            AdminPanelSetting::getPathToResources('img/profile.png'),
-            'icon-panel',
-            AdminPanelSetting::getPathToTemplates(),
-            'None',
-        );
+        $adminPageUi = $this->getAdminPageUiFactory($this->user);
 
         $this->settingModule($parameters, $adminPageUi->getSidebarComponent(), $adminPageUi->getContentComponent());
         // $this->settingSiteBarUi($adminPageUi->getSidebarComponent());
@@ -123,6 +119,90 @@ class MainController
             AdminPanelSetting::getPathToTemplates(),
             'None',
         );
+
+        // Настройка меню пользователя
+        $adminPageUi->getHeaderComponent()->addAccountMenuItem(new AccountItemUi(
+            'Аккаунт',
+            AdminPanelSetting::getModuleUrl('UserAccountModule') . '/GET/content'
+        ));
+
+        $adminPageUi->getHeaderComponent()->addAccountMenuItem(new AccountItemUi(
+            'Выход',
+            AdminPanelSetting::getModuleUrl('UserAccountModule') . '/GET/sign_out'
+        ));
+
+        // Настройка Уведомлений
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.
+            В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.
+            В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+            true
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
+        $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
+            'Уведомление',
+            '09.02.2023 07:21',
+            'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
+            изменить звук уведомлений, настроить уведомления с учетом геопозиции,
+            разрешить уведомления от госучреждений и настроить другие параметры.',
+        ));
+
         return $adminPageUi;
     }
 }

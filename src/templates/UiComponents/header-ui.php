@@ -5,6 +5,7 @@
     $html_notification_sub_menu_items ??= [];
     $user_icon_path ??= '';
     $user_name ??= '';
+    $has_push ??= false;
 ?>
 
 <header>
@@ -14,7 +15,14 @@
         <?php endforeach; ?>
     </section>
     <section class="account-control">
+
+
+    <?php if ($has_push === true) : ?>
         <div class="notification-block __push">
+    <?php else : ?>
+        <div class="notification-block">
+    <?php endif; ?>
+
             <div class="notifications" value="55">
                 <div class="icon-header-notification">
                     <i></i>
