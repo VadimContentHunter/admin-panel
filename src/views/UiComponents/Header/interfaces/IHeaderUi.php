@@ -12,4 +12,9 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface IHeaderUi extends IBaseUiComponent
 {
+    public function addControlMenuItem(IControlItemUi $controlItem): IHeaderUi;
+
+    public function addAccountMenuItem(IAccountItemUi $accountItem): IHeaderUi;
+
+    public function addNotificationMenuItem(INotificationItemUi $notificationItem): IHeaderUi;
 }

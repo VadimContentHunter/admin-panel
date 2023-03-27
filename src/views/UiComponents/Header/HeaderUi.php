@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\views\UiComponents\Header;
 
+use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IHeaderUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IAccountItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IControlItemUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\INotificationItemUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -12,9 +16,26 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IHeaderUi
  */
 class HeaderUi implements IHeaderUi
 {
+    /**
+     * @var string[]
+     */
+    protected array $controlMenuItems = [];
+
+    /**
+     * @var string[]
+     */
+    protected array $accountMenuItems = [];
+
+    /**
+     * @var string[]
+     */
+    protected array $notificationItems = [];
+
     public function __construct(
         protected string $userName,
-        protected string $userIconPath
+        protected string $userIconPath,
+        protected string $pathToTemplates = '',
+        protected string $templateName = 'UiComponents/header-ui.php'
     ) {
     }
 
@@ -24,6 +45,24 @@ class HeaderUi implements IHeaderUi
             <section class="control-panel">
             </section>
         HTML;
+    }
+
+    public function addControlMenuItem(IControlItemUi $controlItem): IHeaderUi
+    {
+        $this->controlMenuItems[] = $controlItem->getHtml();
+        return $this;
+    }
+
+    public function addAccountMenuItem(IAccountItemUi $accountItem): IHeaderUi
+    {
+        $this->accountMenuItems[] = $accountItem->getHtml();
+        return $this;
+    }
+
+    public function addNotificationMenuItem(INotificationItemUi $notificationItem): IHeaderUi
+    {
+        $this->notificationItems[] = $notificationItem->getHtml();
+        return $this;
     }
 
     private function getNotificationItemsHtml(): string
@@ -156,45 +195,19 @@ class HeaderUi implements IHeaderUi
         HTML;
     }
 
-    private function getUserIconHtml(): string
-    {
-        return '<img src="' . $this->userIconPath . '" alt="profile">';
-    }
-
     public function getHtml(): string
     {
-        return <<<HTML
-            <header>
-                {$this->getControlPanelHtml()}
-                <section class="account-control">
-                    <div class="notification-block __push">
-                        <div class="notifications" value="55">
-                            <div class="icon-header-notification">
-                                <i></i>
-                            </div>
-                        </div>
-                        <div class="sub-menu">
-                            {$this->getNotificationItemsHtml()}
-                        </div>
-                    </div>
-                    <div class="account-block">
-                        <div class="account-block-main">
-                            {$this->getUserIconHtml()}
-                            <div class="account-name">
-                                <span>{$this->userName}</span>
-                                <div class="icon-triangle">
-                                    <i></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="sub-menu">
-                            <menu>
-                                {$this->getAccountMenuItemsHtml()}
-                            </menu>
-                        </div>
-                    </div>
-                </section>
-            </header>
-        HTML;
+        $html_control_panel_items = implode($this->controlMenuItems);
+        $html_account_sub_menu_items = implode($this->accountMenuItems);
+        $html_notification_sub_menu_items = implode($this->notificationItems);
+        $user_icon_path = $this->userIconPath;
+        $user_name = $this->userName;
+
+        ob_start();
+            include $this->pathToTemplates . '/' . $this->templateName;
+            $template = ob_get_contents();
+        ob_end_clean();
+
+        return $template ?: throw new AdminPanelException('Error, unable to write template.');
     }
 }
