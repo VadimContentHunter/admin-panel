@@ -15,4 +15,6 @@ interface IAccountItemUi extends IBaseUiComponent
     public function setTitle(string $title): IAccountItemUi;
 
     public function setRequestUrl(string $url): IAccountItemUi;
+
+    public function setPathToTemplates(string $url): IAccountItemUi;
 }

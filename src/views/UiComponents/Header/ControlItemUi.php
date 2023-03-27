@@ -12,6 +12,18 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Header\interfaces\IControlI
  */
 class ControlItemUi implements IControlItemUi
 {
+    public function __construct(
+        protected string $pathToTemplates = ''
+    )
+    {
+    }
+
+    public function setPathToTemplates(string $url): ControlItemUi
+    {
+        $this->pathToTemplates = $url;
+        return $this;
+    }
+
     public function getHtml(): string
     {
         return '';

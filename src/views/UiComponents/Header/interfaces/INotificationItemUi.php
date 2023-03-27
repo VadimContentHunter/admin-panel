@@ -19,4 +19,6 @@ interface INotificationItemUi extends IBaseUiComponent
     public function setContent(string $content): INotificationItemUi;
 
     public function setStatusPush(bool $flag = false): INotificationItemUi;
+
+    public function setPathToTemplates(string $url): INotificationItemUi;
 }

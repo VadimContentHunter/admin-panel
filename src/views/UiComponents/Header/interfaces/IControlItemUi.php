@@ -12,4 +12,5 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface IControlItemUi extends IBaseUiComponent
 {
+    public function setPathToTemplates(string $url): IControlItemUi;
 }

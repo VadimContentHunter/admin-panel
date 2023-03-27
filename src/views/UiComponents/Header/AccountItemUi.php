@@ -35,6 +35,12 @@ class AccountItemUi implements IAccountItemUi
         return $this;
     }
 
+    public function setPathToTemplates(string $url): IAccountItemUi
+    {
+        $this->pathToTemplates = $url;
+        return $this;
+    }
+
     public function getHtml(): string
     {
         $item_text = $this->title;

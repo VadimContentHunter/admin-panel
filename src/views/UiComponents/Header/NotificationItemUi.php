@@ -47,6 +47,12 @@ class NotificationItemUi implements INotificationItemUi
         return $this;
     }
 
+    public function setPathToTemplates(string $url): INotificationItemUi
+    {
+        $this->pathToTemplates = $url;
+        return $this;
+    }
+
     public function getHtml(): string
     {
         $item_title = $this->title;
