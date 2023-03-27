@@ -12,11 +12,11 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface INotificationItemUi extends IBaseUiComponent
 {
-    public function setTitle(string $title): IHeaderUi;
+    public function setTitle(string $title): INotificationItemUi;
 
-    public function setDate(string $date): IHeaderUi;
+    public function setDate(string $date): INotificationItemUi;
 
-    public function setContent(string $content): IHeaderUi;
+    public function setContent(string $content): INotificationItemUi;
 
-    public function hasPush(bool $flag = false): IHeaderUi;
+    public function hasPush(bool $flag = false): INotificationItemUi;
 }

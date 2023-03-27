@@ -12,7 +12,7 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\interfaces\IBaseUiComponent
  */
 interface IAccountItemUi extends IBaseUiComponent
 {
-    public function setTitle(string $title): IHeaderUi;
+    public function setTitle(string $title): IAccountItemUi;
 
-    public function setRequestUrl(string $url): IHeaderUi;
+    public function setRequestUrl(string $url): IAccountItemUi;
 }
