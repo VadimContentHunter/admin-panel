@@ -19,8 +19,7 @@ class AccountItemUi implements IAccountItemUi
         protected string $requestUrl = '',
         protected string $pathToTemplates = '',
         protected string $templateName = 'UiComponents/header-account-menu-item-ui.php'
-    )
-    {
+    ) {
     }
 
     public function setTitle(string $title): IAccountItemUi

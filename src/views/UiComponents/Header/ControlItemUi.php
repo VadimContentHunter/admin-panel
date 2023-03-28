@@ -14,8 +14,7 @@ class ControlItemUi implements IControlItemUi
 {
     public function __construct(
         protected string $pathToTemplates = ''
-    )
-    {
+    ) {
     }
 
     public function setPathToTemplates(string $url): ControlItemUi
