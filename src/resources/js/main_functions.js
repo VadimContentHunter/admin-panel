@@ -11,6 +11,14 @@ function checkString(parameter, parameter_name = '', function_name = '') {
     return true;
 }
 
+function checkBoolean(parameter, parameter_name = '', function_name = '') {
+    if ( typeof parameter !== "boolean") {
+        console.error('Error serverRequest > ' + function_name + ' : parameter "' + parameter_name + '" is not a boolean.');
+        return false;
+    }
+    return true;
+}
+
 function checkObject(parameter, parameter_name = '', function_name = '') {
     if ( typeof parameter !== "object") {
         console.error('Error serverRequest > ' + function_name + ' : parameter "' + parameter_name + '" is not a object.');
@@ -159,11 +167,14 @@ function sidebarUpdate(selector) {
     });
 }
 
-function controlMenuItem(selector, selector_container) {
+function controlMenuItem(selector, selector_container, check_activated_class = true) {
     if(!checkString(selector, 'selector', 'controlMenuItem')) {
         return;
     };
     if(!checkString(selector_container, 'selector_container', 'controlMenuItem')) {
+        return;
+    };
+    if(!checkBoolean(check_activated_class, 'check_activated_class', 'controlMenuItem')) {
         return;
     };
 
@@ -183,7 +194,7 @@ function controlMenuItem(selector, selector_container) {
 
             if (tag_data.hasAttribute('value')) {
                 item.addEventListener('click', (e) => {
-                    if (!item.classList.contains('activated')) {
+                    if (!item.classList.contains('activated') || !check_activated_class) {
                         e.preventDefault();
                         sidebarUpdate('.sidebar');
                         setContent(selector_container, '');
@@ -196,7 +207,10 @@ function controlMenuItem(selector, selector_container) {
                                 console.log(data_packet);
                             }
                         )
-                        item.classList.add('activated');
+
+                        if (!check_activated_class) {
+                            item.classList.add('activated');
+                        }
                     }
                 });
             }
