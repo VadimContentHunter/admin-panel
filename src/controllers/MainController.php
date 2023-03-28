@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\controllers;
 
-use vadimcontenthunter\AdminPanel\services\Helper;
-use vadimcontenthunter\AdminPanel\models\Module\Module;
-use vadimcontenthunter\AdminPanel\views\RenderResponse;
-use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
-use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
+use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
+use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
+use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\services\Helper;
+use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
+use vadimcontenthunter\AdminPanel\views\RenderResponse;
+use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\AdminPageUiFactory;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Header\AccountItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Header\NotificationItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\AdminPageFactories\AdminPageUiFactory;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
+use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\ISitebarUi;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -98,6 +98,10 @@ class MainController
                         } elseif ($menuItem instanceof IModuleItemUi) {
                             $sitebarUi->addMenuModuleItem($menuItem);
                         }
+                    } elseif ($module->getName() === 'ExitModule') {
+                        continue;
+                    } elseif ($module->getName() === 'UserAccountModule') {
+                        continue;
                     } else {
                         $temp_menu_item = $menuItem;
                         $temp_module = $module;
@@ -132,7 +136,7 @@ class MainController
 
         $adminPageUi->getHeaderComponent()->addAccountMenuItem(new AccountItemUi(
             'Выход',
-            AdminPanelSetting::getModuleUrl('UserAccountModule') . '/GET/sign_out'
+            AdminPanelSetting::getModuleUrl('ExitModule') . '/GET/sign_out'
         ));
 
         // Настройка Уведомлений

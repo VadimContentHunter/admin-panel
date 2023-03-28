@@ -203,8 +203,16 @@ function controlMenuItem(selector, selector_container, check_activated_class = t
                             tag_data.getAttribute('value'),
                             {},
                             (data_packet) => {
-                                setContent(selector_container, data_packet.data[0] ?? '');
-                                console.log(data_packet);
+
+                                if (data_packet?.type === "html") {
+                                    setContent(selector_container, data_packet.data[0] ?? '');
+                                }
+
+                                if (data_packet.type === "data" && typeof data_packet.data === "object") {
+                                    if (data_packet.data.hasOwnProperty('location') && typeof data_packet.data.location === "string") {
+                                        window.location.href = data_packet.data.location;
+                                    }
+                                }
                             }
                         )
 
