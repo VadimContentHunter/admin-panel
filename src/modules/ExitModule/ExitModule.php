@@ -24,7 +24,10 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  */
 class ExitModule extends Module
 {
-    public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function builderAdminContentUi(IContentContainerUi $contentContainerUi, array $parameters = []): IModule
     {
         $contentContainerUi->setTitle($this->getAlias());
         return $this;

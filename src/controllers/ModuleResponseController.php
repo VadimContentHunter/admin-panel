@@ -36,6 +36,8 @@ class ModuleResponseController
                 $user = MainController::setAccessToUser(Helper::getCurrentHostUrl() . '/admin/login');
                 $adminPageUi = MainController::getAdminPageUiFactory($user);
                 $parameters['contentContainerUi'] = $adminPageUi->getContentComponent();
+                $parameters['user'] = $user;
+
                 $route = $module->getRoutingForModule($parameters)
                                 ->searchByPattern($parameters['route']);
                 if ($route instanceof IRoute) {

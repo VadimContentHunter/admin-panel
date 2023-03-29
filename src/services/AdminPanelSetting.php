@@ -34,7 +34,11 @@ class AdminPanelSetting
 
     public static function getPathToTemplates(?string $template_name = null): string
     {
-        $t = __DIR__ . '\..\templates' . ($template_name !== null ? '/' . $template_name : '');
+        return __DIR__ . '\..\templates' . ($template_name !== null ? '/' . $template_name : '');
+    }
+
+    public static function getPathToTemplatesForModules(?string $template_name = null): string
+    {
         return __DIR__ . '\..\templates' . ($template_name !== null ? '/' . $template_name : '');
     }
 }

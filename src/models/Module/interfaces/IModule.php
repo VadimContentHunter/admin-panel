@@ -79,7 +79,10 @@ interface IModule
 
     public function getFormatDateTime(): string;
 
-    public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule;
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function builderAdminContentUi(IContentContainerUi $contentContainerUi, array $parameters = []): IModule;
 
     public function getMenuItem(): IModuleItemUi;
 
