@@ -1,3 +1,6 @@
+<?php
+
+?>
 <script>
     let selector_button = '.container-one .panel-header a';
     let selector_panel_footer = '.container-one form .panel-footer';
