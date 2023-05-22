@@ -52,11 +52,21 @@ class Response implements IResponse
 
     /**
      *
-     * @param mixed[] $data
+     * @param array<string, mixed> $data
      */
     public function setData(array $data): IResponse
     {
         $this->data = $data;
+        return $this;
+    }
+
+    /**
+     *
+     * @param array<string, mixed> $data
+     */
+    public function addData(array $data): IResponse
+    {
+        $this->data += $data;
         return $this;
     }
 
