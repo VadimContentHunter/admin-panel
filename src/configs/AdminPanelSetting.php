@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\services;
+namespace vadimcontenthunter\AdminPanel\configs;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 

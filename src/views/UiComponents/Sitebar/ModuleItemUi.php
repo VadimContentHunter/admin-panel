@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 

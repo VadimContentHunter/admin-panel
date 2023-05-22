@@ -6,7 +6,7 @@ namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
