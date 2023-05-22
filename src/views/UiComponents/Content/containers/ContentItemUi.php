@@ -88,7 +88,7 @@ class ContentItemUi implements IContentItemUi
             include $this->pathToTemplates . '/' . $this->templateContainerName;
             $html = ob_get_contents();
         ob_end_clean();
-        return $html;
+        return $html ?: '';
     }
 
     public function setPathToTemplates(string $path_to_templates): IContentItemUi

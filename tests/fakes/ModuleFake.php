@@ -25,7 +25,7 @@ class ModuleFake extends Module
         return new ContentContainerUi('ModuleFake', AdminPanelSetting::getPathToTemplates());
     }
 
-    public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule
+    public function builderAdminContentUi(IContentContainerUi $contentContainerUi, array $parameters = []): IModule
     {
         return $this;
     }
