@@ -15,6 +15,6 @@ $page_title ??= '';
         <link href="<?= $path ?>" rel="stylesheet">
     <?php endforeach; ?>
     <?php foreach ($js_head_paths as $path) : ?>
-        <script src="<?= $path ?>"></script>
+        <script src="<?= $path ?>" type="module"></script>
     <?php endforeach; ?>
     <title><?= $page_title?></title>

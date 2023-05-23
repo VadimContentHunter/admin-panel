@@ -6,7 +6,11 @@ $js_begin_body_paths ??= [];
 $js_after_body_paths ??= [];
 
 $login_action ??= '';
+$login_json_rpc_method ??= '';
+
 $sing_in_action ??= '';
+$sing_in_json_rpc_method ??= '';
+
 $email ??= '';
 $password ??= '';
 $head ??= '';
@@ -26,7 +30,7 @@ $head ??= '';
             <div class="panel-header">
                 <h4>Войти</h4>
             </div>
-            <form action='<?= $login_action ?>'>
+            <form action="<?= $login_action ?>" json-rpc-method="<?= $login_json_rpc_method ?>">
                 <ul>
                     <li>
                         <label >Электронная почта</label>
@@ -40,7 +44,7 @@ $head ??= '';
                     </li>
                 </ul>
                 <div class="panel-footer-form">
-                    <input type="submit" value="Продолжить">
+                    <input type="button" value="Продолжить">
                     <a>Забыли пароль ?</a>
                 </div>
             </form>
@@ -54,7 +58,7 @@ $head ??= '';
             <div class="panel-header">
                 <h4>Зарегистрироваться</h4>
             </div>
-            <form action='<?= $sing_in_action ?>'>
+            <form action="<?= $sing_in_action ?>" json-rpc-method="<?= $sing_in_json_rpc_method ?>">
                 <ul>
                     <li>
                         <label >Имя пользователя</label>
@@ -78,7 +82,7 @@ $head ??= '';
                     </li>
                 </ul>
                 <div class="panel-footer-form">
-                    <input type="submit" value="Продолжить">
+                    <input type="button" value="Продолжить">
                 </div>
             </form>
 
@@ -89,7 +93,7 @@ $head ??= '';
     </main>
 
     <?php foreach ($js_after_body_paths as $path) : ?>
-        <script src="<?= $path ?>"></script>
+        <script src="<?= $path ?>" type="module"></script>
     <?php endforeach; ?>
 </body>
 
