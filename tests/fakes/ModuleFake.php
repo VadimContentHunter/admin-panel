@@ -7,7 +7,7 @@ namespace vadimcontenthunter\AdminPanel\tests\fakes;
 use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\ContentContainerUi;

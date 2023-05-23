@@ -12,7 +12,7 @@ use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\controllers\MainController;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\controllers\AuthorizationController;
 use vadimcontenthunter\AdminPanel\controllers\ModuleResponseController;
