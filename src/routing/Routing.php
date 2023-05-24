@@ -58,7 +58,7 @@ class Routing
     /**
      * @param mixed[] $parameters
      */
-    protected function handlerJsonRpcRequest(string $request, Route $route, array $parameters = []): void
+    protected function handlerJsonRpcRequest(string $request, IRoute $route, array $parameters = []): void
     {
         $class_name = $route->getClassName();
         $parameters += $route->getParameters();
@@ -83,7 +83,7 @@ class Routing
     /**
      * @param mixed[] $parameters
      */
-    protected function handlerPage(Route $route, array $parameters = []): void
+    protected function handlerPage(IRoute $route, array $parameters = []): void
     {
         $parameters += $route->getParameters();
 
