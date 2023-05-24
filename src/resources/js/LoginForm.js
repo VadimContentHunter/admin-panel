@@ -40,6 +40,18 @@ allForms.forEach((form) => {
                         if (jsonRpcResponseClient.checkError()) {
                             // eslint-disable-next-line no-alert
                             alert(jsonRpcResponseClient.error.message);
+                            if (typeof jsonRpcResponseClient.error?.data === 'object') {
+                                Object.keys(jsonRpcResponseClient.error.data).forEach((key) => {
+                                    if (typeof jsonRpcResponseClient.error.data[key] === 'string') {
+                                        const message = jsonRpcResponseClient.error.data[key] ?? '';
+                                        let elemOutput = form.querySelector('output[name="' + key + '"]') ?? null;
+                                        if (elemOutput instanceof HTMLElement) {
+                                            elemOutput.innerText = message;
+                                            elemOutput.style.display = 'block';
+                                        }
+                                    }
+                                });
+                            }
                         } else {
                             let result = jsonRpcResponseClient.result;
                             if (typeof result?.redirect === 'string') {
