@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\controllers;
 
+use vadimcontenthunter\JsonRpc\JsonRpcError;
+use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\User\User;
-use vadimcontenthunter\AdminPanel\views\RenderResponse;
 use vadimcontenthunter\AdminPanel\validations\LoginValidate;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeData;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -43,16 +43,18 @@ class UserController
 
         if (!$user) {
             User::deleteSessionData();
-            $response = new ResponseTypeData(false, 1, message: 'Ошибка: Неправильный логин или пароль.');
+            $response = new JsonRpcResponse(error: new JsonRpcError(2, 'Неправильный логин или пароль.'), id: $parameters['request_id'] ?? null);
         } else {
             $user->setSessionFromObject();
-            $response = new ResponseTypeData(true, 0, [
-                'redirect' => Helper::getCurrentHostUrl() . '/admin'
-            ]);
+            $response = new JsonRpcResponse(
+                [
+                    'redirect' => Helper::getCurrentHostUrl() . '/admin'
+                ],
+                $parameters['request_id'] ?? null
+            );
         }
 
-        $renderResponse = new RenderResponse($response);
-        $renderResponse->render();
+        echo $response->getJsonRequest();
     }
 
     /**
@@ -60,8 +62,7 @@ class UserController
      */
     public function registerUser(array $parameters): void
     {
-        $response = new ResponseTypeData(false, 1);
-        $response->setMessage('Не удалось зарегистрироваться.');
+        $response = new JsonRpcResponse(error: new JsonRpcError(3, 'Не удалось зарегистрироваться.'));
 
         $user_name = $parameters['from_user_name'] ?? '';
         $user_email = $parameters['from_user_email'] ?? '';
@@ -75,8 +76,11 @@ class UserController
         $userLoginValidate->checkPasswordMatchWithConfirmPassword($user_password, $user_confirm_password, 'result_confirm_password', 'Пароли не совпадают');
 
         if ($userLoginValidate->isExistingMail((new User()), $user_email)) {
-            $response->setData($userLoginValidate->getResult());
-            $response->setMessage('Пользователь уже существует.');
+            $response = new JsonRpcResponse(error: new JsonRpcError(
+                4,
+                'Пользователь уже существует.',
+                $userLoginValidate->getResult()
+            ), id: $parameters['request_id'] ?? null);
         }
 
         if ($userLoginValidate->hasValidating()) {
@@ -84,13 +88,15 @@ class UserController
             $user->setPasswordHashFromPassword($user_password);
             $user->insertObjectToDb();
             $user->setSessionFromObject();
-            $response->setSuccess(true);
-            $response->setMessage('Пользователь добавлен.');
+            $response = new JsonRpcResponse('Пользователь добавлен.', $parameters['request_id'] ?? null);
         } else {
-            $response->setData($userLoginValidate->getResult());
+            $response = new JsonRpcResponse(error: new JsonRpcError(
+                5,
+                'Ошибка при валидации.',
+                $userLoginValidate->getResult()
+            ), id: $parameters['request_id'] ?? null);
         }
 
-        $renderResponse = new RenderResponse($response);
-        $renderResponse->render();
+        echo $response->getJsonRequest();
     }
 }

@@ -70,12 +70,13 @@ class Routing
             $method_name = $objRequest->getMethod();
             if (method_exists($class_name, $method_name)) {
                 $parameters += $objRequest->getParams();
+                $parameters['request_id'] = $objRequest->getId();
 
                 $obj = new $class_name();
                 $obj->$method_name($parameters);
             }
         } else {
-            echo json_encode($response);
+            echo $response->getJsonRequest();
         }
     }
 
