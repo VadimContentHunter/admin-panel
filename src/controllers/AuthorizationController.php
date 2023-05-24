@@ -34,6 +34,7 @@ class AuthorizationController
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/login-page/login-page.css'));
         $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/MainLibrary/MainLibrary.js'));
         $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/LoginForm.js'));
+        $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/SwitchingPanelsLogin.js'));
         $this->renderAdminPage->render(
             'login-page.php',
             [
