@@ -89,12 +89,6 @@ class UserController
             $user->insertObjectToDb();
             $user->setSessionFromObject();
             $response = new JsonRpcResponse('Пользователь добавлен.', $parameters['request_id'] ?? null);
-        } else {
-            $response = new JsonRpcResponse(error: new JsonRpcError(
-                5,
-                'Ошибка при валидации.',
-                $userLoginValidate->getResult()
-            ), id: $parameters['request_id'] ?? null);
         }
 
         echo $response->getJsonRequest();
