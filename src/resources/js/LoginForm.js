@@ -41,8 +41,10 @@ allForms.forEach((form) => {
                             // eslint-disable-next-line no-alert
                             alert(jsonRpcResponseClient.error.message);
                         } else {
-                            // eslint-disable-next-line no-alert
-                            alert(jsonRpcResponseClient.result);
+                            let result = jsonRpcResponseClient.result;
+                            if (typeof result?.redirect === 'string') {
+                                document.location.href = result.redirect;
+                            }
                         }
                     },
                 });
