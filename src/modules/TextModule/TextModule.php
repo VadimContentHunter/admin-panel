@@ -36,7 +36,7 @@ class TextModule extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new MainItemUi($this->getAlias(), $this->getName());
+        return new MainItemUi($this->getAlias(), $this->getName(), valueData: $this->getName() . '|' . 'getContent');
     }
 
     /**

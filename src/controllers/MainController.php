@@ -54,8 +54,9 @@ class MainController
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
-        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/main_functions.js'));
-        $this->renderAdminPage->addHtmlScript('control_menu_item.php');
+        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/MainLibrary/MainLibrary.js'));
+        $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/ControlMenuItem.js'));
+        // $this->renderAdminPage->addHtmlScript('control_menu_item.php');
         $this->renderAdminPage->renderPageUiComponent(
             'admin-panel-page.php',
             $adminPageUi,
@@ -67,7 +68,7 @@ class MainController
     {
         $user = UserController::getUserObjBySession();
         if ($user instanceof IUser) {
-            return$user;
+            return $user;
         }
 
         header('Location: ' . $url);

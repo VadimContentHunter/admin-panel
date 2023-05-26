@@ -37,7 +37,7 @@ class TextModule2 extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new MainItemUi($this->getAlias(), $this->getName());
+        return new MainItemUi($this->getAlias(), $this->getName(), valueData: $this->getName() . '|' . 'getContent');
     }
 
     /**
@@ -46,7 +46,7 @@ class TextModule2 extends Module
     public function getRoutingForModule(array $parameters): Routing
     {
         $routing = new Routing();
-        $routing->addRoute('~GET/content$~', self::class, 'getContent', $parameters);
+        $routing->addRoute('~content$~', self::class, 'getContent', $parameters);
         return $routing;
     }
 

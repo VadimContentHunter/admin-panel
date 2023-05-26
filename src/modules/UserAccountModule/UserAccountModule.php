@@ -53,7 +53,7 @@ class UserAccountModule extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new ModuleItemUi($this->getAlias(), $this->getName());
+        return new ModuleItemUi($this->getAlias(), $this->getName(), valueData: $this->getName() . '|' . 'getContent');
     }
 
     /**

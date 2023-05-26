@@ -22,7 +22,7 @@ class ModuleItemUi implements IModuleItemUi
         protected bool $activated = false,
         protected string $pathToTemplates = '',
         protected string $templateName = 'UiComponents/sitebar-menu-item.php',
-        protected ?string $url = null
+        protected ?string $valueData = null
     ) {
     }
 
@@ -40,7 +40,7 @@ class ModuleItemUi implements IModuleItemUi
 
     public function getRequestContent(): string
     {
-        return $this->url ?? AdminPanelSetting::getModuleUrl($this->moduleName) . '/GET/content';
+        return $this->valueData ?? 'content';
     }
 
     /**
@@ -51,7 +51,7 @@ class ModuleItemUi implements IModuleItemUi
         $item_class = $this->iconPath;
         $item_text = $this->title;
         $item_activated = $this->activated;
-        $request_url = $this->getRequestContent();
+        $value_data = $this->getRequestContent();
 
         ob_start();
             include $this->pathToTemplates . '/' . $this->templateName;
