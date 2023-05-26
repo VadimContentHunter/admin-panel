@@ -30,5 +30,5 @@ interface IRoute
      */
     public function getParameters(): array;
 
-    public function getMethodName(): string;
+    public function getMethodName(): ?string;
 }

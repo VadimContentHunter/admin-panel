@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c7b921a0d49869c3fe4ef9055b52283",
+    "content-hash": "29d856b7433605cdd8f360a6846281bd",
     "packages": [
         {
             "name": "psr/log",
@@ -55,6 +55,51 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "vadimcontenthunter/json-rpc",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/VadimContentHunter/json-rpc.git",
+                "reference": "8569fb63a706f06430fe4cf9b284b807df93c119"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/VadimContentHunter/json-rpc/zipball/8569fb63a706f06430fe4cf9b284b807df93c119",
+                "reference": "8569fb63a706f06430fe4cf9b284b807df93c119",
+                "shasum": ""
+            },
+            "require": {
+                "psr/log": "^3.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.1",
+                "squizlabs/php_codesniffer": "^3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "vadimcontenthunter\\JsonRpc\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "Vadim",
+                    "email": "project.k.vadim@gmail.com"
+                }
+            ],
+            "description": "JSON-RPC implementation",
+            "support": {
+                "issues": "https://github.com/VadimContentHunter/json-rpc/issues",
+                "source": "https://github.com/VadimContentHunter/json-rpc/tree/v2.0.0"
+            },
+            "time": "2023-05-07T17:49:34+00:00"
         },
         {
             "name": "vadimcontenthunter/my-db",

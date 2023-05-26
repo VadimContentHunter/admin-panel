@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\ExitModule;
 
-use vadimcontenthunter\AdminPanel\routing\Routing;
+use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\User\User;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeData;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeNone;
-use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
@@ -35,25 +32,16 @@ class ExitModule extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new MainItemUi($this->getAlias(), $this->getName());
+        return new MainItemUi($this->getAlias(), $this->getName(), valueData: $this->getName() . '|' . 'signOut');
     }
 
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getRoutingForModule(array $parameters): Routing
-    {
-        $routing = new Routing();
-        $routing->addRoute('~GET/sign_out$~', self::class, 'signOut', $parameters);
-        return $routing;
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function signOut(array $parameters): AResponseType|null
+    public function signOut(array $parameters): IModuleResponse|null
     {
         User::deleteSessionData();
-        return new ResponseTypeData(true, 0, ['location' => Helper::getCurrentHostUrl() . '/admin/login']);
+        return (new ModuleResponse($parameters['request_id'] ?? null))
+            ->setResponseLocation(Helper::getCurrentHostUrl() . '/admin/login');
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\modules\TextModule;
+namespace vadimcontenthunter\AdminPanel\modules\TextModule2;
 
 use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
@@ -18,7 +18,7 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class TextModule extends Module
+class TextModule2 extends Module
 {
     /**
      * @param array<string, mixed> $parameters

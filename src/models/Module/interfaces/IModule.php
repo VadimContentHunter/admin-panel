@@ -87,11 +87,6 @@ interface IModule
     public function getMenuItem(): IModuleItemUi;
 
     /**
-     * @param array<string, string> $parameters
-     */
-    public function getRoutingForModule(array $parameters): Routing;
-
-    /**
      * @param IModule[] $modules
      */
     public static function searchByName(array $modules, string $name): IModule|null;
