@@ -1,9 +1,11 @@
 // import MainLibraryError from './errors/MainLibraryError.js';
 import { JsonRpcRequestClient } from '../../../../node_modules/vadimcontenthunter-json-rpc-client/src/JsonRpcRequestClient.js';
+import { JsonRpcResponseClient } from '../../../../node_modules/vadimcontenthunter-json-rpc-client/src/JsonRpcResponseClient.js';
 import SetClickHandlerOnElemError from './errors/SetClickHandlerOnElemError.js';
 import ControlMenuItemError from './errors/ControlMenuItemError.js';
 import SidebarUpdateError from './errors/SidebarUpdateError.js';
 import SetContentError from './errors/SetContentError.js';
+import ServerRequestModuleError from './errors/ServerRequestModuleError.js';
 
 export function setClickHandlerOnElem(selector, clickHandler) {
     if (typeof selector !== 'string') {
@@ -23,14 +25,6 @@ export function setClickHandlerOnElem(selector, clickHandler) {
         e.preventDefault();
         clickHandler(elem);
     });
-}
-
-export function requestDataPackerJson(valueObject) {
-    const jsonRpcRequestClient = new JsonRpcRequestClient('response', {
-        module_name: valueObject?.moduleName ?? '',
-        module_method: valueObject?.moduleMethod ?? '',
-    });
-    return JSON.stringify(jsonRpcRequestClient);
 }
 
 export function sidebarUpdate(selector) {
@@ -117,4 +111,36 @@ export function controlMenuItem(selector, selectorContainer, serverRequest, chec
             });
         }
     });
+}
+
+export function requestDataPackerJson(valueObject) {
+    const jsonRpcRequestClient = new JsonRpcRequestClient('response', {
+        module_name: valueObject?.moduleName ?? '',
+        module_method: valueObject?.moduleMethod ?? '',
+    });
+    return JSON.stringify(jsonRpcRequestClient);
+}
+
+export function serverRequestModule(value, selectorContainer) {
+    if (typeof selectorContainer !== 'string') {
+        throw new ServerRequestModuleError('Тип параметра selectorContainer, должен быть "string"');
+    }
+
+    const jsonRpcResponseClient = new JsonRpcResponseClient(value);
+    if (jsonRpcResponseClient.checkError()) {
+        // eslint-disable-next-line no-alert
+        alert(jsonRpcResponseClient.error.message);
+    } else {
+        if (typeof jsonRpcResponseClient.result === 'string') {
+            setContent(selectorContainer, jsonRpcResponseClient.result);
+        }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.location === 'string'
+        ) {
+            document.location.href = jsonRpcResponseClient.result.location;
+        }
+        // let result = jsonRpcResponseClient.result;
+    }
 }
