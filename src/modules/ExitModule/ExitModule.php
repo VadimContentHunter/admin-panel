@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\ExitModule;
 
+use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\User\User;
@@ -41,19 +42,9 @@ class ExitModule extends Module
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getRoutingForModule(array $parameters): Routing
-    {
-        $routing = new Routing();
-        $routing->addRoute('~GET/sign_out$~', self::class, 'signOut', $parameters);
-        return $routing;
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function signOut(array $parameters): AResponseType|null
+    public function signOut(array $parameters): JsonRpcResponse|null
     {
         User::deleteSessionData();
-        return new ResponseTypeData(true, 0, ['location' => Helper::getCurrentHostUrl() . '/admin/login']);
+        return new JsonRpcResponse(['location' => Helper::getCurrentHostUrl() . '/admin/login'], $parameters['request_id'] ?? null);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\UserAccountModule;
 
+use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
@@ -59,17 +60,7 @@ class UserAccountModule extends Module
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getRoutingForModule(array $parameters): Routing
-    {
-        $routing = new Routing();
-        $routing->addRoute('~GET/content$~', self::class, 'getContent', $parameters);
-        return $routing;
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function getContent(array $parameters): AResponseType|null
+    public function getContent(array $parameters): JsonRpcResponse|null
     {
         $contentContainerUi = $parameters['contentContainerUi'] ?? null;
         if (!($contentContainerUi instanceof IContentContainerUi)) {
@@ -77,6 +68,6 @@ class UserAccountModule extends Module
         }
 
         $this->builderAdminContentUi($contentContainerUi, $parameters);
-        return new ResponseTypeHtml(true, 0, $contentContainerUi);
+        return new JsonRpcResponse($contentContainerUi->getHtml(), $parameters['request_id'] ?? null);
     }
 }

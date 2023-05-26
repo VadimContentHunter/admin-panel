@@ -37,10 +37,4 @@ class ModuleFake extends Module
     {
         return new MainItemUi('Текстовый модуль', $this->getName());
     }
-
-    public function getRoutingForModule(array $parameters): Routing
-    {
-        $routing = new Routing();
-        return $routing;
-    }
 }
