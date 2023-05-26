@@ -67,8 +67,6 @@ abstract class Module extends ActiveRecord implements IModule
 
     abstract public function getMenuItem(): IModuleItemUi;
 
-    abstract public function getRoutingForModule(array $parameters): Routing;
-
     final public function __construct(
         ?IModuleConfig $moduleConfig = null,
         #[NotInDb]

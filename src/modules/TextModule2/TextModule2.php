@@ -43,16 +43,6 @@ class TextModule2 extends Module
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getRoutingForModule(array $parameters): Routing
-    {
-        $routing = new Routing();
-        $routing->addRoute('~content$~', self::class, 'getContent', $parameters);
-        return $routing;
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
     public function getContent(array $parameters): JsonRpcResponse|null
     {
         $contentContainerUi = $parameters['contentContainerUi'] ?? null;
@@ -61,6 +51,6 @@ class TextModule2 extends Module
         }
 
         $this->builderAdminContentUi($contentContainerUi);
-        return new JsonRpcResponse($contentContainerUi->getHtml());
+        return new JsonRpcResponse($contentContainerUi->getHtml(), $parameters['request_id'] ?? null);
     }
 }

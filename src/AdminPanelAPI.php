@@ -46,6 +46,7 @@ class AdminPanelAPI
         $this->routing->addRoute('~^admin$~', MainController::class, 'view');
         $this->routing->addRoute('~^admin/login$~', AuthorizationController::class, 'view');
         $this->routing->addRoute('~^admin/users$~', UserController::class);
+        $this->routing->addRoute('~^admin/module$~', ModuleResponseController::class);
         // $this->routing->addRoute('~^admin/GET/users$~', UserController::class, 'loginUser');
         // $this->routing->addRoute('~^admin/POST/users$~', UserController::class, 'registerUser');
         // $this->routing->addRoute('~^admin/module/(?<module_name>\w+)/~', ModuleResponseController::class, 'response');

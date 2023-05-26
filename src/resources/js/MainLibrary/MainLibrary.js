@@ -28,7 +28,7 @@ export function setClickHandlerOnElem(selector, clickHandler) {
 export function requestDataPackerJson(valueObject) {
     const jsonRpcRequestClient = new JsonRpcRequestClient('response', {
         module_name: valueObject?.moduleName ?? '',
-        module_method: valueObject?.method ?? '',
+        module_method: valueObject?.moduleMethod ?? '',
     });
     return JSON.stringify(jsonRpcRequestClient);
 }
@@ -103,10 +103,11 @@ export function controlMenuItem(selector, selectorContainer, serverRequest, chec
                     sidebarUpdate('.sidebar');
                     setContent(selectorContainer, '');
 
+                    let valuesElemData = elemData.getAttribute('value').split('|');
+
                     serverRequest({
-                        url: elemData.getAttribute('value'),
-                        moduleName: elemData.getAttribute('value'),
-                        container: selectorContainer,
+                        moduleName: valuesElemData[0] ?? '',
+                        moduleMethod: valuesElemData[1] ?? '',
                     });
 
                     if (!checkActivatedClass) {
