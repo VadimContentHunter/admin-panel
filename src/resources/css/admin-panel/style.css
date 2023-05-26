@@ -578,68 +578,6 @@ section.header-menu .sub-menu {
 .content-wrapper .items-container .container-one .panel-header a.icon-panel:hover i {
   background-color: var(--main-color);
 }
-.content-wrapper .items-container .container-one form {
-  display: flex;
-  flex-direction: column;
-}
-.content-wrapper .items-container .container-one form ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-.content-wrapper .items-container .container-one form ul li {
-  display: flex;
-  flex-direction: column;
-}
-.content-wrapper .items-container .container-one form ul li label {
-  color: var(--main-soft-text);
-  font-size: 13px;
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-.content-wrapper .items-container .container-one form ul li input {
-  padding: 4px 12px;
-  outline: none;
-  border: none;
-  border-radius: var(--main-border-radius);
-  color: var(--main-text-color);
-  font-size: 16px;
-  background-color: var(--header-background-active);
-  margin-bottom: 8px;
-}
-.content-wrapper .items-container .container-one form ul li input::placeholder {
-  font-size: 13px;
-  color: var(--header-text-color);
-}
-.content-wrapper .items-container .container-one form ul li output {
-  display: none;
-  margin-bottom: 20px;
-  font-size: 13px;
-  color: var(--main-color);
-}
-.content-wrapper .items-container .container-one form ul li output::before {
-  content: "*** ";
-}
-.content-wrapper .items-container .container-one form .panel-footer {
-  display: none;
-  flex-direction: row;
-  justify-content: flex-end;
-  border-top: var(--header-border-bottom);
-}
-.content-wrapper .items-container .container-one form .panel-footer button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: var(--main-border-radius);
-  color: var(--main-text-color);
-  font-size: 16px;
-  background-color: var(--header-background-active);
-  margin-top: 16px;
-}
-.content-wrapper .items-container .container-one form .panel-footer button:hover {
-  color: #ffffff;
-  background-color: var(--main-color);
-  cursor: pointer;
-}
 .content-wrapper .items-container .container-2 {
   grid-column: span 3;
   height: 500px;
@@ -670,6 +608,72 @@ section.header-menu .sub-menu {
   font-size: 14px;
   padding: 12px 0px;
   line-height: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+form ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+form ul li {
+  display: flex;
+  flex-direction: column;
+}
+form ul li label {
+  color: var(--main-soft-text);
+  font-size: 13px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+form ul li input {
+  padding: 4px 12px;
+  outline: none;
+  border: none;
+  border-radius: var(--main-border-radius);
+  color: var(--main-text-color);
+  font-size: 16px;
+  background-color: var(--header-background-active);
+  margin-bottom: 8px;
+}
+form ul li input::placeholder {
+  font-size: 13px;
+  color: var(--header-text-color);
+}
+form ul li output {
+  display: none;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--main-color);
+}
+form ul li output::before {
+  content: "*** ";
+}
+form ul li.hidden {
+  display: none;
+}
+form .panel-footer {
+  display: none;
+  flex-direction: row;
+  justify-content: flex-end;
+  border-top: var(--header-border-bottom);
+}
+form .panel-footer button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--main-border-radius);
+  color: var(--main-text-color);
+  font-size: 16px;
+  background-color: var(--header-background-active);
+  margin-top: 16px;
+}
+form .panel-footer button:hover {
+  color: #ffffff;
+  background-color: var(--main-color);
+  cursor: pointer;
 }
 
 .main-block {

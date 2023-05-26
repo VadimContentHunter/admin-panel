@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\services;
+namespace vadimcontenthunter\AdminPanel\configs;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 
@@ -34,7 +34,11 @@ class AdminPanelSetting
 
     public static function getPathToTemplates(?string $template_name = null): string
     {
-        $t = __DIR__ . '\..\templates' . ($template_name !== null ? '/' . $template_name : '');
         return __DIR__ . '\..\templates' . ($template_name !== null ? '/' . $template_name : '');
+    }
+
+    public static function getPathToTemplatesForModules(string $module_name, string $template_name = null): string
+    {
+        return __DIR__ . '/../modules/' . $module_name . '/templates/' . $template_name;
     }
 }

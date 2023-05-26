@@ -6,7 +6,11 @@ $js_begin_body_paths ??= [];
 $js_after_body_paths ??= [];
 
 $login_action ??= '';
+$login_json_rpc_method ??= '';
+
 $sing_in_action ??= '';
+$sing_in_json_rpc_method ??= '';
+
 $email ??= '';
 $password ??= '';
 $head ??= '';
@@ -26,7 +30,7 @@ $head ??= '';
             <div class="panel-header">
                 <h4>Войти</h4>
             </div>
-            <form action='<?= $login_action ?>'>
+            <form action="<?= $login_action ?>" json-rpc-method="<?= $login_json_rpc_method ?>">
                 <ul>
                     <li>
                         <label >Электронная почта</label>
@@ -40,7 +44,7 @@ $head ??= '';
                     </li>
                 </ul>
                 <div class="panel-footer-form">
-                    <input type="submit" value="Продолжить">
+                    <input type="button" value="Продолжить">
                     <a>Забыли пароль ?</a>
                 </div>
             </form>
@@ -54,7 +58,7 @@ $head ??= '';
             <div class="panel-header">
                 <h4>Зарегистрироваться</h4>
             </div>
-            <form action='<?= $sing_in_action ?>'>
+            <form action="<?= $sing_in_action ?>" json-rpc-method="<?= $sing_in_json_rpc_method ?>">
                 <ul>
                     <li>
                         <label >Имя пользователя</label>
@@ -78,7 +82,7 @@ $head ??= '';
                     </li>
                 </ul>
                 <div class="panel-footer-form">
-                    <input type="submit" value="Продолжить">
+                    <input type="button" value="Продолжить">
                 </div>
             </form>
 
@@ -89,83 +93,7 @@ $head ??= '';
     </main>
 
     <?php foreach ($js_after_body_paths as $path) : ?>
-        <script src="<?= $path ?>"></script>
+        <script src="<?= $path ?>" type="module"></script>
     <?php endforeach; ?>
 </body>
-
-<script>
-    setClickHandlerOnElem('#container_sing_in .panel-footer a', (elem_a) => {
-        let elem_register = document.querySelector('#container_register') ?? null;
-        if (elem_register === null) {
-            throw new Error('Error!');
-        }
-        elem_register.style.display = 'block';
-
-        let elem_parent = elem_a.closest('.login-container');
-        elem_parent.style.display = 'none';
-    });
-
-    setClickHandlerOnElem('#container_register .panel-footer a', (elem_a) => {
-        let elem_sing_in = document.querySelector('#container_sing_in') ?? null;
-        if (elem_sing_in === null) {
-            throw new Error('Error!');
-        }
-        elem_sing_in.style.display = 'block';
-
-        let elem_parent = elem_a.closest('.login-container');
-        elem_parent.style.display = 'none';
-    });
-</script>
-<script>
-    setClickHandlerOnForm('#container_sing_in form', (elem_form) => {
-        serverRequest(
-            elem_form.getAttribute('action'),
-            (new FormData(elem_form)),
-            function (response_data) {
-                if(typeof response_data?.message !== 'undefined' && response_data?.message !== ''){
-                    alert(response_data.message ?? '');
-                }
-
-                if(typeof response_data?.data?.redirect !== 'undefined'){
-                    location= response_data.data.redirect;
-                }
-            }
-        )
-    });
-
-    setClickHandlerOnForm('#container_register > form', (elem_form) => {
-        serverRequest(
-            elem_form.getAttribute('action'),
-            (new FormData(elem_form)),
-            function (response_data) {
-
-                if(typeof response_data?.message !== 'undefined' && response_data?.message !== ''){
-                    alert(response_data.message ?? '');
-                }
-
-                if(typeof response_data?.data === 'object'){
-                    const data = response_data.data;
-                    for (const key in data) {
-                        if (data.hasOwnProperty(key) && typeof data[key] === 'string') {
-                            const message = data[key] ?? '';
-
-                            let elem_output = elem_form.querySelector('output[name="' + key + '"]') ?? null;
-                            if (elem_output === null) {
-                                throw new Error('Error!');
-                            }
-
-                            elem_output.innerHTML = message;
-                            elem_output.style.display = 'block';
-                        }
-                    }
-                }
-
-                // if(typeof response_data?.data?.redirect !== 'undefined'){
-                //     location= response_data.data.redirect;
-                // }
-            }
-        )
-    });
-</script>
-
 </html>

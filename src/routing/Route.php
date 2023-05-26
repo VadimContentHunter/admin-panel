@@ -18,7 +18,7 @@ class Route implements IRoute
     public function __construct(
         protected string $pattern,
         protected string $class_name,
-        protected string $method_name,
+        protected ?string $method_name = null,
         protected array $parameters = []
     ) {
     }
@@ -67,7 +67,7 @@ class Route implements IRoute
         return $this->parameters;
     }
 
-    public function getMethodName(): string
+    public function getMethodName(): ?string
     {
         return $this->method_name;
     }

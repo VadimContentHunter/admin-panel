@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\UserAccountModule;
 
-use vadimcontenthunter\AdminPanel\routing\Routing;
+use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
+use vadimcontenthunter\JsonRpc\interfaces\IJsonRpcResponse;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
@@ -20,11 +23,31 @@ use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContent
  */
 class UserAccountModule extends Module
 {
-    public function builderAdminContentUi(IContentContainerUi $contentContainerUi): IModule
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function builderAdminContentUi(IContentContainerUi $contentContainerUi, array $parameters = []): IModule
     {
+        $user = null;
+        if ($parameters['user'] && $parameters['user'] instanceof IUser) {
+            $user = $parameters['user'];
+        }
+
+        $content_parameters = [
+            'title' => $this->getAlias(),
+            'user_name' => ($user?->getName()) ?? '',
+            'user_email' => ($user?->getEmail()) ?? '',
+        ];
+
         $contentContainerUi->setTitle($this->getAlias());
         $contentContainerUi->addContent(
-            (new ContentItemUi($this->getAlias()))
+            (new ContentItemUi(
+                $content_parameters,
+                AdminPanelSetting::getPathToTemplatesForModules($this->getName(), '/admin')
+            ))
+            ->setContent('account-content.php')
+            ->setGridColumnCount(3)
+            ->addHtmlScript('mode-editor-script.php')
         );
 
         return $this;
@@ -32,30 +55,21 @@ class UserAccountModule extends Module
 
     public function getMenuItem(): IModuleItemUi
     {
-        return new ModuleItemUi($this->getAlias(), $this->getName());
+        return new ModuleItemUi($this->getAlias(), $this->getName(), valueData: $this->getName() . '|' . 'getContent');
     }
 
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getRoutingForModule(array $parameters): Routing
-    {
-        $routing = new Routing();
-        $routing->addRoute('~GET/content$~', self::class, 'getContent', $parameters);
-        return $routing;
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    public function getContent(array $parameters): AResponseType|null
+    public function getContent(array $parameters): IModuleResponse|null
     {
         $contentContainerUi = $parameters['contentContainerUi'] ?? null;
         if (!($contentContainerUi instanceof IContentContainerUi)) {
             return null;
         }
 
-        $this->builderAdminContentUi($contentContainerUi);
-        return new ResponseTypeHtml(true, 0, $contentContainerUi);
+        $this->builderAdminContentUi($contentContainerUi, $parameters);
+        return (new ModuleResponse($parameters['request_id'] ?? null))
+            ->setResponseHtml($contentContainerUi->getHtml());
     }
 }

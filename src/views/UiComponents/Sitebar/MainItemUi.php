@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IMainItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
@@ -23,7 +23,7 @@ class MainItemUi implements IMainItemUi
         protected bool $activated = false,
         protected string $pathToTemplates = '',
         protected string $templateName = 'UiComponents/sitebar-menu-item.php',
-        protected ?string $url = null
+        protected ?string $valueData = null
     ) {
     }
 
@@ -41,7 +41,7 @@ class MainItemUi implements IMainItemUi
 
     public function getRequestContent(): string
     {
-        return $this->url ?? AdminPanelSetting::getModuleUrl($this->moduleName) . '/GET/content';
+        return $this->valueData ?? 'content';
     }
 
     /**
@@ -52,7 +52,7 @@ class MainItemUi implements IMainItemUi
         $item_class = $this->iconPath;
         $item_text = $this->title;
         $item_activated = $this->activated;
-        $request_url = $this->getRequestContent();
+        $value_data = $this->getRequestContent();
 
         ob_start();
             include $this->pathToTemplates . '/' . $this->templateName;

@@ -12,7 +12,7 @@ use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
 use vadimcontenthunter\AdminPanel\controllers\MainController;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\controllers\AuthorizationController;
 use vadimcontenthunter\AdminPanel\controllers\ModuleResponseController;
@@ -45,11 +45,11 @@ class AdminPanelAPI
         $this->routing = new Routing();
         $this->routing->addRoute('~^admin$~', MainController::class, 'view');
         $this->routing->addRoute('~^admin/login$~', AuthorizationController::class, 'view');
-        $this->routing->addRoute('~^admin/GET/users$~', UserController::class, 'loginUser');
-        $this->routing->addRoute('~^admin/POST/users$~', UserController::class, 'registerUser');
-        $this->routing->addRoute('~^admin/module/(?<module_name>\w+)/~', ModuleResponseController::class, 'response');
-        // $this->routing->addRoute('~^admin/module/UserAccountModule/GET/content$~', UserController::class, 'settingUser');
-        // $this->routing->addRoute('~^admin/module/TextModule/GET/content$~', MainController::class, 'getInfo');
+        $this->routing->addRoute('~^admin/users$~', UserController::class);
+        $this->routing->addRoute('~^admin/module$~', ModuleResponseController::class);
+        // $this->routing->addRoute('~^admin/GET/users$~', UserController::class, 'loginUser');
+        // $this->routing->addRoute('~^admin/POST/users$~', UserController::class, 'registerUser');
+        // $this->routing->addRoute('~^admin/module/(?<module_name>\w+)/~', ModuleResponseController::class, 'response');
     }
 
     public function createConnectToDb(): AdminPanelAPI

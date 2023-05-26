@@ -6,7 +6,7 @@ namespace vadimcontenthunter\AdminPanel\controllers;
 
 use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\views\RenderAdminPage;
-use vadimcontenthunter\AdminPanel\services\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -32,13 +32,17 @@ class AuthorizationController
 
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/login-page/login-page.css'));
-        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/main_functions.js'));
+        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/MainLibrary/MainLibrary.js'));
+        $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/LoginForm.js'));
+        $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/SwitchingPanelsLogin.js'));
         $this->renderAdminPage->render(
             'login-page.php',
             [
                 'page_title' => 'login',
-                'login_action' => Helper::getCurrentHostUrl() . '/admin/GET/users',
-                'sing_in_action' => Helper::getCurrentHostUrl() . '/admin/POST/users',
+                'login_action' => Helper::getCurrentHostUrl() . '/admin/users',
+                'login_json_rpc_method' => 'loginUser',
+                'sing_in_action' => Helper::getCurrentHostUrl() . '/admin/users',
+                'sing_in_json_rpc_method' => 'registerUser',
             ]
         );
     }
