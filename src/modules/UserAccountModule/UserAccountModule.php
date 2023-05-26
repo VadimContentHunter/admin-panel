@@ -47,6 +47,7 @@ class UserAccountModule extends Module
             ))
             ->setContent('account-content.php')
             ->setGridColumnCount(3)
+            ->addHtmlScript('mode-editor-script.php')
         );
 
         return $this;

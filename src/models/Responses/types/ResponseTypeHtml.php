@@ -21,7 +21,7 @@ class ResponseTypeHtml extends AResponseType
         $this->response->setSuccess($success);
         $this->response->setMessage($message ?? '');
         $this->response->setCode($code);
-        $this->response->setData([$uiComponent->getHtml()]);
+        $this->response->setData([ 'body' => $uiComponent->getHtml()]);
         $this->response->setType($this->getType());
     }
 
@@ -29,6 +29,11 @@ class ResponseTypeHtml extends AResponseType
     {
         $this->response->setData([$uiComponent->getHtml()]);
         return $this;
+    }
+
+    public function addScript(IBaseUiComponent $elem): IResponse
+    {
+        return $this->response;
     }
 
     public function getResponse(): IResponse
