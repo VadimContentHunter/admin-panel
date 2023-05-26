@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\modules\TextModule2;
 
 use vadimcontenthunter\JsonRpc\JsonRpcResponse;
-use vadimcontenthunter\AdminPanel\routing\Routing;
-use vadimcontenthunter\AdminPanel\services\Helper;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\MainItemUi;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
-use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
@@ -43,7 +41,7 @@ class TextModule2 extends Module
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getContent(array $parameters): JsonRpcResponse|null
+    public function getContent(array $parameters): IModuleResponse|null
     {
         $contentContainerUi = $parameters['contentContainerUi'] ?? null;
         if (!($contentContainerUi instanceof IContentContainerUi)) {
@@ -51,6 +49,7 @@ class TextModule2 extends Module
         }
 
         $this->builderAdminContentUi($contentContainerUi);
-        return new JsonRpcResponse($contentContainerUi->getHtml(), $parameters['request_id'] ?? null);
+        return (new ModuleResponse($parameters['request_id'] ?? null))
+            ->setResponseHtml($contentContainerUi->getHtml());
     }
 }

@@ -14,6 +14,7 @@ use vadimcontenthunter\AdminPanel\routing\interfaces\IRoute;
 use vadimcontenthunter\AdminPanel\controllers\MainController;
 use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeNone;
 use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
@@ -44,8 +45,10 @@ class ModuleResponseController
                     $parameters['contentContainerUi'] = $adminPageUi->getContentComponent();
                     $parameters['user'] = $user;
 
-                    $response = $module->$module_method($parameters);
-                    if (!($response instanceof IJsonRpcResponse)) {
+                    $responseModule = $module->$module_method($parameters);
+                    if ($responseModule instanceof IModuleResponse) {
+                        $response = $responseModule->getResponse();
+                    } else {
                         $response = new JsonRpcResponse(error: new JsonRpcError(2, 'This module not found!'), id: $parameters['request_id'] ?? null);
                     }
                 } else {

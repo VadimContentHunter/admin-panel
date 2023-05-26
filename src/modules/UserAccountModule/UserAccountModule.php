@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace vadimcontenthunter\AdminPanel\modules\UserAccountModule;
 
 use vadimcontenthunter\JsonRpc\JsonRpcResponse;
-use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
+use vadimcontenthunter\JsonRpc\interfaces\IJsonRpcResponse;
 use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
-use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeHtml;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
+use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
@@ -60,7 +60,7 @@ class UserAccountModule extends Module
     /**
      * @param array<string, mixed> $parameters
      */
-    public function getContent(array $parameters): JsonRpcResponse|null
+    public function getContent(array $parameters): IModuleResponse|null
     {
         $contentContainerUi = $parameters['contentContainerUi'] ?? null;
         if (!($contentContainerUi instanceof IContentContainerUi)) {
@@ -68,6 +68,7 @@ class UserAccountModule extends Module
         }
 
         $this->builderAdminContentUi($contentContainerUi, $parameters);
-        return new JsonRpcResponse($contentContainerUi->getHtml(), $parameters['request_id'] ?? null);
+        return (new ModuleResponse($parameters['request_id'] ?? null))
+            ->setResponseHtml($contentContainerUi->getHtml());
     }
 }
