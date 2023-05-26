@@ -1,9 +1,9 @@
 <?php
 
     $item_text ??= '';
-    $request_url ??= '';
+    $value_data ??= '';
 ?>
 
 <li>
-    <data value="<?= $request_url ?>"><?= $item_text ?></data>
+    <data value="<?= $value_data ?>"><?= $item_text ?></data>
 </li>

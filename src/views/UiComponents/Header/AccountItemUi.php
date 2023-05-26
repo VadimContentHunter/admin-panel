@@ -16,7 +16,7 @@ class AccountItemUi implements IAccountItemUi
 {
     public function __construct(
         protected string $title = '',
-        protected string $requestUrl = '',
+        protected string $value = '',
         protected string $pathToTemplates = '',
         protected string $templateName = 'UiComponents/header-account-menu-item-ui.php'
     ) {
@@ -28,9 +28,9 @@ class AccountItemUi implements IAccountItemUi
         return $this;
     }
 
-    public function setRequestUrl(string $url): IAccountItemUi
+    public function setValue(string $url): IAccountItemUi
     {
-        $this->requestUrl = $url;
+        $this->value = $url;
         return $this;
     }
 
@@ -43,7 +43,7 @@ class AccountItemUi implements IAccountItemUi
     public function getHtml(): string
     {
         $item_text = $this->title;
-        $request_url = $this->requestUrl;
+        $value_data = $this->value;
 
         ob_start();
             include $this->pathToTemplates . '/' . $this->templateName;

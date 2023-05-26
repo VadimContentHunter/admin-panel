@@ -81,14 +81,18 @@ class UserController
                 'Пользователь уже существует.',
                 $userLoginValidate->getResult()
             ), id: $parameters['request_id'] ?? null);
-        }
-
-        if ($userLoginValidate->hasValidating()) {
+        } elseif ($userLoginValidate->hasValidating()) {
             $user = new User($user_name, $user_email);
             $user->setPasswordHashFromPassword($user_password);
             $user->insertObjectToDb();
             $user->setSessionFromObject();
             $response = new JsonRpcResponse('Пользователь добавлен.', $parameters['request_id'] ?? null);
+        } else {
+            $response = new JsonRpcResponse(error: new JsonRpcError(
+                5,
+                'Ошибка при регистрации.',
+                $userLoginValidate->getResult()
+            ), id: $parameters['request_id'] ?? null);
         }
 
         echo $response->getJsonRequest();

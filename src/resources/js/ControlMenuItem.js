@@ -18,4 +18,15 @@ controlMenuItem('.sidebar menu > li', '.content-wrapper', (serverData) => {
         },
     });
 });
-controlMenuItem('header .account-block menu > li', '.content-wrapper');
+
+controlMenuItem('header .account-block menu > li', '.content-wrapper', (serverData) => {
+    serverRequest.request('eventRequestMenuItem', {
+        url: 'admin/module',
+        method: 'POST',
+        objectForDataPacker: serverData,
+        requestDataPacker: requestDataPackerJson,
+        responseHandler: (value) => {
+            serverRequestModule(value, '.content-wrapper');
+        },
+    });
+});

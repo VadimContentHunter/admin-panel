@@ -132,12 +132,12 @@ class MainController
         // Настройка меню пользователя
         $adminPageUi->getHeaderComponent()->addAccountMenuItem(new AccountItemUi(
             'Аккаунт',
-            AdminPanelSetting::getModuleUrl('UserAccountModule') . '/GET/content'
+            'UserAccountModule|getContent'
         ));
 
         $adminPageUi->getHeaderComponent()->addAccountMenuItem(new AccountItemUi(
             'Выход',
-            AdminPanelSetting::getModuleUrl('ExitModule') . '/GET/sign_out'
+            'ExitModule|signOut'
         ));
 
         // Настройка Уведомлений
