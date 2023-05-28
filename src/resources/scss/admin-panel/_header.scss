@@ -138,6 +138,12 @@ header{
             margin-left: -40px;
             overflow-y: auto;
 
+            article.default {
+                h4 {
+                    display: none !important;
+                }
+            }
+
             article {
                 display: flex;
                 flex-direction: column;

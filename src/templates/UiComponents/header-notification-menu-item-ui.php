@@ -3,14 +3,14 @@
     $item_title ??= '';
     $item_date ??= '';
     $item_content ??= '';
+
     $has_push ??= false;
+    $has_default ??= false;
+    $has_push = is_bool($has_push) && $has_push ? '__push' : '';
+    $has_default = is_bool($has_default) && $has_default ? 'default' : '';
 ?>
 
-<?php if ($has_push === true) : ?>
-    <article class="__push">
-<?php else : ?>
-    <article>
-<?php endif; ?>
+<article class="<?= $has_push ?><?= $has_push ? ' ' . $has_default : $has_default?>">
 
     <h4>
         <p>
