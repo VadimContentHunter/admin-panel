@@ -170,6 +170,9 @@ header .notification-block .sub-menu {
   margin-left: -40px;
   overflow-y: auto;
 }
+header .notification-block .sub-menu article.default h4 {
+  display: none !important;
+}
 header .notification-block .sub-menu article {
   display: flex;
   flex-direction: column;

@@ -18,6 +18,7 @@ class NotificationItemUi implements INotificationItemUi
         protected string $date = '',
         protected string $content = '',
         protected bool $statusPush = false,
+        protected bool $statusDefault = false,
         protected string $pathToTemplates = '',
         protected string $templateName = 'UiComponents/header-notification-menu-item-ui.php'
     ) {
@@ -59,6 +60,7 @@ class NotificationItemUi implements INotificationItemUi
         $item_date = $this->date;
         $item_content = $this->content;
         $has_push = $this->statusPush;
+        $has_default = $this->statusDefault;
 
         ob_start();
             include $this->pathToTemplates . '/' . $this->templateName;

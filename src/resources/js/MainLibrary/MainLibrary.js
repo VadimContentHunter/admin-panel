@@ -6,6 +6,7 @@ import ControlMenuItemError from './errors/ControlMenuItemError.js';
 import SidebarUpdateError from './errors/SidebarUpdateError.js';
 import SetContentError from './errors/SetContentError.js';
 import ServerRequestModuleError from './errors/ServerRequestModuleError.js';
+import { Notification } from '../Notification/Notification.js';
 
 export function setClickHandlerOnElem(selector, clickHandler) {
     if (typeof selector !== 'string') {
@@ -121,15 +122,22 @@ export function requestDataPackerJson(valueObject) {
     return JSON.stringify(jsonRpcRequestClient);
 }
 
-export function serverRequestModule(value, selectorContainer) {
+export function serverRequestModule(value, selectorContainer, notification) {
     if (typeof selectorContainer !== 'string') {
         throw new ServerRequestModuleError('Тип параметра selectorContainer, должен быть "string"');
+    }
+
+    if (!(notification instanceof Notification)) {
+        throw new ServerRequestModuleError('Тип параметра notification, должен принадлежать класс "Notification"');
     }
 
     const jsonRpcResponseClient = new JsonRpcResponseClient(value);
     if (jsonRpcResponseClient.checkError()) {
         // eslint-disable-next-line no-alert
-        alert(jsonRpcResponseClient.error.message);
+        // alert(jsonRpcResponseClient.error.message);
+        notification.addNotification('Ошибка', new Date().toLocaleString(), jsonRpcResponseClient.error.message);
+        notification.setStatusNew();
+        notification.update();
     } else {
         if (typeof jsonRpcResponseClient.result === 'string') {
             setContent(selectorContainer, jsonRpcResponseClient.result);
