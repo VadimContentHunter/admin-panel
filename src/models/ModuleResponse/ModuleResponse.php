@@ -35,6 +35,16 @@ class ModuleResponse implements IModuleResponse
         return $this;
     }
 
+    public function setResponseHtmlAndJs(string $html, string $path_js_file): self
+    {
+        $data = [
+            'html' => $html,
+            'pathJsFile' => $path_js_file
+        ];
+        $this->response = new JsonRpcResponse($data, $this->id);
+        return $this;
+    }
+
     public function getResponse(): IJsonRpcResponse
     {
         return $this->response;

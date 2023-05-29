@@ -6,6 +6,7 @@ import ControlMenuItemError from './errors/ControlMenuItemError.js';
 import SidebarUpdateError from './errors/SidebarUpdateError.js';
 import SetContentError from './errors/SetContentError.js';
 import ServerRequestModuleError from './errors/ServerRequestModuleError.js';
+import CreatedScriptBlockError from './errors/CreatedScriptBlockError.js';
 import { Notification } from '../Notification/Notification.js';
 
 export function setClickHandlerOnElem(selector, clickHandler) {
@@ -59,6 +60,22 @@ export function setContent(selector, content) {
     }
 
     container.innerHTML = content;
+}
+
+export function createdScriptBlock(pathToJsFile) {
+    if (typeof pathToJsFile !== 'string') {
+        throw new CreatedScriptBlockError('Тип параметра pathToJsFile, должен быть "string"');
+    }
+
+    let script = document.createElement('script');
+    script.src = pathToJsFile;
+    script.type = 'module';
+    // script.onload = () => {};
+    script.onerror = () => {
+        console.log('Error occurred while loading script');
+    };
+
+    document.body.append(script);
 }
 
 /**
@@ -148,6 +165,20 @@ export function serverRequestModule(value, selectorContainer, notification) {
             typeof jsonRpcResponseClient.result?.location === 'string'
         ) {
             document.location.href = jsonRpcResponseClient.result.location;
+        }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.html === 'string'
+        ) {
+            setContent(selectorContainer, jsonRpcResponseClient.result.html);
+        }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.pathJsFile === 'string'
+        ) {
+            createdScriptBlock(jsonRpcResponseClient.result.pathJsFile);
         }
         // let result = jsonRpcResponseClient.result;
     }

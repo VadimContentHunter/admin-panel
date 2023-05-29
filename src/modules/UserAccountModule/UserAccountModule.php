@@ -47,7 +47,7 @@ class UserAccountModule extends Module
             ))
             ->setContent('account-content.php')
             ->setGridColumnCount(3)
-            ->addHtmlScript('mode-editor-script.php')
+            // ->addHtmlScript('mode-editor-script.php')
         );
 
         return $this;
@@ -70,6 +70,6 @@ class UserAccountModule extends Module
 
         $this->builderAdminContentUi($contentContainerUi, $parameters);
         return (new ModuleResponse($parameters['request_id'] ?? null))
-            ->setResponseHtml($contentContainerUi->getHtml());
+            ->setResponseHtmlAndJs($contentContainerUi->getHtml(), AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/admin/test.js');
     }
 }
