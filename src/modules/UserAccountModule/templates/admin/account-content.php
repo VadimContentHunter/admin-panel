@@ -39,6 +39,6 @@
         </li>
     </ul>
     <div class="panel-footer">
-        <button type="button">Сохранить</button>
+        <input type="button" value="Сохранить">
     </div>
 </form>

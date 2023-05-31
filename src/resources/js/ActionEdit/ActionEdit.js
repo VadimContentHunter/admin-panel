@@ -6,7 +6,7 @@ function InputReadOnly(selectorForm, activate) {
         throw new ActionEditError('selector for form, not found!');
     }
 
-    let inputs = elemForm.querySelectorAll('input');
+    let inputs = elemForm.querySelectorAll('input:not([type="button"])');
 
     inputs.forEach((elemInput) => {
         if (elemInput instanceof HTMLInputElement) {
