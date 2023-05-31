@@ -23,20 +23,17 @@ function InputReadOnly(selectorForm, activate) {
     });
 }
 
-export function ActionEdit(selectorButton, selectorPanelFooter, selectorForm = 'form') {
-    let elemButton = document.querySelector(selectorButton) ?? null;
-    if (!(elemButton instanceof HTMLElement)) {
-        throw new ActionEditError('selector for button, not found!');
-    }
-
+export function EditStatus(selectorPanelFooter, selectorForm = 'form', status = null) {
     let elemPanelFooter = document.querySelector(selectorPanelFooter) ?? null;
     if (!(elemPanelFooter instanceof HTMLElement)) {
         throw new ActionEditError('selector for Panel Footer, not found!');
     }
 
-    elemButton.addEventListener('click', (e) => {
-        e.preventDefault();
+    if (typeof status !== 'boolean' && status !== null) {
+        throw new ActionEditError('The status is not of type boolean or null.');
+    }
 
+    if (status === null) {
         if (elemPanelFooter.style.display !== 'flex') {
             elemPanelFooter.style.display = 'flex';
             InputReadOnly(selectorForm, false);
@@ -44,5 +41,26 @@ export function ActionEdit(selectorButton, selectorPanelFooter, selectorForm = '
             elemPanelFooter.style.display = '';
             InputReadOnly(selectorForm, true);
         }
+    } else if (status) {
+        if (elemPanelFooter.style.display !== 'flex') {
+            elemPanelFooter.style.display = 'flex';
+            InputReadOnly(selectorForm, false);
+        }
+    } else {
+        elemPanelFooter.style.display = '';
+        InputReadOnly(selectorForm, true);
+    }
+}
+
+export function ActionEdit(selectorButton, selectorPanelFooter, selectorForm = 'form') {
+    let elemButton = document.querySelector(selectorButton) ?? null;
+    if (!(elemButton instanceof HTMLElement)) {
+        throw new ActionEditError('selector for button, not found!');
+    }
+
+    elemButton.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        EditStatus(selectorPanelFooter, selectorForm);
     });
 }

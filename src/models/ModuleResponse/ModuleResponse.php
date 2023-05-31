@@ -35,11 +35,37 @@ class ModuleResponse implements IModuleResponse
         return $this;
     }
 
-    public function setResponseHtmlAndJs(string $html, string $path_js_file): self
+    /**
+     * @param string[] $path_js_files
+     */
+    public function setResponseHtmlAndJsFiles(string $html, array $path_js_files): self
     {
         $data = [
             'html' => $html,
-            'pathJsFile' => $path_js_file
+            'pathJsFiles' => $path_js_files
+        ];
+        $this->response = new JsonRpcResponse($data, $this->id);
+        return $this;
+    }
+
+    /**
+     * @param string[] $path_js_files
+     */
+    public function setResponseHtmlAndJsFromFiles(string $html, array $path_js_files): self
+    {
+        $pack_js = [];
+
+        foreach ($path_js_files as $key => $path) {
+            $jsString = file_get_contents($path);
+            if ($jsString === false) {
+                continue;
+            }
+            $pack_js[] = $jsString;
+        }
+
+        $data = [
+            'html' => $html,
+            'js' => $pack_js
         ];
         $this->response = new JsonRpcResponse($data, $this->id);
         return $this;

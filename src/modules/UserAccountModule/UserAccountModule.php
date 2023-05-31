@@ -70,6 +70,9 @@ class UserAccountModule extends Module
 
         $this->builderAdminContentUi($contentContainerUi, $parameters);
         return (new ModuleResponse($parameters['request_id'] ?? null))
-            ->setResponseHtmlAndJs($contentContainerUi->getHtml(), AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/admin/EditUserData.js');
+            ->setResponseHtmlAndJsFromFiles($contentContainerUi->getHtml(), [
+                AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/admin/EditUserData.js',
+                AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/admin/SaveNewForm.js',
+            ]);
     }
 }

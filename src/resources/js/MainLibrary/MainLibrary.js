@@ -29,6 +29,19 @@ export function setClickHandlerOnElem(selector, clickHandler) {
     });
 }
 
+export function eventDelete(element, eventName, eventFunction) {
+    if (typeof eventName !== 'string') {
+        throw new SetClickHandlerOnElemError('Тип параметра eventName, должен быть "string"');
+    }
+
+    let deleteFunctionEvent = () => {
+        element.removeEventListener(eventName, eventFunction);
+        document.removeEventListener('eventDeleteMLibrary', deleteFunctionEvent);
+    };
+
+    document.addEventListener('eventDeleteMLibrary', deleteFunctionEvent);
+}
+
 export function sidebarUpdate(selector) {
     if (typeof selector !== 'string') {
         throw new SidebarUpdateError('Тип параметра selector, должен быть "string"');
@@ -60,6 +73,9 @@ export function setContent(selector, content) {
     }
 
     container.innerHTML = content;
+
+    document.dispatchEvent(new Event('eventDeleteScriptBlockForModule'));
+    document.dispatchEvent(new Event('eventDeleteMLibrary'));
 }
 
 export function createdScriptBlock(pathToJsFile) {
@@ -67,13 +83,47 @@ export function createdScriptBlock(pathToJsFile) {
         throw new CreatedScriptBlockError('Тип параметра pathToJsFile, должен быть "string"');
     }
 
+    // let search = 'script[src="' + pathToJsFile + '"]';
+    // let elemScriptBlock = document.querySelector(search) ?? null;
+    // if (elemScriptBlock !== null) {
+    //     return;
+    // }
+
     let script = document.createElement('script');
-    script.src = pathToJsFile;
+    script.src = pathToJsFile + `?cache=${Math.random()}`;
     script.type = 'module';
-    // script.onload = () => {};
+    // script.setAttribute('nonce', Math.random().toString(36).substring(2));
     script.onerror = () => {
         console.log('Error occurred while loading script');
     };
+
+    let scriptRemove = () => {
+        script.remove();
+    };
+    document.addEventListener('eventDeleteScriptBlockForModule', scriptRemove);
+    eventDelete(document, 'eventDeleteScriptBlockForModule', scriptRemove);
+
+    document.body.append(script);
+}
+
+export function createdScriptBlockFromBody(body) {
+    if (typeof body !== 'string') {
+        throw new CreatedScriptBlockError('Тип параметра body, должен быть "string"');
+    }
+
+    let script = document.createElement('script');
+    script.innerHTML = body;
+    script.type = 'module';
+    // script.setAttribute('nonce', Math.random().toString(36).substring(2));
+    script.onerror = () => {
+        console.log('Error occurred while loading script');
+    };
+
+    let scriptRemove = () => {
+        script.remove();
+    };
+    document.addEventListener('eventDeleteScriptBlockForModule', scriptRemove);
+    eventDelete(document, 'eventDeleteScriptBlockForModule', scriptRemove);
 
     document.body.append(script);
 }
@@ -176,9 +226,17 @@ export function serverRequestModule(value, selectorContainer, notification) {
 
         if (
             typeof jsonRpcResponseClient.result === 'object' &&
-            typeof jsonRpcResponseClient.result?.pathJsFile === 'string'
+            Array.isArray(jsonRpcResponseClient.result?.pathJsFiles)
         ) {
-            createdScriptBlock(jsonRpcResponseClient.result.pathJsFile);
+            jsonRpcResponseClient.result.pathJsFiles.forEach((path) => {
+                createdScriptBlock(path);
+            });
+        }
+
+        if (typeof jsonRpcResponseClient.result === 'object' && Array.isArray(jsonRpcResponseClient.result?.js)) {
+            jsonRpcResponseClient.result.js.forEach((jsBody) => {
+                createdScriptBlockFromBody(jsBody);
+            });
         }
         // let result = jsonRpcResponseClient.result;
     }

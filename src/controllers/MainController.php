@@ -56,6 +56,7 @@ class MainController
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
         $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/MainLibrary/MainLibrary.js'));
         $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/Notification/Notification.js'));
+        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/ActionEdit/ActionEdit.js'));
         $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/ControlMenuItem.js'));
         // $this->renderAdminPage->addHtmlScript('control_menu_item.php');
         $this->renderAdminPage->renderPageUiComponent(
