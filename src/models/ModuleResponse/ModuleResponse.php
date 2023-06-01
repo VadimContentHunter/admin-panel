@@ -24,7 +24,7 @@ class ModuleResponse implements IModuleResponse
         $this->response = new JsonRpcResponse(error: new JsonRpcError(1, 'Неизвестная ошибка!.'), id: $this->id);
     }
 
-    public function setResponseError(IJsonRpcError $error): self
+    public function setResponseError(?IJsonRpcError $error): self
     {
         $this->response = new JsonRpcResponse(error: $error, id: $this->id);
         return $this;
