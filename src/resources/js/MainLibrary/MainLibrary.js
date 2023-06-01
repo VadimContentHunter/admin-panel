@@ -246,6 +246,21 @@ export function serverRequestModule(value, selectorContainer, notification) {
             // eslint-disable-next-line no-alert
             alert(jsonRpcResponseClient.result.alert);
         }
-        // let result = jsonRpcResponseClient.result;
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.notification === 'object' &&
+            typeof jsonRpcResponseClient.result?.notification?.title === 'string' &&
+            typeof jsonRpcResponseClient.result?.notification?.data_time === 'string' &&
+            typeof jsonRpcResponseClient.result?.notification?.content === 'string'
+        ) {
+            notification.addNotification(
+                jsonRpcResponseClient.result.notification.title,
+                jsonRpcResponseClient.result.notification.data_time,
+                jsonRpcResponseClient.result.notification.content,
+            );
+            notification.setStatusNew();
+            notification.update();
+        }
     }
 }
