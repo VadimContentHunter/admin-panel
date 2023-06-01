@@ -16,5 +16,5 @@ interface IModuleResponse
 
     public function setResponseHtml(string $html): self;
 
-    public function getResponse(): IJsonRpcResponse;
+    public function getResponse(): ?IJsonRpcResponse;
 }

@@ -121,7 +121,7 @@ class LoginValidate implements IValidation
     }
 
     /**
-     * @return bool Возвращает true в случае, если  иначе false
+     * @return bool Возвращает true в случае, если Пароли не совпадают совпадают иначе false
      */
     public function checkPasswordMatchWithConfirmPassword(
         string $user_password,
@@ -129,7 +129,7 @@ class LoginValidate implements IValidation
         ?string $output_key = null,
         ?string $output_message = null
     ): bool {
-        if (strcmp($user_password, $user_confirm_password)) {
+        if (strcmp($user_password, $user_confirm_password) !== 0) {
             $this->saveOutput($output_key, $output_message);
             $this->hasValidated = false;
             return true;

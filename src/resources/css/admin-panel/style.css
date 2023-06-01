@@ -664,7 +664,7 @@ form .panel-footer {
   justify-content: flex-end;
   border-top: var(--header-border-bottom);
 }
-form .panel-footer button {
+form .panel-footer button, form .panel-footer input[type=button] {
   padding: 8px 12px;
   border: none;
   border-radius: var(--main-border-radius);
@@ -673,7 +673,7 @@ form .panel-footer button {
   background-color: var(--header-background-active);
   margin-top: 16px;
 }
-form .panel-footer button:hover {
+form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
   color: #ffffff;
   background-color: var(--main-color);
   cursor: pointer;

@@ -55,9 +55,8 @@ class MainController
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/eric-meyers-css-reset.css'));
         $this->renderAdminPage->addCssFile(AdminPanelSetting::getPathToResources('css/admin-panel/style.css'));
         $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/MainLibrary/MainLibrary.js'));
-        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/MainLibrary/Notification.js'));
+        $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/Notification/Notification.js'));
         $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/ControlMenuItem.js'));
-        // $this->renderAdminPage->addHtmlScript('control_menu_item.php');
         $this->renderAdminPage->renderPageUiComponent(
             'admin-panel-page.php',
             $adminPageUi,
@@ -146,69 +145,6 @@ class MainController
             content: 'Уведомлений, нет.',
             statusDefault: true
         ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.
-        //     В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.
-        //     В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        //     true
-        // ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        // ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        // ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        // ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        // ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        // ));
-
-        // $adminPageUi->getHeaderComponent()->addNotificationMenuItem(new NotificationItemUi(
-        //     'Уведомление',
-        //     '09.02.2023 07:21',
-        //     'В Настройках  можно выбрать приложения, которые будут отправлять уведомления,
-        //     изменить звук уведомлений, настроить уведомления с учетом геопозиции,
-        //     разрешить уведомления от госучреждений и настроить другие параметры.',
-        // ));
 
         return $adminPageUi;
     }

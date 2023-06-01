@@ -12,6 +12,8 @@ use vadimcontenthunter\AdminPanel\views\RenderResponse;
 use vadimcontenthunter\JsonRpc\interfaces\IJsonRpcResponse;
 use vadimcontenthunter\AdminPanel\routing\interfaces\IRoute;
 use vadimcontenthunter\AdminPanel\controllers\MainController;
+use vadimcontenthunter\AdminPanel\controllers\UserController;
+use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
 use vadimcontenthunter\AdminPanel\models\Responses\types\ResponseTypeNone;
 use vadimcontenthunter\AdminPanel\models\Responses\interfaces\AResponseType;
 use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
@@ -40,16 +42,22 @@ class ModuleResponseController
             $module = Module::searchByName($parameters['modules'], $parameters['module_name']);
             if ($module instanceof Module) {
                 if (method_exists($module, $module_method)) {
-                    $user = MainController::setAccessToUser(Helper::getCurrentHostUrl() . '/admin/login');
-                    $adminPageUi = MainController::getAdminPageUiFactory($user);
-                    $parameters['contentContainerUi'] = $adminPageUi->getContentComponent();
-                    $parameters['user'] = $user;
+                    $user = UserController::getUserObjBySession();
+                    if ($user instanceof IUser) {
+                        $adminPageUi = MainController::getAdminPageUiFactory($user);
+                        $parameters['contentContainerUi'] = $adminPageUi->getContentComponent();
+                        $parameters['user'] = $user;
 
-                    $responseModule = $module->$module_method($parameters);
-                    if ($responseModule instanceof IModuleResponse) {
-                        $response = $responseModule->getResponse();
+                        $responseModule = $module->$module_method($parameters);
+                        if ($responseModule instanceof IModuleResponse) {
+                            $response = $responseModule->getResponse();
+                        } else {
+                            $response = new JsonRpcResponse(error: new JsonRpcError(2, 'This module not found!'), id: $parameters['request_id'] ?? null);
+                        }
                     } else {
-                        $response = new JsonRpcResponse(error: new JsonRpcError(2, 'This module not found!'), id: $parameters['request_id'] ?? null);
+                        $response = new JsonRpcResponse([
+                            'location' => Helper::getCurrentHostUrl() . '/admin/login',
+                        ], $parameters['request_id'] ?? null);
                     }
                 } else {
                     $response = new JsonRpcResponse(error: new JsonRpcError(2, 'method for module not found!'), id: $parameters['request_id'] ?? null);
@@ -57,6 +65,8 @@ class ModuleResponseController
             }
         }
 
-        echo $response->getJsonRequest();
+        if ($response instanceof IJsonRpcResponse) {
+            echo $response->getJsonRequest();
+        }
     }
 }

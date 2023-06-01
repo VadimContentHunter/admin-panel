@@ -20,7 +20,7 @@ class UserController
     public static function getUserObjBySession(): ?IUser
     {
         $user = User::createObjectFromSession();
-        $user = User::selectByEmailAndPassword($user->getEmail(), $user->getPasswordHash());
+        $user = User::selectByEmailAndPasswordHash($user->getEmail(), $user->getPasswordHash());
         if (!$user) {
             User::deleteSessionData();
             return null;
@@ -39,7 +39,7 @@ class UserController
         $user_password = $parameters['from_user_password'] ?? '';
         $user_password_hash = $parameters['from_user_password_hash'] ?? User::composePasswordHash($user_password);
 
-        $user = User::selectByEmailAndPassword($user_email, $user_password_hash);
+        $user = User::selectByEmailAndPasswordHash($user_email, $user_password_hash);
 
         if (!$user) {
             User::deleteSessionData();
@@ -86,7 +86,7 @@ class UserController
             $user->setPasswordHashFromPassword($user_password);
             $user->insertObjectToDb();
             $user->setSessionFromObject();
-            $response = new JsonRpcResponse('Пользователь добавлен.', $parameters['request_id'] ?? null);
+            $response = new JsonRpcResponse(['alert' => 'Пользователь добавлен.'], $parameters['request_id'] ?? null);
         } else {
             $response = new JsonRpcResponse(error: new JsonRpcError(
                 5,

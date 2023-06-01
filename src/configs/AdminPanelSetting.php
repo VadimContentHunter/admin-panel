@@ -12,19 +12,24 @@ use vadimcontenthunter\AdminPanel\services\Helper;
  */
 class AdminPanelSetting
 {
-    public static string $dbName = 'db_admin_panel';
+    public static string $dbName = '';
 
-    public static string $dbHost = '127.0.0.1';
+    public static string $dbHost = '';
 
-    public static string $dbUser = 'mytest';
+    public static string $dbUser = '';
 
-    public static string $dbPassword = 'mytest';
+    public static string $dbPassword = '';
 
-    public static string $dbType = 'mysql';
+    public static string $dbType = '';
 
     public static function getModuleUrl(string $module_name): string
     {
         return Helper::getCurrentHostUrl() . '/admin/module/' . $module_name;
+    }
+
+    public static function getPathModuleUrl(string $module_name): string
+    {
+        return Helper::getCurrentHostUrl() . '/src/modules/' . $module_name;
     }
 
     public static function getPathToResources(?string $resource_name = null): string
@@ -40,5 +45,10 @@ class AdminPanelSetting
     public static function getPathToTemplatesForModules(string $module_name, string $template_name = null): string
     {
         return __DIR__ . '/../modules/' . $module_name . '/templates/' . $template_name;
+    }
+
+    public static function getPathToModule(string $module_name): string
+    {
+        return __DIR__ . '/../modules/' . $module_name;
     }
 }

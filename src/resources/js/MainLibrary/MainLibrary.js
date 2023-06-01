@@ -6,6 +6,7 @@ import ControlMenuItemError from './errors/ControlMenuItemError.js';
 import SidebarUpdateError from './errors/SidebarUpdateError.js';
 import SetContentError from './errors/SetContentError.js';
 import ServerRequestModuleError from './errors/ServerRequestModuleError.js';
+import CreatedScriptBlockError from './errors/CreatedScriptBlockError.js';
 import { Notification } from '../Notification/Notification.js';
 
 export function setClickHandlerOnElem(selector, clickHandler) {
@@ -26,6 +27,19 @@ export function setClickHandlerOnElem(selector, clickHandler) {
         e.preventDefault();
         clickHandler(elem);
     });
+}
+
+export function eventDelete(element, eventName, eventFunction) {
+    if (typeof eventName !== 'string') {
+        throw new SetClickHandlerOnElemError('Тип параметра eventName, должен быть "string"');
+    }
+
+    let deleteFunctionEvent = () => {
+        element.removeEventListener(eventName, eventFunction);
+        document.removeEventListener('eventDeleteMLibrary', deleteFunctionEvent);
+    };
+
+    document.addEventListener('eventDeleteMLibrary', deleteFunctionEvent);
 }
 
 export function sidebarUpdate(selector) {
@@ -59,6 +73,59 @@ export function setContent(selector, content) {
     }
 
     container.innerHTML = content;
+
+    document.dispatchEvent(new Event('eventDeleteScriptBlockForModule'));
+    document.dispatchEvent(new Event('eventDeleteMLibrary'));
+}
+
+export function createdScriptBlock(pathToJsFile) {
+    if (typeof pathToJsFile !== 'string') {
+        throw new CreatedScriptBlockError('Тип параметра pathToJsFile, должен быть "string"');
+    }
+
+    // let search = 'script[src="' + pathToJsFile + '"]';
+    // let elemScriptBlock = document.querySelector(search) ?? null;
+    // if (elemScriptBlock !== null) {
+    //     return;
+    // }
+
+    let script = document.createElement('script');
+    script.src = pathToJsFile + `?cache=${Math.random()}`;
+    script.type = 'module';
+    // script.setAttribute('nonce', Math.random().toString(36).substring(2));
+    script.onerror = () => {
+        console.log('Error occurred while loading script');
+    };
+
+    let scriptRemove = () => {
+        script.remove();
+    };
+    document.addEventListener('eventDeleteScriptBlockForModule', scriptRemove);
+    eventDelete(document, 'eventDeleteScriptBlockForModule', scriptRemove);
+
+    document.body.append(script);
+}
+
+export function createdScriptBlockFromBody(body) {
+    if (typeof body !== 'string') {
+        throw new CreatedScriptBlockError('Тип параметра body, должен быть "string"');
+    }
+
+    let script = document.createElement('script');
+    script.innerHTML = body;
+    script.type = 'module';
+    // script.setAttribute('nonce', Math.random().toString(36).substring(2));
+    script.onerror = () => {
+        console.log('Error occurred while loading script');
+    };
+
+    let scriptRemove = () => {
+        script.remove();
+    };
+    document.addEventListener('eventDeleteScriptBlockForModule', scriptRemove);
+    eventDelete(document, 'eventDeleteScriptBlockForModule', scriptRemove);
+
+    document.body.append(script);
 }
 
 /**
@@ -149,6 +216,51 @@ export function serverRequestModule(value, selectorContainer, notification) {
         ) {
             document.location.href = jsonRpcResponseClient.result.location;
         }
-        // let result = jsonRpcResponseClient.result;
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.html === 'string'
+        ) {
+            setContent(selectorContainer, jsonRpcResponseClient.result.html);
+        }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            Array.isArray(jsonRpcResponseClient.result?.pathJsFiles)
+        ) {
+            jsonRpcResponseClient.result.pathJsFiles.forEach((path) => {
+                createdScriptBlock(path);
+            });
+        }
+
+        if (typeof jsonRpcResponseClient.result === 'object' && Array.isArray(jsonRpcResponseClient.result?.js)) {
+            jsonRpcResponseClient.result.js.forEach((jsBody) => {
+                createdScriptBlockFromBody(jsBody);
+            });
+        }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.alert === 'string'
+        ) {
+            // eslint-disable-next-line no-alert
+            alert(jsonRpcResponseClient.result.alert);
+        }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.notification === 'object' &&
+            typeof jsonRpcResponseClient.result?.notification?.title === 'string' &&
+            typeof jsonRpcResponseClient.result?.notification?.data_time === 'string' &&
+            typeof jsonRpcResponseClient.result?.notification?.content === 'string'
+        ) {
+            notification.addNotification(
+                jsonRpcResponseClient.result.notification.title,
+                jsonRpcResponseClient.result.notification.data_time,
+                jsonRpcResponseClient.result.notification.content,
+            );
+            notification.setStatusNew();
+            notification.update();
+        }
     }
 }

@@ -11,7 +11,7 @@
     "require": {
         "psr/log":"^3.0",
         "vadimcontenthunter/my-db": "^1.2",
-        "vadimcontenthunter/json-rpc": "^2.0"
+        "vadimcontenthunter/json-rpc": "^1.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.7",

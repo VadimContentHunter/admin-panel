@@ -79,7 +79,7 @@ class User extends ActiveRecord implements IUser
 
     public function validateByEmailAndPassword(): bool
     {
-        $object = self::selectByEmailAndPassword($this->getEmail(), $this->getPasswordHash());
+        $object = self::selectByEmailAndPasswordHash($this->getEmail(), $this->getPasswordHash());
         return $object instanceof User ? true : false;
     }
 
@@ -114,7 +114,7 @@ class User extends ActiveRecord implements IUser
         return hash('SHA256', 'a$2' . $password);
     }
 
-    public static function selectByEmailAndPassword(string $email, string $password_hash): ?IUser
+    public static function selectByEmailAndPasswordHash(string $email, string $password_hash): ?IUser
     {
         if (self::createTable() !== false) {
             return null;

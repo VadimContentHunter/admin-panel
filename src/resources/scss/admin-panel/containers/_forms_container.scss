@@ -59,7 +59,7 @@ form {
         justify-content: flex-end;
         border-top: var(--header-border-bottom);
 
-        button {
+        button, input[type="button"] {
             padding: 8px 12px;
             border: none;
             border-radius: var(--main-border-radius);
