@@ -238,6 +238,14 @@ export function serverRequestModule(value, selectorContainer, notification) {
                 createdScriptBlockFromBody(jsBody);
             });
         }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            typeof jsonRpcResponseClient.result?.alert === 'string'
+        ) {
+            // eslint-disable-next-line no-alert
+            alert(jsonRpcResponseClient.result.alert);
+        }
         // let result = jsonRpcResponseClient.result;
     }
 }

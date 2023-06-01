@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\UserAccountModule;
 
+use vadimcontenthunter\JsonRpc\JsonRpcError;
 use vadimcontenthunter\JsonRpc\JsonRpcResponse;
+use vadimcontenthunter\AdminPanel\models\User\User;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
+use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\JsonRpc\interfaces\IJsonRpcResponse;
 use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\validations\LoginValidate;
 use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
+use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
@@ -47,7 +52,6 @@ class UserAccountModule extends Module
             ))
             ->setContent('account-content.php')
             ->setGridColumnCount(3)
-            // ->addHtmlScript('mode-editor-script.php')
         );
 
         return $this;
@@ -74,5 +78,64 @@ class UserAccountModule extends Module
                 AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/admin/EditUserData.js',
                 AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/admin/SaveNewForm.js',
             ]);
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
+    public function updateUserAccount(array $parameters): IModuleResponse|null
+    {
+        $user_name = $parameters['name'] ?? '';
+        $user_email = $parameters['email'] ?? '';
+        $user_new_email = $parameters['new_email'] ?? '';
+        $user_current_password = $parameters['current_password'] ?? '';
+        $user_new_password = $parameters['new_password'] ?? '';
+        $user_confirm_new_password = $parameters['confirm_new_password'] ?? '';
+
+        if ($user_new_email === '') {
+            $user_new_email = $user_email;
+        }
+
+        $moduleResponse = new ModuleResponse($parameters['request_id'] ?? null);
+        $userLoginValidate = new LoginValidate();
+        if ($userLoginValidate->isNameEmpty($user_name)) {
+            return (new ModuleResponse($parameters['request_id'] ?? null))
+                    ->setResponseError(new JsonRpcError(101, 'Имя не указано.'));
+        }
+
+        if ($userLoginValidate->isEmailEmpty($user_email)) {
+            return $moduleResponse->setResponseError(new JsonRpcError(102, 'Email не указан.'));
+        }
+
+        if ($userLoginValidate->isPasswordEmpty($user_current_password)) {
+            return $moduleResponse->setResponseError(new JsonRpcError(103, 'Пароль не указан.'));
+        }
+
+        if ($userLoginValidate->isPasswordEmpty($user_new_password)) {
+            return $moduleResponse->setResponseError(new JsonRpcError(103, 'Новый пароль не указан.'));
+        }
+
+        if ($userLoginValidate->checkPasswordMatchWithConfirmPassword($user_new_password, $user_confirm_new_password)) {
+            return $moduleResponse->setResponseError(new JsonRpcError(104, 'Повторите повторите новый пароль! Он не совпадает с веденным.'));
+        }
+
+        $user = User::selectByEmailAndPasswordHash($user_email, User::composePasswordHash($user_current_password));
+        if ($user === null) {
+            return $moduleResponse->setResponseError(new JsonRpcError(100, 'Неправильный email или пароль!'));
+        }
+
+        if ($userLoginValidate->hasValidating()) {
+            try {
+                $user->setName($user_name);
+                $user->setEmail($user_new_email);
+                $user->setPasswordHash(User::composePasswordHash($user_new_password));
+                $user->updateObjectToDbById();
+                return $moduleResponse->setResponseNotification('Данные успешно обновлены.');
+            } catch (AdminPanelException $errAdminPanel) {
+                return $moduleResponse->setResponseError(new JsonRpcError(106, 'Не удалось обновить данные для аккаунта.'));
+            }
+        } else {
+            return $moduleResponse->setResponseError(new JsonRpcError(105, 'Неизвестная ошибка при валидации.'));
+        }
     }
 }

@@ -57,6 +57,11 @@ allForms.forEach((form) => {
                             if (typeof result?.redirect === 'string') {
                                 document.location.href = result.redirect;
                             }
+
+                            if (typeof result === 'object' && typeof result?.alert === 'string') {
+                                // eslint-disable-next-line no-alert
+                                alert(result.alert);
+                            }
                         }
                     },
                 });
