@@ -1,12 +1,8 @@
-import {
-    setClickHandlerOnElem,
-    requestDataPackerJson,
-    serverRequestModule,
-    eventDelete,
-} from '../../../src/resources/js/MainLibrary/MainLibrary.js';
+import { serverRequestModule, eventDelete } from '../../../src/resources/js/MainLibrary/MainLibrary.js';
 import { Notification } from '../../../src/resources/js/Notification/Notification.js';
 import { ServerRequests } from '../../../../../node_modules/vadimcontenthunter-server-requests/src/ServerRequests.js';
-import { RequestBase } from '../../../../../node_modules/vadimcontenthunter-server-requests/src/requests/RequestBase.js';
+import { RequestForms } from '../../../../../node_modules/vadimcontenthunter-server-requests/src/requests/RequestForms.js';
+import { JsonRpcRequestClient } from '../../../../../node_modules/vadimcontenthunter-json-rpc-client/src/JsonRpcRequestClient.js';
 import { EditStatus } from '../../../src/resources/js/ActionEdit/ActionEdit.js';
 
 const notificationUserAccountModule = new Notification(
@@ -16,22 +12,34 @@ const notificationUserAccountModule = new Notification(
 );
 
 const serverRequestUserAccountModule = new ServerRequests();
-const requestBase = new RequestBase();
-serverRequestUserAccountModule.eventRegistration('eventSaveUserAccountModule', requestBase);
-eventDelete(document, 'eventSaveUserAccountModule', requestBase);
+const requestForms = new RequestForms();
+serverRequestUserAccountModule.eventRegistration('eventSaveUserAccountModule', requestForms);
+eventDelete(document, 'eventSaveUserAccountModule', requestForms);
 
-setClickHandlerOnElem('.container-one form .panel-footer button', () => {
-    EditStatus('.container-one form .panel-footer', 'form', false);
-    serverRequestUserAccountModule.request('eventSaveUserAccountModule', {
-        url: 'admin/module',
-        method: 'POST',
-        objectForDataPacker: {
-            moduleName: 'UserAccountModule',
-            moduleMethod: 'updateUserAccount',
-        },
-        requestDataPacker: requestDataPackerJson,
-        responseHandler: (value) => {
-            serverRequestModule(value, '.content-wrapper', notificationUserAccountModule);
-        },
-    });
-});
+const form = document.querySelector('form');
+if (form instanceof HTMLFormElement) {
+    const button = form.querySelector('input[type="button"]');
+    if (button instanceof HTMLInputElement) {
+        button.addEventListener('click', (event) => {
+            EditStatus('.container-one form .panel-footer', 'form', false);
+            serverRequestUserAccountModule.request('eventSaveUserAccountModule', {
+                formElem: form,
+                url: 'admin/module',
+                method: 'POST',
+                requestDataPacker: (valueObject) => {
+                    let params = {};
+                    valueObject.forEach((value, key) => {
+                        params[key] = value;
+                    });
+                    params.module_name = 'UserAccountModule';
+                    params.module_method = 'updateUserAccount';
+                    const jsonRpcRequestClient = new JsonRpcRequestClient('response', params);
+                    return JSON.stringify(jsonRpcRequestClient);
+                },
+                responseHandler: (value) => {
+                    serverRequestModule(value, '.content-wrapper', notificationUserAccountModule);
+                },
+            });
+        });
+    }
+}
