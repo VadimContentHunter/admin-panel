@@ -14,10 +14,24 @@ function InputReadOnly(selectorForm, activate) {
                 // eslint-disable-next-line no-param-reassign
                 elemInput.style.color = '#000000';
                 elemInput.removeAttribute('readonly');
+
+                let parentLi = elemInput.parentElement;
+                if (parentLi instanceof HTMLLIElement && parentLi.classList.contains('hidden')) {
+                    parentLi.classList.remove('hidden');
+                }
             } else {
                 // eslint-disable-next-line no-param-reassign
                 elemInput.style.color = '';
                 elemInput.setAttribute('readonly', null);
+
+                let parentLi = elemInput.parentElement;
+                if (
+                    parentLi instanceof HTMLLIElement &&
+                    !parentLi.classList.contains('hidden') &&
+                    parentLi.hasAttribute('hidden')
+                ) {
+                    parentLi.classList.add('hidden');
+                }
             }
         }
     });

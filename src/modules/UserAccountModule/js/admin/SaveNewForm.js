@@ -3,7 +3,7 @@ import { Notification } from '../../../src/resources/js/Notification/Notificatio
 import { ServerRequests } from '../../../../../node_modules/vadimcontenthunter-server-requests/src/ServerRequests.js';
 import { RequestForms } from '../../../../../node_modules/vadimcontenthunter-server-requests/src/requests/RequestForms.js';
 import { JsonRpcRequestClient } from '../../../../../node_modules/vadimcontenthunter-json-rpc-client/src/JsonRpcRequestClient.js';
-import { EditStatus } from '../../../src/resources/js/ActionEdit/ActionEdit.js';
+import { EditStatus } from '../../../../../src/modules/UserAccountModule/js/admin/ActionEdit/ActionEdit.js';
 
 const notificationUserAccountModule = new Notification(
     '.account-control > .notification-block',

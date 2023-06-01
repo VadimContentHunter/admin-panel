@@ -27,12 +27,12 @@
             <input type="password" name="current_password" placeholder="Введите текущий пароль" value="************" readonly>
             <output name="result_name"></output>
         </li>
-        <li class="hidden">
+        <li class="hidden" hidden>
             <label >Новый пароль</label>
             <input type="password" name="new_password" placeholder="Введите новый пароль" value="************" readonly>
             <output name="result_name"></output>
         </li>
-        <li class="hidden">
+        <li class="hidden" hidden>
             <label >Повторите новый пароль</label>
             <input type="password" name="confirm_new_password" placeholder="Повторите новый пароль" value="************" readonly>
             <output name="result_name"></output>
