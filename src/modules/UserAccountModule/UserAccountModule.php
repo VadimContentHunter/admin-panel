@@ -120,22 +120,22 @@ class UserAccountModule extends Module
         }
 
         $user = User::selectByEmailAndPasswordHash($user_email, User::composePasswordHash($user_current_password));
-        if ($user === null) {
-            return $moduleResponse->setResponseError(new JsonRpcError(100, 'Неправильный email или пароль!'));
-        }
-
-        if ($userLoginValidate->hasValidating()) {
-            try {
-                $user->setName($user_name);
-                $user->setEmail($user_new_email);
-                $user->setPasswordHash(User::composePasswordHash($user_new_password));
-                $user->updateObjectToDbById();
-                return $moduleResponse->setResponseNotification('Данные успешно обновлены.');
-            } catch (AdminPanelException $errAdminPanel) {
-                return $moduleResponse->setResponseError(new JsonRpcError(106, 'Не удалось обновить данные для аккаунта.'));
+        if ($user instanceof User) {
+            if ($userLoginValidate->hasValidating()) {
+                try {
+                    $user->setName($user_name);
+                    $user->setEmail($user_new_email);
+                    $user->setPasswordHash(User::composePasswordHash($user_new_password));
+                    $user->updateObjectToDbById();
+                    return $moduleResponse->setResponseNotification('Данные успешно обновлены.');
+                } catch (AdminPanelException $errAdminPanel) {
+                    return $moduleResponse->setResponseError(new JsonRpcError(106, 'Не удалось обновить данные для аккаунта.'));
+                }
+            } else {
+                return $moduleResponse->setResponseError(new JsonRpcError(105, 'Неизвестная ошибка при валидации.'));
             }
         } else {
-            return $moduleResponse->setResponseError(new JsonRpcError(105, 'Неизвестная ошибка при валидации.'));
+            return $moduleResponse->setResponseError(new JsonRpcError(100, 'Неправильный email или пароль!'));
         }
     }
 }
