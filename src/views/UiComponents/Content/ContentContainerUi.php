@@ -33,6 +33,12 @@ class ContentContainerUi implements IContentContainerUi
         HTML;
     }
 
+    public function setTemplate(string $path): IContentContainerUi
+    {
+        $this->templatesPath = $path;
+        return $this;
+    }
+
     public function addContent(IContentItemUi $content_item): IContentContainerUi
     {
         if ($this->templatesPath !== null) {
