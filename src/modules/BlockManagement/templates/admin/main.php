@@ -13,7 +13,9 @@
 <section class="container-blocks">
     <ul class="list-blocks">
         <li class="default">
-            
+            <div class="icon-plus-solid">
+                <i></i>
+            </div>
         </li>
     </ul>
 </section>

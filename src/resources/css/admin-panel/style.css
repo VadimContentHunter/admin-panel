@@ -589,6 +589,7 @@ section.header-menu .sub-menu {
 .content-wrapper .fill-container {
   display: flex;
   flex-direction: column;
+  gap: 40px;
 }
 
 .dashboard_container {
@@ -713,7 +714,52 @@ form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
 .container-separate menu li:hover {
   cursor: pointer;
   color: var(--main-color);
-  font-weight: bold;
+}
+
+.container-blocks {
+  color: var(--header-text-color);
+  padding: 20px;
+  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  border-radius: var(--main-border-radius);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+.container-blocks .list-blocks {
+  display: flex;
+  flex-direction: column;
+}
+.container-blocks .list-blocks .default {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0px;
+  border: 2px dashed var(--main-icon-color);
+}
+.container-blocks .list-blocks .default:hover {
+  cursor: pointer;
+  border-color: var(--main-color);
+}
+.container-blocks .list-blocks .default:hover .icon-plus-solid i {
+  background: var(--main-color);
+}
+.container-blocks .icon-plus-solid {
+  height: 24px;
+  width: 24px;
+}
+.container-blocks .icon-plus-solid i {
+  display: block;
+  width: inherit;
+  height: inherit;
+  background: var(--main-icon-color);
+  -webkit-mask: url("http://admin-panel/src/resources/img/icon-plus-solid.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask: url("http://admin-panel/src/resources/img/icon-plus-solid.svg");
+  mask-repeat: no-repeat;
+  mask-size: contain;
 }
 
 .main-block {
