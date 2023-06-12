@@ -1,7 +1,7 @@
 <?php
 
 ?>
-<section class="container-separate" style="grid-column: span 3">
+<section class="container-separate">
     <h3>Менеджер блоков</h3>
     <menu>
         <li>Добавить блок</li>
@@ -10,7 +10,7 @@
     </menu>
 </section>
 
-<section class="container-blocks" style="grid-column: span 3">
+<section class="container-blocks">
     <ul class="list-blocks">
         <li class="default">
             
