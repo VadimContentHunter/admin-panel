@@ -1,0 +1,13 @@
+@mixin reset-a-effects($color: inherit) {
+    a:active,
+    a:hover,
+    a:visited,
+    a:hover,
+    a {
+        outline: none;
+        text-decoration: none;
+        color: $color;
+    }
+}
+
+@import 'container-main-screen';
