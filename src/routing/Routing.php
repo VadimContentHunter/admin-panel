@@ -41,7 +41,7 @@ class Routing
                 unset($matches[0]);
                 $parameters += $matches;
 
-                if ($parameters['module_name'] && $parameters['execution_method']) {
+                if (!empty($parameters['module_name']) && !empty($parameters['execution_method'])) {
                     $this->handlerRestModule($route, $parameters);
                     return;
                 }

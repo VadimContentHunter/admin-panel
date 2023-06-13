@@ -49,7 +49,7 @@ class AdminPanelAPI
         $this->routing->addRoute('~^admin/users$~', UserController::class);
         $this->routing->addRoute('~^admin/module$~', ModuleResponseController::class);
         $this->routing->addRoute(
-            '~^admin/module/(?<module_name>\w+)/(?<execution_method>\w+)(?<module_url_data>/[\w\\/]+)?(?<module_parameters>(\?|&)[\w&=%.,]+)?$~',
+            '~^admin/module/rest/(?<execution_method>\w+)/(?<module_name>\w+)(?<module_url_data>/[\w\\/]+)?(?<module_parameters>(\?|&)[\w&=%.,]+)?$~',
             ModuleController::class
         );
         // $this->routing->addRoute('~^admin/GET/users$~', UserController::class, 'loginUser');
