@@ -20,6 +20,8 @@
     <title>preview-block</title>
 </head>
 <body>
-    <?= $body ?>
+    <div class="main-container">
+        <?= $body ?>
+    </div>
 </body>
 </html>

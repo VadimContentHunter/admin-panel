@@ -7,22 +7,15 @@ namespace vadimcontenthunter\AdminPanel\modules\BlockManagement;
 use vadimcontenthunter\JsonRpc\JsonRpcError;
 use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\views\BaseView;
-use vadimcontenthunter\AdminPanel\models\User\User;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
-use vadimcontenthunter\AdminPanel\services\ActiveRecord;
-use vadimcontenthunter\JsonRpc\interfaces\IJsonRpcResponse;
 use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
-use vadimcontenthunter\AdminPanel\validations\LoginValidate;
-use vadimcontenthunter\AdminPanel\models\User\interfaces\IUser;
-use vadimcontenthunter\AdminPanel\exceptions\AdminPanelException;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
-use vadimcontenthunter\AdminPanel\modules\BlockManagement\BlockManagementView;
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\view\BlockItemUi;
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\view\ListBlocksUi;
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\view\ContentBlocksUi;
 use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\ContentItemUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\containers\TextContentUi;
-use vadimcontenthunter\AdminPanel\views\UiComponents\Content\FilledContentContainerUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
@@ -37,15 +30,20 @@ class BlockManagement extends Module
      */
     public function builderAdminContentUi(IContentContainerUi $contentContainerUi, array $parameters = []): IModule
     {
+        $content = new ContentBlocksUi(
+            $this->getAlias(),
+            AdminPanelSetting::getPathToTemplatesForModules($this->getName()),
+            'admin/main.php'
+        );
+        $content->addBlock(
+            (new BlockItemUi('admin/block-controller.php'))
+                ->addInput('label', 'text', 'block1', 'block1 selected')
+        );
+
         $contentContainerUi->setClassForContainer('fill-container');
         $contentContainerUi->setTitle($this->getAlias());
         $contentContainerUi->setTemplate(AdminPanelSetting::getPathToTemplatesForModules($this->getName()));
-        $contentContainerUi->addContent(
-            (new TextContentUi(
-                $this->getAlias(),
-                templateName: 'admin/main.php'
-            ))
-        );
+        $contentContainerUi->addContent($content);
 
         return $this;
     }
