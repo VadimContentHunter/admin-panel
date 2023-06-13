@@ -10,9 +10,10 @@ use vadimcontenthunter\MyDB\Connectors\Connector;
 use vadimcontenthunter\AdminPanel\routing\Routing;
 use vadimcontenthunter\AdminPanel\models\Module\Module;
 use vadimcontenthunter\AdminPanel\models\Module\StatusCode;
+use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
 use vadimcontenthunter\AdminPanel\controllers\MainController;
 use vadimcontenthunter\AdminPanel\controllers\UserController;
-use vadimcontenthunter\AdminPanel\configs\AdminPanelSetting;
+use vadimcontenthunter\AdminPanel\controllers\ModuleController;
 use vadimcontenthunter\AdminPanel\models\Module\interfaces\IModule;
 use vadimcontenthunter\AdminPanel\controllers\AuthorizationController;
 use vadimcontenthunter\AdminPanel\controllers\ModuleResponseController;
@@ -47,6 +48,10 @@ class AdminPanelAPI
         $this->routing->addRoute('~^admin/login$~', AuthorizationController::class, 'view');
         $this->routing->addRoute('~^admin/users$~', UserController::class);
         $this->routing->addRoute('~^admin/module$~', ModuleResponseController::class);
+        $this->routing->addRoute(
+            '~^admin/module/(?<module_name>\w+)/(?<execution_method>\w+)(?<module_url_data>/[\w\\/]+)?(?<module_parameters>(\?|&)[\w&=%.,]+)?$~',
+            ModuleController::class
+        );
         // $this->routing->addRoute('~^admin/GET/users$~', UserController::class, 'loginUser');
         // $this->routing->addRoute('~^admin/POST/users$~', UserController::class, 'registerUser');
         // $this->routing->addRoute('~^admin/module/(?<module_name>\w+)/~', ModuleResponseController::class, 'response');
