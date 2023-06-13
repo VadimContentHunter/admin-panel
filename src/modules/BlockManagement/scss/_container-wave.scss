@@ -1,0 +1,52 @@
+
+.container-wave {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include reset-a-effects();
+
+    img {
+        width: 100%;
+    }
+
+    & > .wrapper > header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 80px;
+
+        span {
+            padding: 0px var(--padding-with-main);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 16px;
+
+            .icon {
+                width: 64px ;
+                height: 64px;
+            }
+
+            h2 {
+                margin-left: 24px;
+                font-size: 32px;
+                font-weight: bold;
+                color: var(--text-main-color);
+            }
+        }
+
+        a {
+            padding: 0px var(--padding-with-main);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            font-weight: bold;
+
+            p {
+                padding-right: 16px;
+            }
+        }
+    }
+}

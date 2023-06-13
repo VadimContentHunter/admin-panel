@@ -1,0 +1,115 @@
+
+%icon {
+    height: 24px;
+    width: 24px;
+}
+
+%mini-icon {
+    height: 18px;
+    width: 18px;
+}
+
+.icon-youtube {
+    @extend %icon;
+    @include img-block-mask('../resources/youtube.svg', var(--color-main-dark));
+}
+
+.icon-facebook {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-facebook.svg', var(--color-main-dark));
+}
+
+.icon-inst {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-inst.svg', var(--color-main-dark));
+}
+
+.icon-telegram {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-telegram.svg', var(--color-main-dark));
+}
+
+.icon-done {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-done.svg', var(--color-main-dark));
+}
+
+.icon-access-time {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-access-time.svg', var(--color-main-dark));
+}
+
+.icon-pending-actions {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-pending-actions.svg', var(--color-main-dark));
+}
+
+.icon-shopping-cart {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-shopping-cart.svg', var(--color-main-dark));
+}
+
+.icon-keyboard-arrow-right {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-keyboard-arrow-right.svg', var(--color-main-dark));
+}
+
+.icon-header-card {
+    @extend %icon;
+    @include img-block-mask('../resources/header-card.svg', var(--color-main-4-light));
+}
+
+.icon-group {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-group.svg', var(--color-main-dark));
+}
+
+.icon-marker {
+    @extend %mini-icon;
+    @include img-block-mask('../resources/icon-marker.svg', #ffffff);
+}
+
+.icon-message {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-message.svg', var(--color-main-dark));
+}
+
+.icon-stars {
+    height: 18px;
+    @include img-block-mask('../resources/icon-stars.svg', var(--color-main-dark));
+}
+
+.icon-star {
+    @extend %mini-icon;
+    @include img-block-mask('../resources/icon-star.svg', var(--color-main-dark));
+}
+
+.icon-star-2v {
+    height: 18px;
+    width: 18px;
+    overflow: hidden;
+    @include img-block-mask('../resources/icon-star-2v.svg', var(--color-main-dark));
+
+    i {
+        width: 36px;
+    }
+}
+
+.icon-hamburger-menu {
+    height: 34px;
+    width: 34px;
+    @include img-block-mask('../resources/icon-hamburger-menu.svg', var(--color-main-dark));
+}
+
+.icon-close {
+    @extend %icon;
+    @include img-block-mask('../resources/icon-close.svg', var(--color-main-dark));
+}
+
+.icon-flag-ru {
+    background: url(../resources/icon-flag-ru.svg);
+}
+
+.icon-flag-ua {
+    background: url(../resources/icon-flag-ua.svg);
+}

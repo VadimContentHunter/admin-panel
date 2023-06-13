@@ -1,0 +1,103 @@
+
+%activated-card {
+    .icon-header-card {
+        i {
+            background: var(--color-main-dark);
+        }
+    }
+
+    div {
+        i {
+            background: var(--color-main-dark);
+        }
+    }
+    @include box-shadow(0px 2px 14px 0px var(--shadow-color-main));
+}
+
+.container-3 {
+    .product-cards {
+        // padding: 54px 80px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 32px;
+
+        article {
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            border-radius: var(--border-radius-block);
+
+            &:hover {
+                @extend %activated-card;
+            }
+
+            &.activated {
+                @extend %activated-card;
+            }
+
+            header {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 48px;
+
+                .title {
+                    position: relative;
+                    width: 100%;
+                    height: 44px;
+                    margin-bottom: 16px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+
+                    .icon-header-card {
+                        position: absolute;
+                        width: inherit;
+                        height: inherit;
+                        left: 0;
+                        top: 0;
+                        z-index: ($z_index_level_3 - 50);
+                    }
+
+                    h3 {
+                        font-weight: bold;
+                        color: var(--container-color-one-text);
+                        z-index: ($z_index_level_3 - 40);
+                    }
+                }
+
+                p {
+                    font-weight: bold;
+                }
+            }
+
+            ul {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 16px;
+
+                li {
+                    list-style-type: none;
+                    padding: 8px 12px;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+
+                    div {
+                        i {
+                            background: var(--color-main-4-light);
+                        }
+                    }
+
+                    p {
+                        margin-left: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

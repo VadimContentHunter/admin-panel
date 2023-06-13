@@ -1,0 +1,42 @@
+
+.container-2 {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+        margin-bottom: 60px;
+        text-align: center;
+        font-size: 32px;
+        font-weight: bold;
+        color: var(--text-main-color);
+    }
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        gap: 100px;
+        justify-content: center;
+
+        ul {
+            width: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            li {
+                list-style-type: none;
+                margin: 12px 0px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            p {
+                margin-left: 16px;
+            }
+        }
+    }
+}
