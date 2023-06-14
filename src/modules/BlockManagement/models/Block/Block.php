@@ -118,10 +118,10 @@ class Block extends ActiveRecord implements IBlock
                             ->addField('description', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
-                            ->addField('pathBlockView', FieldDataType::TEXT, [
+                            ->addField('pathBlock_view', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
-                            ->addField('levelBlock', FieldDataType::INT, [
+                            ->addField('level_block', FieldDataType::INT, [
                                 FieldAttributes::NOT_NULL
                             ])
                             ->addField('parameters', FieldDataType::TEXT, [
