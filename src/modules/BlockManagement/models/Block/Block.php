@@ -19,6 +19,8 @@ use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\Table
 class Block extends ActiveRecord implements IBlock
 {
     protected ?string $name = null;
+
+    protected int $levelBlock = 0;
     protected ?string $description = null;
     protected ?array $parameters = null;
     protected ?string $pathBlockView = null;
@@ -39,6 +41,17 @@ class Block extends ActiveRecord implements IBlock
             throw new BlockException('Имя должно быть указано.');
         }
         return $this->name;
+    }
+
+    public function setLevelBlock(int $level): IBlock
+    {
+        $this->levelBlock = $level;
+        return $this;
+    }
+
+    public function getLevelBlock(): int
+    {
+        return $this->levelBlock;
     }
 
     public function setPathBlockView(string $path): IBlock

@@ -14,6 +14,10 @@ interface IBlock
 
     public function getName(): string;
 
+    public function setLevelBlock(int $level): IBlock;
+
+    public function getLevelBlock(): int;
+
     public function setPathBlockView(string $path): IBlock;
 
     public function getPathBlockView(): string;
