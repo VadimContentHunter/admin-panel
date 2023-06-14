@@ -10,10 +10,6 @@ namespace vadimcontenthunter\AdminPanel\modules\BlockManagement\models\Block\int
  */
 interface IBlock
 {
-    public function setId(int $id): IBlock;
-
-    public function getId(): int;
-
     public function setName(string $name): IBlock;
 
     public function getName(): string;

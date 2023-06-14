@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\exceptions;
+namespace vadimcontenthunter\AdminPanel\modules\BlockManagement\exceptions;
 
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
