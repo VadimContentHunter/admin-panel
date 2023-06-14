@@ -14,6 +14,10 @@ interface IBlock
 
     public function getName(): string;
 
+    public function setPathBlockView(string $path): IBlock;
+
+    public function getPathBlockView(): string;
+
     public function setDescription(string $description): IBlock;
 
     public function getDescription(): string;

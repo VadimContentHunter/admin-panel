@@ -21,6 +21,7 @@ class Block extends ActiveRecord implements IBlock
     protected ?string $name = null;
     protected ?string $description = null;
     protected ?array $parameters = null;
+    protected ?string $pathBlockView = null;
 
     public function __construct()
     {
@@ -38,6 +39,27 @@ class Block extends ActiveRecord implements IBlock
             throw new BlockException('Имя должно быть указано.');
         }
         return $this->name;
+    }
+
+    public function setPathBlockView(string $path): IBlock
+    {
+        if (!is_file($path)) {
+            throw new BlockException('Файл к блоку для показа не существует.');
+        }
+        $this->pathBlockView = $path;
+        return $this;
+    }
+
+    public function getPathBlockView(): string
+    {
+        if ($this->pathBlockView === null) {
+            throw new BlockException('Путь к блоку для показа должен быть указан.');
+        }
+
+        if (!is_file($this->pathBlockView)) {
+            throw new BlockException('Файл к блоку для показа не существует.');
+        }
+        return $this->pathBlockView;
     }
 
     public function setDescription(string $description): IBlock

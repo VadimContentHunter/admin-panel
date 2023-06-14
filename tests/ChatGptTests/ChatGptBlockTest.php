@@ -25,6 +25,24 @@ class ChatGptBlockTest extends TestCase
         $block->getName();
     }
 
+    public function testSetAndGetPathBlockView(): void
+    {
+        $path_file = __DIR__ . '/BlockViewTest.php';
+        file_put_contents($path_file, 'BlockViewTest');
+
+        $block = new Block();
+        $block->setPathBlockView($path_file);
+        $this->assertSame($path_file, $block->getPathBlockView());
+        unlink($path_file);
+    }
+
+    public function testGetPathBlockViewThrowsBlockExceptionIfNameIsNull(): void
+    {
+        $this->expectException(BlockException::class);
+        $block = new Block();
+        $block->getPathBlockView();
+    }
+
     public function testSetAndGetDescription(): void
     {
         $block = new Block();
