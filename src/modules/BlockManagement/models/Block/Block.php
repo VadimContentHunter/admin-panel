@@ -20,7 +20,7 @@ class Block extends ActiveRecord implements IBlock
 {
     protected ?string $name = null;
     protected ?string $description = null;
-    protected ?array $parameters = null;
+    protected ?string $parameters = null;
     protected ?string $pathBlockView = null;
 
     public function __construct()
@@ -75,7 +75,11 @@ class Block extends ActiveRecord implements IBlock
 
     public function setParameters(array $parameters): IBlock
     {
-        $this->parameters = $parameters;
+        $json = json_encode($parameters);
+        if (!is_string($json)) {
+            throw new BlockException('Не удалось преобразовать параметры в json.');
+        }
+        $this->parameters = $json;
         return $this;
     }
 
@@ -84,13 +88,19 @@ class Block extends ActiveRecord implements IBlock
         if ($this->parameters === null) {
             throw new BlockException('Параметры должны быть указаны.');
         }
-        return $this->parameters;
+
+        $params = json_decode($this->parameters, true);
+        if (!is_array($params)) {
+            throw new BlockException('Не удалось преобразовать json параметры в массив.');
+        }
+        return $params;
     }
 
     public function getParameter(string $key): ?string
     {
-        if (array_key_exists($key, $this->parameters)) {
-            return $this->parameters[$key];
+        $params = $this->getParameters();
+        if (array_key_exists($key, $params)) {
+            return $params[$key];
         }
 
         return null;
@@ -107,7 +117,7 @@ class Block extends ActiveRecord implements IBlock
             $db = new DB();
             $db->singleRequest()
                 ->singleQuery((new TableMySQLQueryBuilder())
-                        ->create(self::getTableName())
+                        ->create(static::getTableName())
                             ->addField('id', FieldDataType::INT, [
                                 FieldAttributes::AUTO_INCREMENT,
                                 FieldAttributes::PRIMARY_KEY
@@ -118,10 +128,7 @@ class Block extends ActiveRecord implements IBlock
                             ->addField('description', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
-                            ->addField('pathBlock_view', FieldDataType::TEXT, [
-                                FieldAttributes::NOT_NULL
-                            ])
-                            ->addField('level_block', FieldDataType::INT, [
+                            ->addField('path_block_view', FieldDataType::TEXT, [
                                 FieldAttributes::NOT_NULL
                             ])
                             ->addField('parameters', FieldDataType::TEXT, [

@@ -2,70 +2,26 @@
 
 declare(strict_types=1);
 
-namespace vadimcontenthunter\AdminPanel\modules\BlockManagement\models\BlockLevel;
+namespace vadimcontenthunter\AdminPanel\tests\fakes;
 
 use vadimcontenthunter\MyDB\DB;
-use vadimcontenthunter\AdminPanel\services\ActiveRecord;
+use vadimcontenthunter\AdminPanel\tests\fakes\PageFake;
+use vadimcontenthunter\AdminPanel\tests\fakes\BlockFake;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldAttributes;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\ForeignKeyAttributes;
-use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\Page\Page;
-use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\Block\Block;
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\BlockLevel\BlockLevel;
 use vadimcontenthunter\MyDB\MySQL\MySQLQueryBuilder\TableMySQLQueryBuilder\TableMySQLQueryBuilder;
-use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\BlockLevel\interfaces\IBlockLevel;
 
 /**
  * @author    Vadim Volkovskyi <project.k.vadim@gmail.com>
  * @copyright (c) Vadim Volkovskyi 2022
  */
-class BlockLevel extends ActiveRecord implements IBlockLevel
+class BlockLevelFake extends BlockLevel
 {
-    protected ?int $pageId;
-    protected ?int $blockId;
-    protected ?int $level;
-
-    public function setPageId(int $pageId): IBlockLevel
-    {
-        $this->pageId = $pageId;
-        return $this;
-    }
-
-    public function getPageId(): int
-    {
-        return $this->pageId;
-    }
-
-    public function setBlockId(int $blockId): IBlockLevel
-    {
-        $this->blockId = $blockId;
-        return $this;
-    }
-
-    public function getBlockId(): int
-    {
-        return $this->blockId;
-    }
-
-    public function setLevel(int $level): IBlockLevel
-    {
-        $this->level = $level;
-        return $this;
-    }
-
-    public function getLevel(): int
-    {
-        return $this->level;
-    }
-
-    public function changeLevel(int $new_level): IBlockLevel
-    {
-        $this->level = $new_level;
-        return $this;
-    }
-
     public static function getTableName(): string
     {
-        return 'block_level';
+        return 'block_level_test';
     }
 
     public static function createTable(): bool
@@ -91,7 +47,7 @@ class BlockLevel extends ActiveRecord implements IBlockLevel
                             ->consrtaintForeignKey(
                                 'block_level_page_fk',
                                 ['page_id'],
-                                Page::getTableName(),
+                                PageFake::getTableName(),
                                 ['id'],
                                 ForeignKeyAttributes::ON_DELETE,
                                 ForeignKeyAttributes::ACTION_CASCADE
@@ -99,7 +55,7 @@ class BlockLevel extends ActiveRecord implements IBlockLevel
                             ->consrtaintForeignKey(
                                 'block_level_block_fk',
                                 ['block_id'],
-                                Block::getTableName(),
+                                BlockFake::getTableName(),
                                 ['id'],
                                 ForeignKeyAttributes::ON_DELETE,
                                 ForeignKeyAttributes::ACTION_CASCADE
