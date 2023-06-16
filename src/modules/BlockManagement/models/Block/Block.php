@@ -73,6 +73,9 @@ class Block extends ActiveRecord implements IBlock
         return $this->description ?? '';
     }
 
+    /**
+     * @param array(string, string) $parameters
+     */
     public function setParameters(array $parameters): IBlock
     {
         $json = json_encode($parameters);
@@ -83,6 +86,9 @@ class Block extends ActiveRecord implements IBlock
         return $this;
     }
 
+    /**
+     * @return array(string, string) $parameters
+     */
     public function getParameters(): array
     {
         if ($this->parameters === null) {

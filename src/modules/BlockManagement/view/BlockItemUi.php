@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\BlockManagement\view;
 
+use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentItemUi;
 
 /**
@@ -34,9 +35,20 @@ class BlockItemUi implements IContentItemUi
 
     public function addInput(string $label_text, string $type, string $name, string $value = ''): BlockItemUi
     {
+        $this->inputBlocks[] = $this->getInputHtml($label_text, $type, $name, $value);
+        return $this;
+    }
+
+    public function getInputHtml(string $label_text, string $type, string $name, string $value = ''): string
+    {
         $label = '<label>' . $label_text . '</label>';
         $input = '<input type="' . $type . '" name="' . $name . '" value="' . $value . '" />';
-        $this->inputBlocks[] = $label . $input;
+        return $label . $input;
+    }
+
+    public function addInputHtml(string $html): BlockItemUi
+    {
+        $this->inputBlocks[] = $html;
         return $this;
     }
 
