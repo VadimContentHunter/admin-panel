@@ -15,7 +15,31 @@
 <section class="container-menu">
     <menu>
         <li class="save">Сохранить</li>
-        <li>Выбрать страницу</li>
+        <li>
+            <div class="select-element">
+                <div class="item-selected">
+                    <p>Выберите страницу</p>
+                    <div class="icon-triangle">
+                        <i></i>
+                    </div>
+                </div>
+                <menu>
+                    <!-- <li value="1">[id: 1] Страница 1</li> -->
+                    <!-- <li value="0">Выберите страницу</li>
+                    <li value="1">[id: 1] Страница 1</li>
+                    <li value="2">[id: 2] Страница 2</li>
+                    <li value="3">[id: 3] Страница 3</li>
+                    <li value="4">[id: 4] Страница 1</li> -->
+                    <li class="sync">
+                        <div class="sync-block">
+                            <div class="icon-sync">
+                                <i></i>
+                            </div>
+                        </div>
+                    </li>
+                </menu>
+            </div>
+        </li>
         <li>Добавить блок</li>
         <li>Язык</li>
     </menu>

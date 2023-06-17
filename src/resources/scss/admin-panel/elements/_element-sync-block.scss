@@ -1,0 +1,22 @@
+.icon-sync {
+    height: 44px;
+    width: 44px;
+    @include img-block-mask("#{$main_path_to_resources}/icon-sync.svg", var(--main-icon-color));
+    animation: icon-sync-rotate 3s linear infinite;
+}
+
+.sync-block {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@keyframes icon-sync-rotate {
+    from {
+      transform: rotate(360deg);
+    }
+  }

@@ -767,7 +767,7 @@ form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
   display: flex;
   flex-direction: column;
 }
-.container-menu menu {
+.container-menu > menu {
   display: flex;
   flex-direction: row;
   color: var(--main-text-color);
@@ -775,20 +775,92 @@ form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
   flex-wrap: wrap;
   gap: 20px;
 }
-.container-menu menu li {
+.container-menu > menu > li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   list-style-type: none;
   padding: 8px 14px;
+  border-radius: var(--main-border-radius);
+  background-color: #ffffff;
   -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
   -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
   box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
-  border-radius: var(--main-border-radius);
-  background-color: #ffffff;
 }
-.container-menu menu li:hover {
+.container-menu > menu > li:hover {
   cursor: pointer;
   color: var(--main-color);
 }
 
+.select-element {
+  cursor: default;
+  color: var(--header-text-color);
+}
+.select-element > .item-selected {
+  cursor: pointer;
+}
+.select-element > menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-top: 24px;
+  margin-left: -14px;
+  list-style-type: none;
+  border-radius: var(--main-border-radius);
+  background-color: #ffffff;
+  max-height: 300px;
+  max-width: 240px;
+  overflow-y: auto;
+  z-index: 1;
+  -webkit-box-shadow: 0px 5px 10px 2px #d4413731;
+  -moz-box-shadow: 0px 5px 10px 2px #d4413731;
+  box-shadow: 0px 5px 10px 2px #d4413731;
+}
+.select-element > menu > li {
+  padding: 8px 14px;
+}
+.select-element > menu > li:hover {
+  cursor: pointer;
+  color: var(--main-color);
+}
+.select-element > menu > li.sync {
+  width: 100px;
+  height: 80px;
+}
+
+.icon-sync {
+  height: 44px;
+  width: 44px;
+  animation: icon-sync-rotate 3s linear infinite;
+}
+.icon-sync i {
+  display: block;
+  width: inherit;
+  height: inherit;
+  background: var(--main-icon-color);
+  -webkit-mask: url("http://admin-panel/src/resources/img/icon-sync.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask: url("http://admin-panel/src/resources/img/icon-sync.svg");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+.sync-block {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes icon-sync-rotate {
+  from {
+    transform: rotate(360deg);
+  }
+}
 .main-block {
   display: flex;
   flex-direction: row;
