@@ -88,6 +88,28 @@ class BlockManagement extends Module
     /**
      * @param array<string, mixed> $parameters
      */
+    public function getPages(array $parameters): IModuleResponse|null
+    {
+        return  (new ModuleResponse($parameters['request_id'] ?? null))
+                    ->setResponseData([
+                        [
+                            'id' => 1,
+                            'title' => 'Page 1'
+                        ],
+                        [
+                            'id' => 2,
+                            'title' => 'Главная страница'
+                        ],
+                        [
+                            'id' => 4,
+                            'title' => 'О нас'
+                        ],
+                    ]);
+    }
+
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function viewPageBlock(array $parameters): string
     {
         $baseView = new BaseView(

@@ -19,5 +19,5 @@ const selectPageMenu = new SelectElement({
     moduleMethod: 'getPages',
 });
 
-selectPageMenu.addItemToSubMenuForClick();
-selectPageMenu.addServerRequestForClick('eventRequestSelect');
+selectPageMenu.actionMainItem();
+selectPageMenu.actionMainItemServerRequest('eventRequestSelect');

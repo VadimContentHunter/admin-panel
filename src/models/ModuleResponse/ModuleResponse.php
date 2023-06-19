@@ -42,6 +42,15 @@ class ModuleResponse implements IModuleResponse
         return $this;
     }
 
+    /**
+     * @param array(mixed) $data
+     */
+    public function setResponseData(array $data): self
+    {
+        $this->response = new JsonRpcResponse(['responseData' => $data], $this->id);
+        return $this;
+    }
+
     public function setResponseNotification(
         string $content,
         string $title = 'Уведомление',

@@ -140,7 +140,29 @@ export class SelectElement {
         return this.#notification;
     }
 
-    addServerRequestForClick(eventName) {
+    getPageId() {
+        let input = this.selectElement.querySelector('data input[name="page_id"]');
+        if (input instanceof HTMLInputElement) {
+            if (input.hasAttribute('value')) {
+                return input.getAttribute('value');
+            }
+        }
+
+        return -1;
+    }
+
+    setPageId(value) {
+        if (typeof value === 'number') {
+            throw new SelectElementError('value для setPageId должно быть number.');
+        }
+
+        let input = this.selectElement.querySelector('data input[name="page_id"]') ?? null;
+        if (input instanceof HTMLInputElement) {
+            input.setAttribute('value', value);
+        }
+    }
+
+    actionMainItemServerRequest(eventName) {
         let requestQuery = {
             module_name: this.#moduleName ?? '',
             module_method: this.#moduleMethod ?? '',
@@ -163,6 +185,8 @@ export class SelectElement {
                 return;
             }
 
+            this.clearListSubMenu();
+
             this.serverRequest.request(eventName, {
                 url: 'admin/module',
                 method: 'POST',
@@ -178,21 +202,33 @@ export class SelectElement {
 
     addItemsForList(data) {
         if (Array.isArray(data)) {
+            this.clearListSubMenu();
             let elemAdded = false;
             data.forEach((item) => {
                 if (Object.hasOwn(item, 'id') && Object.hasOwn(item, 'title')) {
+                    if (elemAdded === false) {
+                        this.disableDisplaySync();
+                        elemAdded = true;
+                    }
                     let elemLi = document.createElement('li');
                     elemLi.setAttribute('value', item.id);
                     elemLi.innerHTML = '<p>[id: ' + item.id + '] ' + item.title + '</p>';
+                    elemLi.addEventListener('click', (event) => {
+                        this.actionItemForSubMenu(elemLi);
+                    });
                     this.subMenu.append(elemLi);
-                    elemAdded = true;
                 }
             });
-
-            if (elemAdded === true) {
-                this.disableDisplaySync();
-            }
         }
+    }
+
+    clearListSubMenu() {
+        let items = this.subMenu.querySelectorAll('li:not(.sync)');
+        items.forEach((item) => {
+            if (item instanceof HTMLElement) {
+                item.remove();
+            }
+        });
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -200,7 +236,7 @@ export class SelectElement {
         return JSON.stringify(new JsonRpcRequestClient('response', requestQuery));
     }
 
-    addItemToSubMenuForClick() {
+    actionMainItem() {
         this.mainItem.addEventListener('click', (event) => {
             if (this.subMenu.style.display !== 'flex') {
                 this.subMenu.style.display = 'flex';
@@ -210,6 +246,23 @@ export class SelectElement {
                 this.disableDisplaySync();
             }
         });
+    }
+
+    actionItemForSubMenu(item) {
+        if (!(item instanceof HTMLElement)) {
+            throw new SelectElementError('item для actionItemForSubMenu должно быть HTMLElement.');
+        }
+
+        if (!item.hasAttribute('value')) {
+            throw new SelectElementError('item для actionItemForSubMenu должен иметь атрибут value.');
+        }
+
+        let elemP = this.mainItem.querySelector('p') ?? null;
+        if (elemP instanceof HTMLElement) {
+            elemP.innerText = item.innerText;
+            this.setPageId(item.getAttribute('value'));
+        }
+        this.subMenu.style.display = '';
     }
 
     hasActivatedDisplaySync() {
