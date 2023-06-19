@@ -43,6 +43,14 @@
         }
     }
 
+    & > data {
+        display: none;
+    }
+
+    p {
+        user-select: none;
+    }
+
     .icon-triangle {
         width: 20px;
         height: 20px;

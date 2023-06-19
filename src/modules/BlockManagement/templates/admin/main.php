@@ -17,6 +17,9 @@
         <li class="save">Сохранить</li>
         <li>
             <div class="select-element" id="select_menu">
+                <data>
+                    <input type="hidden" name="page_id" value="-1">
+                </data>
                 <div class="item-selected">
                     <p>Выберите страницу</p>
                     <div class="icon-triangle">

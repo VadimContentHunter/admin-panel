@@ -262,5 +262,14 @@ export function serverRequestModule(value, selectorContainer, notification) {
             notification.setStatusNew();
             notification.update();
         }
+
+        if (
+            typeof jsonRpcResponseClient.result === 'object' &&
+            Array.isArray(jsonRpcResponseClient.result?.responseData)
+        ) {
+            return jsonRpcResponseClient.result?.responseData;
+        }
     }
+
+    return null;
 }

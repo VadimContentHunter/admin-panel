@@ -169,10 +169,30 @@ export class SelectElement {
                 objectForDataPacker: requestQuery,
                 requestDataPacker: this.processingData,
                 responseHandler: (value) => {
-                    serverRequestModule(value, '.content-wrapper', this.notification);
+                    let res = serverRequestModule(value, '.content-wrapper', this.notification) ?? null;
+                    this.addItemsForList(res);
                 },
             });
         });
+    }
+
+    addItemsForList(data) {
+        if (Array.isArray(data)) {
+            let elemAdded = false;
+            data.forEach((item) => {
+                if (Object.hasOwn(item, 'id') && Object.hasOwn(item, 'title')) {
+                    let elemLi = document.createElement('li');
+                    elemLi.setAttribute('value', item.id);
+                    elemLi.innerHTML = '<p>[id: ' + item.id + '] ' + item.title + '</p>';
+                    this.subMenu.append(elemLi);
+                    elemAdded = true;
+                }
+            });
+
+            if (elemAdded === true) {
+                this.disableDisplaySync();
+            }
+        }
     }
 
     // eslint-disable-next-line class-methods-use-this

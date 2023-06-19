@@ -865,6 +865,12 @@ form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
   width: 100px;
   height: 80px;
 }
+.select-element > data {
+  display: none;
+}
+.select-element p {
+  user-select: none;
+}
 .select-element .icon-triangle {
   width: 20px;
   height: 20px;
