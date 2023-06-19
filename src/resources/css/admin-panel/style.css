@@ -793,12 +793,48 @@ form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
   color: var(--main-color);
 }
 
+.icon-sync {
+  height: 44px;
+  width: 44px;
+  animation: icon-sync-rotate 3s linear infinite;
+}
+.icon-sync i {
+  display: block;
+  width: inherit;
+  height: inherit;
+  background: #c1c1c1;
+  -webkit-mask: url("http://admin-panel/src/resources/img/icon-sync.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask: url("http://admin-panel/src/resources/img/icon-sync.svg");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
+
+.sync-block {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes icon-sync-rotate {
+  from {
+    transform: rotate(360deg);
+  }
+}
 .select-element {
   cursor: default;
   color: var(--header-text-color);
 }
 .select-element > .item-selected {
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 .select-element > menu {
   display: flex;
@@ -825,42 +861,28 @@ form .panel-footer button:hover, form .panel-footer input[type=button]:hover {
   color: var(--main-color);
 }
 .select-element > menu > li.sync {
+  display: none;
   width: 100px;
   height: 80px;
 }
-
-.icon-sync {
-  height: 44px;
-  width: 44px;
-  animation: icon-sync-rotate 3s linear infinite;
+.select-element .icon-triangle {
+  width: 20px;
+  height: 20px;
+  transform: rotate(180deg);
 }
-.icon-sync i {
+.select-element .icon-triangle i {
   display: block;
   width: inherit;
   height: inherit;
   background: var(--main-icon-color);
-  -webkit-mask: url("http://admin-panel/src/resources/img/icon-sync.svg");
+  -webkit-mask: url("http://admin-panel/src/resources/img/change_history_20.svg");
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: contain;
-  mask: url("http://admin-panel/src/resources/img/icon-sync.svg");
+  mask: url("http://admin-panel/src/resources/img/change_history_20.svg");
   mask-repeat: no-repeat;
   mask-size: contain;
 }
 
-.sync-block {
-  width: inherit;
-  height: inherit;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-@keyframes icon-sync-rotate {
-  from {
-    transform: rotate(360deg);
-  }
-}
 .main-block {
   display: flex;
   flex-direction: row;

@@ -16,7 +16,7 @@
     <menu>
         <li class="save">Сохранить</li>
         <li>
-            <div class="select-element">
+            <div class="select-element" id="select_menu">
                 <div class="item-selected">
                     <p>Выберите страницу</p>
                     <div class="icon-triangle">

@@ -30,6 +30,7 @@ $header-menu-indent: -8px;
 @import './containers/container-blocks';
 @import './containers/container-menu';
 @import './elements/element-sync-block';
+@import './elements/element-select';
 
 .main-block {
     display: flex;

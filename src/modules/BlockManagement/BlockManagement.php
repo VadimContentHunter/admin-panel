@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\BlockManagement;
 
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\Page\Page;
 use vadimcontenthunter\JsonRpc\JsonRpcError;
 use vadimcontenthunter\JsonRpc\JsonRpcResponse;
 use vadimcontenthunter\AdminPanel\views\BaseView;
@@ -14,9 +15,11 @@ use vadimcontenthunter\AdminPanel\models\ModuleResponse\ModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\ModuleItemUi;
 use vadimcontenthunter\AdminPanel\modules\BlockManagement\view\BlockItemUi;
 use vadimcontenthunter\AdminPanel\modules\BlockManagement\view\ListBlocksUi;
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\Block\Block;
 use vadimcontenthunter\AdminPanel\modules\BlockManagement\view\ContentBlocksUi;
 use vadimcontenthunter\AdminPanel\models\ModuleResponse\interfaces\IModuleResponse;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Sitebar\interfaces\IModuleItemUi;
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\models\BlockLevel\BlockLevel;
 use vadimcontenthunter\AdminPanel\views\UiComponents\Content\interfaces\IContentContainerUi;
 
 /**
@@ -35,10 +38,21 @@ class BlockManagement extends Module
             AdminPanelSetting::getPathToTemplatesForModules($this->getName()),
             'admin/main.php'
         );
-        $content->addBlock(
-            (new BlockItemUi('admin/block-controller.php'))
-                ->addInput('label', 'text', 'block1', 'block1 selected')
-        );
+        // $content->addBlock(
+        //     (new BlockItemUi('admin/block-controller.php'))
+        //         ->addInput('label', 'text', 'block1', 'block1 selected')
+        // );
+        // $blocks = Block::selectAllFields();
+        // if (is_array($blocks)) {
+        //     foreach ($blocks as $key => $block_item) {
+        //         if ($block_item instanceof Block) {
+        //             $content->addBlock(
+        //                 (new BlockItemUi('admin/block-controller.php'))
+        //                     ->addInput('label', 'text', 'block1', 'block1 selected')
+        //             );
+        //         }
+        //     }
+        // }
 
         $contentContainerUi->setClassForContainer('fill-container');
         $contentContainerUi->setTitle($this->getAlias());
@@ -67,6 +81,7 @@ class BlockManagement extends Module
         return (new ModuleResponse($parameters['request_id'] ?? null))
             ->setResponseHtmlAndJsFromFiles($contentContainerUi->getHtml(), [
                 AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/IframeController.js',
+                AdminPanelSetting::getPathModuleUrl($this->getName()) . '/js/addMenu.js',
             ]);
     }
 
