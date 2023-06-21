@@ -1,3 +1,7 @@
+<?php
+
+?>
+
 <section class="container-main-screen">
     <span class="img-1"></span>
     <div class="wrapper">
