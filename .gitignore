@@ -1,3 +1,14 @@
 /.vscode
 /.phpunit.result.cache
 /vendor
+/index.php
+/.htaccess
+/phpunit.xml.bak
+/.phpunit.cache
+/.phpunit.cache/test-results
+.phpunit.cache/test-results
+/.prettierrc.js
+/.prettierignore
+/.eslintrc.js
+/.eslintignore
+/node_modules

@@ -1,0 +1,104 @@
+
+.main-block section.sidebar {
+    z-index: $sidebar-z-index;
+    @include box-shadow(5px 0px 8px -4px rgba(34, 60, 80, 0.2));
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    max-width: var(--sidebar-panel-width);
+    min-width: var(--sidebar-panel-width);
+    background-color: #ffffff;
+
+    color: var(--header-text-color);
+    font-size: var(--sidebar-font-size);
+
+    h6{
+        color: #949494;
+        margin: 8px 0px;
+        font-size: 8pt;
+        font-weight: normal;
+    }
+
+    .logo {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        justify-content: center;
+
+        min-height: var(--header-height);
+        background-color: var(--header-background-color);
+
+        .icon-panel {
+            width: 50px;
+            height: 50px;
+            @include img-block-mask('#{$main_path_to_resources}/admin_control_panel_icon_150307.svg', var(--main-logo-color));
+        }
+
+        h1 {
+            font-size: 14pt;
+            color: var(--main-logo-color);
+        }
+    }
+
+    section {
+        display: flex;
+        flex-direction: column;
+        padding: 0px 14px;
+        margin: 12px 0px;
+
+       > menu {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+
+            li {
+                &:hover {
+                    background-color: var(--header-background-active);
+                    cursor: pointer;
+                }
+
+                display: grid;
+                grid-template-columns: 50px 1fr;
+                align-items: center;
+                @extend %menu-item-li;
+                margin-right: 8px;
+
+                .icon-module {
+                    height: 40px;
+                    width: 40px;
+                    @include img-block-mask('#{$main_path_to_resources}/extension_FILL0_40.svg', var(--main-icon-color));
+                }
+
+                .icon-module-off {
+                    height: 40px;
+                    width: 40px;
+                    @include img-block-mask('#{$main_path_to_resources}/extension_off_FILL0_wght300_GRAD0_opsz40.svg', var(--main-icon-color));
+                }
+
+                @include reset-a-effects(var(--header-text-color));
+            }
+
+            li.activated {
+                // border-right: 2px solid var(--main-color);
+                background-color: var(--header-background-active);
+                // background-color: var(--header-background-active);
+                &:hover {
+                    cursor: default;
+                }
+            }
+        }
+    }
+
+    section.modules-items {
+        overflow-y: hidden;
+        margin-bottom: 20px;
+
+        menu {
+            overflow-y: auto;
+        }
+    }
+
+}

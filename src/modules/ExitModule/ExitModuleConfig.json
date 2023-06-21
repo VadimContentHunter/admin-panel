@@ -1,0 +1,8 @@
+{
+    "alias": "ExitModule",
+    "name": "ExitModule",
+    "status": 100,
+    "data": [],
+    "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\ExitModule\\ExitModuleConfig.json",
+    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\ExitModule"
+}

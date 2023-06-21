@@ -1,0 +1,32 @@
+.dashboard_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h3 {
+        color: var(--main-text-header-color);
+        font-size: 20px;
+        padding: 0px 0px 20px 0px;
+    }
+
+    .dashboard_content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        section {
+
+            h4 {
+                color: var(--main-text-header-2-color);
+                font-size: 18px;
+                padding: 12px 0px;
+            }
+
+            p {
+                color: var(--main-text-color);
+                font-size: 14px;
+                padding: 12px 0px;
+                line-height: 20px;
+            }
+        }
+    }
+}

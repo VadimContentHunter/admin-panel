@@ -1,0 +1,169 @@
+:root {
+  --main-logo-color: #949494;
+  --main-color: #D44137;
+  --main-border-radius: 8px;
+  --main-text-color: #636363;
+  --main-text-header-color: #6F6F6F;
+  --main-text-header-2-color: #6F6F6F;
+  --main-content-color: #F9F9FD;
+  --main-soft-text: #949494;
+  --main-icon-color: #949494;
+  --header-height: 68px;
+  --header-border-bottom: 2px solid #f1f1f1;
+  --header-background-color: #ffffff;
+  --header-element-padding: 4px 8px 4px 8px;
+  --header-text-color: #6F6F6F;
+  --header-background-active: #f3f3f3;
+  --sidebar-panel-width: 256px;
+  --sidebar-font-size: 13px;
+  --item-container-column-size: 80px;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #f3f3f3;
+  border-radius: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #c9c9c9;
+  border-radius: 8px;
+}
+
+body {
+  font-family: "Roboto", "Helvetica", "Arial", "sans-serifsans-serif";
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--main-content-color);
+}
+main a:active,
+main a:hover,
+main a:visited,
+main a:hover,
+main a {
+  outline: none;
+  text-decoration: none;
+  color: var(--header-text-color);
+}
+main .login-container {
+  margin: 0px 32px;
+  width: 348px;
+  height: 600px;
+  padding: 30px;
+  border-radius: var(--main-border-radius);
+  background-color: #ffffff;
+  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+}
+main form {
+  display: flex;
+  flex-direction: column;
+}
+main form > ul {
+  display: flex;
+  flex-direction: column;
+}
+main form > ul li {
+  display: flex;
+  flex-direction: column;
+}
+main form > ul li label {
+  color: var(--icon-color);
+  font-size: 13px;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+main form > ul li input {
+  padding: 4px 12px;
+  outline: none;
+  border: none;
+  border-radius: var(--main-border-radius);
+  color: var(--main-text-color);
+  font-size: 16px;
+  background-color: var(--header-background-active);
+  margin-bottom: 8px;
+}
+main form > ul li input::placeholder {
+  font-size: 13px;
+  color: var(--header-text-color);
+}
+main form > ul li output {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 13px;
+  color: var(--main-color);
+}
+main form > ul li output::before {
+  content: "*** ";
+}
+main .panel-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 52px;
+}
+main .panel-header h4 {
+  color: var(--main-logo-color);
+  font-size: 32px;
+}
+main .panel-footer-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+main .panel-footer-form button {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--main-border-radius);
+  color: var(--main-text-color);
+  font-size: 16px;
+  background-color: var(--header-background-active);
+  margin-top: 16px;
+}
+main .panel-footer-form button:hover {
+  color: #ffffff;
+  background-color: var(--main-color);
+  cursor: pointer;
+}
+main .panel-footer-form a {
+  margin: 12px 0px;
+  font-size: 13px;
+  color: var(--main-logo-color);
+}
+main .panel-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: var(--header-border-bottom);
+}
+main .panel-footer a {
+  margin: 12px 0px;
+  font-size: 13px;
+  color: var(--main-logo-color);
+}
+main .panel-footer a span {
+  color: var(--main-text-color);
+  text-decoration: underline;
+}
+main .panel-footer a:hover {
+  cursor: pointer;
+}
+main .panel-footer a:hover span {
+  color: var(--main-color);
+}
+
+/*# sourceMappingURL=login-page.css.map */

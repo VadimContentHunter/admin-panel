@@ -1,0 +1,113 @@
+$z_index_level_1: 1000;
+$z_index_level_2: 500;
+$z_index_level_3: 100;
+$z_index_level_4: 90;
+$z_index_level_5: 60;
+$z_index_level_6: 50;
+
+:root {
+    --text-main-color: #5A5A5A;
+    --color-main-2: #0277BD;
+    --color-main-4-light: #58A5EF;
+    --color-main-dark: #004C8B;
+    --shadow-color-main: #223b4f40;
+    --padding-with-main: 30px;
+    --border-radius-button: 6px;
+    --border-radius-block: 12px;
+    --border-color-button: #CDCDCD;
+    --color-bottom-border-main: #D1D1D1;
+    --color-placeholder-input: #bdbdbd;
+
+    --container-color-one-text: #ffffff;
+    --header-main-height: 64px;
+    --header-information-height: 30px;
+}
+
+@mixin box-shadow($property) {
+    -webkit-box-shadow: $property;
+    -moz-box-shadow: $property;
+    box-shadow: $property;
+}
+
+@mixin reset-a-effects($color: inherit) {
+    a:active,
+    a:hover,
+    a:visited,
+    a:hover,
+    a {
+        outline: none;
+        text-decoration: none;
+        color: $color;
+    }
+}
+
+@mixin img-block-mask($path, $color: null) {
+    i {
+        display: block;
+        width: inherit;
+        height: inherit;
+        -webkit-mask: url($path);
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask: url($path);
+        mask-repeat: no-repeat;
+        mask-size: contain;
+
+        @if $color != null {
+            background: $color;
+        }
+    }
+}
+
+body, input, textarea {
+    font-family: "Roboto", "Helvetica", "Arial", "sans-serifsans-serif";
+    line-height: 1.4;
+    color: var(--text-main-color);
+    font-size: 14px;
+}
+
+input, textarea {
+    &::placeholder {
+        color: var(--color-placeholder-input);
+    }
+}
+
+.main-container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 1440px;
+    }
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+
+    & > section {
+        padding: 40px 0px 100px 0px;
+    }
+}
+
+
+@import 'masks';
+@import 'container-wave';
+
+@import 'header';
+@import 'block-feedback';
+@import 'block-language';
+@import 'container-main-screen';
+@import 'container-2';
+@import 'container-3';
+@import 'container-4';
+@import 'container-comment-slider';
+@import 'container-question-answer';
+@import 'container-form-block-1';
+@import 'footer';
+
+@import 'media';

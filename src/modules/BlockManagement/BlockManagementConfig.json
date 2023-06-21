@@ -1,0 +1,8 @@
+{
+    "alias": "Управление блоками",
+    "name": "BlockManagement",
+    "status": 100,
+    "data": [],
+    "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\BlockManagement\\BlockManagementConfig.json",
+    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\BlockManagement"
+}
