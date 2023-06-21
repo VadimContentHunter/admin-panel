@@ -23,12 +23,12 @@ interface IBlock
     public function getDescription(): string;
 
     /**
-     * @param array(string, string) $parameters
+     * @param array<string> $parameters
      */
     public function setParameters(array $parameters): IBlock;
 
     /**
-     * @return array(string, string) $parameters
+     * @return array<string> $parameters
      */
     public function getParameters(): array;
 

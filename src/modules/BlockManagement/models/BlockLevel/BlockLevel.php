@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace vadimcontenthunter\AdminPanel\modules\BlockManagement\models\BlockLevel;
 
+use vadimcontenthunter\AdminPanel\modules\BlockManagement\exceptions\BlockException;
 use vadimcontenthunter\MyDB\DB;
 use vadimcontenthunter\AdminPanel\services\ActiveRecord;
 use vadimcontenthunter\MyDB\MySQL\Parameters\Fields\FieldDataType;
@@ -26,12 +27,20 @@ class BlockLevel extends ActiveRecord implements IBlockLevel
 
     public function setPageId(int $pageId): IBlockLevel
     {
+        if (!is_int($this->pageId)) {
+            throw new BlockException('BlockLevel должен иметь page Id');
+        }
+
         $this->pageId = $pageId;
         return $this;
     }
 
     public function getPageId(): int
     {
+        if (!is_int($this->pageId)) {
+            throw new BlockException('BlockLevel должен иметь page Id');
+        }
+
         return $this->pageId;
     }
 
@@ -43,6 +52,10 @@ class BlockLevel extends ActiveRecord implements IBlockLevel
 
     public function getBlockId(): int
     {
+        if (!is_int($this->blockId)) {
+            throw new BlockException('BlockLevel должен иметь block Id');
+        }
+
         return $this->blockId;
     }
 
@@ -54,6 +67,10 @@ class BlockLevel extends ActiveRecord implements IBlockLevel
 
     public function getLevel(): int
     {
+        if (!is_int($this->level)) {
+            throw new BlockException('BlockLevel должен иметь level');
+        }
+
         return $this->level;
     }
 

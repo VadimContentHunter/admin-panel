@@ -43,7 +43,7 @@ class ModuleResponse implements IModuleResponse
     }
 
     /**
-     * @param array(mixed) $data
+     * @param mixed[] $data
      */
     public function setResponseData(array $data): self
     {

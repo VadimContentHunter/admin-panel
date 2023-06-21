@@ -1,6 +1,6 @@
 <?php
-    $title = is_string($title) ? $title : '';
-    $blocks = is_array($blocks) ? $blocks : [];
+    $title = is_string($title ??= '') ? $title : '';
+    $blocks = is_array($blocks ??= []) ? $blocks : [];
     $blocks = array_filter($blocks, function (mixed $block) {
         if (is_string($block)) {
             return true;

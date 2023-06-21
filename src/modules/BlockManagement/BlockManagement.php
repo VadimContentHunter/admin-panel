@@ -117,8 +117,9 @@ class BlockManagement extends Module
         );
 
         extract($parameters);
+        $path_to_block = $path_to_block ?? '';
         return $baseView->getPage('admin/preview-block.php', [
-            'body' => $baseView->getPage('blocks/' . $path_to_block ?? '', [
+            'body' => $baseView->getPage('blocks/' . $path_to_block, [
                 $parameters
             ]),
             'css_paths' => [

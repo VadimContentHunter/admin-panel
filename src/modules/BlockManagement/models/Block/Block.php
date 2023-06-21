@@ -74,7 +74,7 @@ class Block extends ActiveRecord implements IBlock
     }
 
     /**
-     * @param array(string, string) $parameters
+     * @param array<string> $parameters
      */
     public function setParameters(array $parameters): IBlock
     {
@@ -87,7 +87,7 @@ class Block extends ActiveRecord implements IBlock
     }
 
     /**
-     * @return array(string, string) $parameters
+     * @return array<string> $parameters
      */
     public function getParameters(): array
     {

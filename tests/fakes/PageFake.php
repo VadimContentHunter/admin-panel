@@ -44,7 +44,7 @@ class PageFake extends Page
                         ->where('id=:page_id'),
                 self::class,
                 parameters: [
-                    ':page_id' => [$page_id],
+                    [':page_id' => [$page_id]],
                 ]
             )
             ->addQuery(
@@ -61,7 +61,7 @@ class PageFake extends Page
                             ->where($table_name_for_block_level . '.page_id=:page_id'),
                 BlockFake::class,
                 parameters: [
-                    ':page_id' => [$page_id],
+                    [':page_id' => [$page_id]],
                 ]
             )
             ->send();

@@ -1,5 +1,6 @@
 <?php
 
+    $input_blocks ??= [];
     $input_blocks = is_array($input_blocks) ? $input_blocks : [];
     $input_blocks = array_filter($input_blocks, function (mixed $block) {
         if (is_string($block)) {
@@ -23,4 +24,3 @@
 <?php foreach ($input_blocks as $block) : ?>
     <?= $block ?>
 <?php endforeach; ?>
-

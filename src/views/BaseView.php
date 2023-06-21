@@ -13,7 +13,7 @@ class BaseView
     public function __construct(
         protected string $templatesPath,
         protected ?string $contentType = null,
-        protected $templatesPathToErrorPage = null
+        protected ?string $templatesPathToErrorPage = null
     ) {
     }
 
@@ -26,7 +26,7 @@ class BaseView
     /**
      * @param array<string, mixed> $parameters
      */
-    public function renderPage(string $template_name, array $parameters = [], $code = 200): void
+    public function renderPage(string $template_name, array $parameters = [], int $code = 200): void
     {
         http_response_code($code);
         if ($this->contentType !== null) {
@@ -36,7 +36,7 @@ class BaseView
     }
 
     /**
-     * @param array<string, mixed> $parameters
+     * @param mixed[] $parameters
      */
     public function getPage(string $template_name, array $parameters = []): string
     {

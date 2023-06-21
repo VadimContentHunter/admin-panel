@@ -1,7 +1,7 @@
 <?php
 
-    $body = is_string($body) ? $body : '';
-    $css_paths = is_array($css_paths) ? $css_paths : [];
+    $body = is_string($body ??= '') ? $body : '';
+    $css_paths = is_array($css_paths ??= []) ? $css_paths : [];
     $css_paths = array_filter($css_paths, function (mixed $path) {
         if (is_string($path)) {
             return true;

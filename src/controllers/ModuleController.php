@@ -54,18 +54,16 @@ class ModuleController
     public function getBlockPathFromRestUrl(string $full_url_parameter): string
     {
         $path_to_block = '';
-        $module_url_data = array_filter(preg_split('~(/|\\\)~', $full_url_parameter));
+        $module_url_data = array_filter(preg_split('~(/|\\\)~', $full_url_parameter) ?: [] );
         $hasBlockPath = false;
         foreach ($module_url_data as $key => $url_chunk) {
             if ($hasBlockPath) {
                 $path_to_block .= $url_chunk . '/';
             }
+
             if ($url_chunk === 'block') {
                 $hasBlockPath = true;
             }
-            // if ($url_chunk !== 'block' && !$hasBlockPath) {
-            //     $hasBlockPath = true;
-            // }
         }
 
         $path_to_block = substr($path_to_block, 0, -1);
@@ -75,7 +73,7 @@ class ModuleController
     public function getMethodFromRestUrl(string $full_url_parameter): string
     {
         $method_name = '';
-        $module_url_data = preg_split('~(/|\\\)~', $full_url_parameter);
+        $module_url_data = preg_split('~(/|\\\)~', $full_url_parameter) ?: [];
         $hasBlockPath = false;
         foreach ($module_url_data as $key => $url_chunk) {
             if ($url_chunk === 'block') {

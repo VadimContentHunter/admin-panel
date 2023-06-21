@@ -18,9 +18,6 @@ class ContentBlocksUi implements IContentItemUi
      */
     protected array $blocks = [];
 
-    /**
-     * @param array<string, mixed> $parameters
-     */
     public function __construct(
         protected string $title,
         protected string $pathToTemplates = '',
@@ -33,9 +30,6 @@ class ContentBlocksUi implements IContentItemUi
         return -1;
     }
 
-    /**
-     * @param array<string, mixed> $parameters
-     */
     public function addBlock(BlockItemUi $block): ContentBlocksUi
     {
         if ($block->getPathToTemplates() === null) {
