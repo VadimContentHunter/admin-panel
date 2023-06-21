@@ -18,27 +18,29 @@ class ContentContainerUi implements IContentContainerUi
      */
     private array $contentItems = [];
 
+    private string $classForContainerValue = 'items-container';
+
     public function __construct(
         protected ?string $templatesPath = null,
         protected string $title = '',
     ) {
     }
 
-    public function getHtml(): string
+    public function setTemplate(string $path): IContentContainerUi
     {
-        return <<<HTML
-        <div class="items-container">
-            {$this->getContentItemsHtml()}
-        <div>
-        HTML;
+        $this->templatesPath = $path;
+        return $this;
     }
 
-    public function addContent(IContentItemUi $content_item): IContentContainerUi
+    public function setClassForContainer(string $class_value): IContentContainerUi
     {
-        if ($this->templatesPath !== null) {
-            $content_item->setPathToTemplates($this->templatesPath);
-        }
-        $this->contentItems[] = $content_item;
+        $this->classForContainerValue = $class_value;
+        return $this;
+    }
+
+    public function setTitle(string $title): IContentContainerUi
+    {
+        $this->title = $title;
         return $this;
     }
 
@@ -50,9 +52,21 @@ class ContentContainerUi implements IContentContainerUi
         ));
     }
 
-    public function setTitle(string $title): IContentContainerUi
+    public function getHtml(): string
     {
-        $this->title = $title;
+        return <<<HTML
+        <div class="{$this->classForContainerValue}">
+            {$this->getContentItemsHtml()}
+        <div>
+        HTML;
+    }
+
+    public function addContent(IContentItemUi $content_item): IContentContainerUi
+    {
+        if ($this->templatesPath !== null) {
+            $content_item->setPathToTemplates($this->templatesPath);
+        }
+        $this->contentItems[] = $content_item;
         return $this;
     }
 }

@@ -1,8 +1,0 @@
-{
-    "alias": "TextModule2",
-    "name": "TextModule2",
-    "status": 100,
-    "data": [],
-    "pathConfig": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule2\\TextModule2Config.json",
-    "pathModule": "D:\\OpenServer\\domains\\admin-panel\\src\\modules\\TextModule2"
-}

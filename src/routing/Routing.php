@@ -41,6 +41,11 @@ class Routing
                 unset($matches[0]);
                 $parameters += $matches;
 
+                if (!empty($parameters['module_name']) && !empty($parameters['execution_method'])) {
+                    $this->handlerRestModule($route, $parameters);
+                    return;
+                }
+
                 $request = file_get_contents('php://input');
                 if (!is_string($request) || $request === '') {
                     $this->handlerPage($route, $parameters);
@@ -53,6 +58,19 @@ class Routing
         }
 
         echo 'Страница не найдена!';
+    }
+
+    /**
+     * @param mixed[] $parameters
+     */
+    protected function handlerRestModule(IRoute $route, array $parameters = []): void
+    {
+        $parameters += $route->getParameters();
+
+        $class_name = $route->getClassName();
+        $method_name = $parameters['execution_method'] ?? null;
+        $obj = new $class_name();
+        $obj->$method_name($parameters);
     }
 
     /**

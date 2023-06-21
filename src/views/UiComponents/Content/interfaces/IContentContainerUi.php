@@ -15,4 +15,7 @@ interface IContentContainerUi extends IBaseUiComponent
 {
     public function setTitle(string $title): IContentContainerUi;
     public function addContent(IContentItemUi $content_item): IContentContainerUi;
+    public function setTemplate(string $path): IContentContainerUi;
+
+    public function setClassForContainer(string $class_value): IContentContainerUi;
 }

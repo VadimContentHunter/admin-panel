@@ -1,0 +1,213 @@
+@mixin menu-item-content($color, $padding_bottom: 4px, $border_bottom_with: 2px) {
+    color: $color;
+    a {
+        padding-bottom: $padding_bottom;
+        border-bottom: $border_bottom_with solid $color;
+    }
+}
+
+@mixin my-button($color) {
+    padding: 6px 8px;
+    color: #ffffff;
+    background-color: $color;
+    border: none;
+    border-radius: var(--border-radius-button);
+}
+
+.main-container > header {
+    position: sticky;
+    top: 0px;
+    width: inherit;
+    z-index: $z_index_level_2;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @include reset-a-effects();
+    @include box-shadow(0px 2px 8px 0px var(--shadow-color-main));
+}
+
+header .header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-main-height);
+    border-bottom: 1px solid var(--color-bottom-border-main);
+    z-index: $z_index_level_3;
+    padding: 0px var(--padding-with-main);
+
+    .group-3 {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .icon {
+            height: 44px;
+            width: 44px;
+            background-color: #E9E9E9;
+            margin-right: 8px;
+        }
+
+        .text {
+            font-size: 20px;
+        }
+    }
+
+    menu.menu-list {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: row;
+
+        li {
+            list-style-type: none;
+            margin: 0px 8px;
+        }
+
+        li.activated
+        {
+            @include menu-item-content( var(--color-main-2) );
+        }
+
+        li:hover {
+            @include menu-item-content( var(--color-main-4-light) );
+        }
+
+        .more {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: var(--color-main-2);
+            border-radius: 12px;
+            padding: 6px 4px;
+
+            div {
+                height: 4px;
+                width: 4px;
+                border-radius: 50%;
+                margin: 0px 2px;
+                background-color: #ffffff;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    address a {
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 16px;
+    }
+
+    menu.menu-toolbar {
+        display: flex;
+        flex-direction: row;
+
+        li {
+            list-style-type: none;
+            margin-right: 16px;
+
+            button {
+                @include my-button(var(--color-main-2));
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .block-select-language > button {
+                background-color: var(--color-main-4-light) !important;
+            }
+        }
+    }
+}
+
+header .header-menu-list {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 30px;
+    // z-index: ($z_index_level_3 - 10);
+
+    li {
+        flex-shrink: 0;
+        list-style-type: none;
+        padding: 8px 0px;
+        margin: 0px 16px;
+
+        &:first-child
+        {
+            margin-left: 0px;
+        }
+
+        &:last-child
+        {
+            margin-right: 0px;
+        }
+
+        &.activated
+        {
+            color: var(--color-main-2);
+        }
+
+        &:hover {
+            color: var(--color-main-4-light);
+        }
+    }
+}
+
+header .header-mobile-menu {
+    overflow-y: auto;
+    font-size: 20px;
+    list-style-type: none;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+
+    li:first-child {
+        margin-top: 30px;
+    }
+
+    li.activated
+    {
+        @include menu-item-content( var(--color-main-2) );
+    }
+}
+
+header .information {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    height: var(--header-information-height);
+    justify-content: center;
+
+    address{
+        a {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 16px;
+        }
+    }
+}
+
+.main-container > menu.mobile {
+    position: fixed;
+    display: none;
+    bottom: 40px;
+    right: 20px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 12px;
+    z-index: $z_index_level_1;
+    @include box-shadow(0px 2px 8px 0px var(--shadow-color-main));
+}

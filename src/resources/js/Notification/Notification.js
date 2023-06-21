@@ -106,27 +106,34 @@ export class Notification {
     }
 
     disableMainBlock() {
-        let hide = false;
-        this.mainElement.addEventListener('mouseover', (event) => {
-            if (!hide) {
-                hide = true;
+        // let hide = false;
+        // this.mainElement.addEventListener('mouseover', (event) => {
+        //     if (!hide) {
+        //         hide = true;
+        //     }
+        // });
+
+        this.mainElement.addEventListener('click', () => {
+            if (this.mainElement.classList.contains(Notification.tagNew)) {
+                this.disableListElement();
+                this.updateListElement();
             }
         });
 
         // mouseout
         // Добавление события для теневого дерева меню
         // (Что бы оно скрывалось если клик не в области элемента)
-        document.addEventListener('click', (e) => {
-            if (
-                !e.composedPath().includes(this.mainElement) &&
-                hide &&
-                this.mainElement.classList.contains(Notification.tagNew)
-            ) {
-                hide = false;
-                this.disableListElement();
-                this.updateListElement();
-            }
-        });
+        // document.addEventListener('click', (e) => {
+        //     if (
+        //         !e.composedPath().includes(this.mainElement) &&
+        //         hide &&
+        //         this.mainElement.classList.contains(Notification.tagNew)
+        //     ) {
+        //         hide = false;
+        //         this.disableListElement();
+        //         this.updateListElement();
+        //     }
+        // });
     }
 
     setNumberNotifications(value) {

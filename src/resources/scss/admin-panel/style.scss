@@ -23,8 +23,14 @@ $header-menu-indent: -8px;
 @import 'sidebar';
 @import 'menu';
 @import 'content';
+@import 'content-fill';
 @import './containers/dashboard_container';
 @import './containers/forms_container';
+@import './containers/container-separate';
+@import './containers/container-blocks';
+@import './containers/container-menu';
+@import './elements/element-sync-block';
+@import './elements/element-select';
 
 .main-block {
     display: flex;
