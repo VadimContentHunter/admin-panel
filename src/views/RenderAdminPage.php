@@ -22,6 +22,11 @@ class RenderAdminPage
     /**
      * @var string[]
      */
+    protected array $headCodeFiles = [];
+
+    /**
+     * @var string[]
+     */
     protected array $jsHeadPaths = [];
 
     /**
@@ -58,6 +63,7 @@ class RenderAdminPage
         $header = $adminPageUiFactory->getHeaderComponent()->getHtml();
         $body_container = $adminPageUiFactory->getContentComponent()->getHtml();
         $css_paths = $this->cssPaths;
+        $head_code_paths = $this->headCodeFiles;
         $js_head_paths = $this->jsHeadPaths;
         $js_begin_body_paths = $this->jsBeginBodyPaths;
         $js_after_body_paths = $this->jsAfterBodyPaths;
@@ -86,6 +92,7 @@ class RenderAdminPage
         extract($parameters);
 
         $css_paths = $this->cssPaths;
+        $head_code_paths = $this->headCodeFiles;
         $js_head_paths = $this->jsHeadPaths;
         $js_begin_body_paths = $this->jsBeginBodyPaths;
         $js_after_body_paths = $this->jsAfterBodyPaths;
@@ -118,6 +125,12 @@ class RenderAdminPage
             throw new AdminPanelException("Error, file not found or not css.");
         }
         $this->cssPaths[] = $path_file;
+        return $this;
+    }
+
+    public function addHeadCodeFiles(string $code_block): RenderAdminPage
+    {
+        $this->headCodeFiles[] = $code_block;
         return $this;
     }
 

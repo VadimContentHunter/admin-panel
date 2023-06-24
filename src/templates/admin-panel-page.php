@@ -1,6 +1,7 @@
 <?php
 
 $css_paths ??= [];
+$head_code_paths ??= [];
 $js_head_paths ??= [];
 $js_begin_body_paths ??= [];
 $js_after_body_paths ??= [];
