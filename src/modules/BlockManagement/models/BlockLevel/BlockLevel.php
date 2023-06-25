@@ -27,7 +27,7 @@ class BlockLevel extends ActiveRecord implements IBlockLevel
 
     public function setPageId(int $pageId): IBlockLevel
     {
-        if (!is_int($this->pageId)) {
+        if (!is_int($pageId)) {
             throw new BlockException('BlockLevel должен иметь page Id');
         }
 
