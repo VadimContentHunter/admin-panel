@@ -60,6 +60,7 @@ class MainController
         $this->renderAdminPage->addHeadCodeFiles($baseView->getPage('scripts/init_paths.php', [
             'path_node_modules' => Helper::getCurrentHostUrl(),
             'path_resources_js' => Helper::getCurrentHostUrl() . '/src/resources/js',
+            'path_module' => Helper::getCurrentHostUrl() . '/src/modules',
         ]));
         $this->renderAdminPage->renderPageUiComponent(
             'admin-panel-page.php',
