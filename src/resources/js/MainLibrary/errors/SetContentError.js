@@ -1,8 +1,18 @@
-import MainLibraryError from './MainLibraryError.js';
+if (typeof pathNodeModules === "undefined") {
+    throw Error("Ошибка укажите переменную pathNodeModules");
+}
+
+if (typeof pathResourcesJs === "undefined") {
+    throw Error("Ошибка укажите переменную pathResourcesJs");
+}
+
+let MainLibraryError = (
+    await import(pathResourcesJs + "/MainLibrary/errors/MainLibraryError.js")
+).default;
 
 export default class SetContentError extends MainLibraryError {
     constructor(message) {
         super(message);
-        this.name = 'SetContent';
+        this.name = "SetContent";
     }
 }

@@ -1,4 +1,16 @@
-import NotificationError from './errors/NotificationError.js';
+if (typeof pathNodeModules === "undefined") {
+    throw Error("Ошибка укажите переменную pathNodeModules");
+}
+
+if (typeof pathResourcesJs === "undefined") {
+    throw Error("Ошибка укажите переменную pathResourcesJs");
+}
+
+let NotificationError = (
+    await import(pathResourcesJs + "/Notification/errors/NotificationError.js")
+).default;
+
+// import NotificationError from "./errors/NotificationError.js";
 
 export class Notification {
     #mainElement;
@@ -6,19 +18,29 @@ export class Notification {
     #counterElement;
     #listNotifications = [];
     static maxListLength = 15;
-    static tagNew = '__push';
+    static tagNew = "__push";
 
-    constructor(selectorMainElement, selectorListElement, selectorCounterElement) {
-        if (typeof selectorMainElement !== 'string') {
-            throw new NotificationError('Тип параметра selectorMainElement, должен быть "string"');
+    constructor(
+        selectorMainElement,
+        selectorListElement,
+        selectorCounterElement
+    ) {
+        if (typeof selectorMainElement !== "string") {
+            throw new NotificationError(
+                'Тип параметра selectorMainElement, должен быть "string"'
+            );
         }
 
-        if (typeof selectorListElement !== 'string') {
-            throw new NotificationError('Тип параметра selectorListElement, должен быть "string"');
+        if (typeof selectorListElement !== "string") {
+            throw new NotificationError(
+                'Тип параметра selectorListElement, должен быть "string"'
+            );
         }
 
-        if (typeof selectorCounterElement !== 'string') {
-            throw new NotificationError('Тип параметра selectorCounterElement, должен быть "string"');
+        if (typeof selectorCounterElement !== "string") {
+            throw new NotificationError(
+                'Тип параметра selectorCounterElement, должен быть "string"'
+            );
         }
 
         this.mainElement = document.querySelector(selectorMainElement);
@@ -31,7 +53,9 @@ export class Notification {
 
     set mainElement(value) {
         if (!(value instanceof HTMLElement)) {
-            throw new NotificationError('Параметр value для свойства mainElement, должно быть "HTMLElement"');
+            throw new NotificationError(
+                'Параметр value для свойства mainElement, должно быть "HTMLElement"'
+            );
         }
 
         this.#mainElement = value;
@@ -39,48 +63,63 @@ export class Notification {
 
     get mainElement() {
         if (!(this.#mainElement instanceof HTMLElement)) {
-            throw new NotificationError('Свойство mainElement, должно быть "HTMLElement"');
+            throw new NotificationError(
+                'Свойство mainElement, должно быть "HTMLElement"'
+            );
         }
         return this.#mainElement;
     }
 
     set listElement(value) {
         if (!(value instanceof HTMLElement)) {
-            throw new NotificationError('Параметр value для свойства listElement, должно быть "HTMLElement"');
+            throw new NotificationError(
+                'Параметр value для свойства listElement, должно быть "HTMLElement"'
+            );
         }
         this.#listElement = value;
     }
 
     get listElement() {
         if (!(this.#listElement instanceof HTMLElement)) {
-            throw new NotificationError('Свойство listElement, должно быть "HTMLElement"');
+            throw new NotificationError(
+                'Свойство listElement, должно быть "HTMLElement"'
+            );
         }
         return this.#listElement;
     }
 
     set counterElement(value) {
         if (!(value instanceof HTMLElement)) {
-            throw new NotificationError('Параметр value для свойства counterElement, должно быть "HTMLElement"');
+            throw new NotificationError(
+                'Параметр value для свойства counterElement, должно быть "HTMLElement"'
+            );
         }
         this.#counterElement = value;
     }
 
     get counterElement() {
         if (!(this.#counterElement instanceof HTMLElement)) {
-            throw new NotificationError('Свойство counterElement, должно быть "HTMLElement"');
+            throw new NotificationError(
+                'Свойство counterElement, должно быть "HTMLElement"'
+            );
         }
         return this.#counterElement;
     }
 
     get listNotifications() {
         if (!Array.isArray(this.#listNotifications)) {
-            throw new NotificationError('Свойство listNotifications, должно быть "array"');
+            throw new NotificationError(
+                'Свойство listNotifications, должно быть "array"'
+            );
         }
         return this.#listNotifications;
     }
 
     updateListElement() {
-        let items = this.listElement.querySelectorAll('article.' + Notification.tagNew) ?? [];
+        let items =
+            this.listElement.querySelectorAll(
+                "article." + Notification.tagNew
+            ) ?? [];
         if (items.length === 0) {
             this.setStatusNew(false);
         }
@@ -96,7 +135,10 @@ export class Notification {
     }
 
     disableListElement() {
-        let items = this.listElement.querySelectorAll('article.' + Notification.tagNew) ?? [];
+        let items =
+            this.listElement.querySelectorAll(
+                "article." + Notification.tagNew
+            ) ?? [];
         items.forEach((item) => {
             if (item.classList.contains(Notification.tagNew)) {
                 item.classList.remove(Notification.tagNew);
@@ -113,7 +155,7 @@ export class Notification {
         //     }
         // });
 
-        this.mainElement.addEventListener('click', () => {
+        this.mainElement.addEventListener("click", () => {
             if (this.mainElement.classList.contains(Notification.tagNew)) {
                 this.disableListElement();
                 this.updateListElement();
@@ -137,12 +179,15 @@ export class Notification {
     }
 
     setNumberNotifications(value) {
-        this.counterElement.setAttribute('value', Number(value));
+        this.counterElement.setAttribute("value", Number(value));
     }
 
     getNumberNotifications() {
-        if (this.counterElement.hasAttribute('value') && this.counterElement.getAttribute('value') > 0) {
-            return Number(this.counterElement.getAttribute('value'));
+        if (
+            this.counterElement.hasAttribute("value") &&
+            this.counterElement.getAttribute("value") > 0
+        ) {
+            return Number(this.counterElement.getAttribute("value"));
         }
 
         return 0;
@@ -154,22 +199,30 @@ export class Notification {
     }
 
     setStatusNew(status = true) {
-        if (typeof status !== 'boolean') {
-            throw new NotificationError('Тип параметра status, должен быть "boolean"');
+        if (typeof status !== "boolean") {
+            throw new NotificationError(
+                'Тип параметра status, должен быть "boolean"'
+            );
         }
 
-        if (status && !this.mainElement.classList.contains(Notification.tagNew)) {
+        if (
+            status &&
+            !this.mainElement.classList.contains(Notification.tagNew)
+        ) {
             this.mainElement.classList.add(Notification.tagNew);
         }
 
-        if (!status && this.mainElement.classList.contains(Notification.tagNew)) {
+        if (
+            !status &&
+            this.mainElement.classList.contains(Notification.tagNew)
+        ) {
             this.mainElement.classList.remove(Notification.tagNew);
         }
     }
 
     deleteDefaultElement() {
         if (this.listNotifications.length > 0) {
-            let elemDefault = this.listElement.querySelector('.default');
+            let elemDefault = this.listElement.querySelector(".default");
             if (elemDefault instanceof HTMLElement) {
                 elemDefault.remove();
             }
@@ -200,34 +253,43 @@ export class Notification {
     }
 
     addNotification(title, titleDate, message, newNotification = true) {
-        if (typeof title !== 'string') {
-            throw new NotificationError('Тип параметра title, должен быть "string"');
+        if (typeof title !== "string") {
+            throw new NotificationError(
+                'Тип параметра title, должен быть "string"'
+            );
         }
 
-        if (typeof titleDate !== 'string') {
-            throw new NotificationError('Тип параметра titleDate, должен быть "string"');
+        if (typeof titleDate !== "string") {
+            throw new NotificationError(
+                'Тип параметра titleDate, должен быть "string"'
+            );
         }
 
-        if (typeof message !== 'string') {
-            throw new NotificationError('Тип параметра message, должен быть "string"');
+        if (typeof message !== "string") {
+            throw new NotificationError(
+                'Тип параметра message, должен быть "string"'
+            );
         }
 
-        if (typeof newNotification !== 'boolean') {
-            throw new NotificationError('Тип параметра newNotification, должен быть "boolean"');
+        if (typeof newNotification !== "boolean") {
+            throw new NotificationError(
+                'Тип параметра newNotification, должен быть "boolean"'
+            );
         }
 
-        let itemArticleElement = document.createElement('article');
-        let itemHeaderElement = document.createElement('h4');
-        let itemHeaderTextElement = document.createElement('p');
-        let itemHeaderTimeElement = document.createElement('time');
-        let itemHeaderMenuElement = document.createElement('menu');
-        let itemHeaderMenuButtonElement = document.createElement('button');
-        let itemContentElement = document.createElement('a');
+        let itemArticleElement = document.createElement("article");
+        let itemHeaderElement = document.createElement("h4");
+        let itemHeaderTextElement = document.createElement("p");
+        let itemHeaderTimeElement = document.createElement("time");
+        let itemHeaderMenuElement = document.createElement("menu");
+        let itemHeaderMenuButtonElement = document.createElement("button");
+        let itemContentElement = document.createElement("a");
 
-        itemHeaderMenuButtonElement.innerHTML = '<div class="icon-check"><i></i></div>';
-        itemHeaderMenuButtonElement.classList.add('check');
+        itemHeaderMenuButtonElement.innerHTML =
+            '<div class="icon-check"><i></i></div>';
+        itemHeaderMenuButtonElement.classList.add("check");
 
-        itemHeaderTimeElement.setAttribute('datetime', titleDate);
+        itemHeaderTimeElement.setAttribute("datetime", titleDate);
         itemHeaderTimeElement.innerText = titleDate;
 
         itemHeaderTextElement.innerText = title;

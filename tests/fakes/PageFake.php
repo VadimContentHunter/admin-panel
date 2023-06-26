@@ -25,7 +25,7 @@ class PageFake extends Page
         return 'pages_test';
     }
 
-    public static function selectByIdWithBlocks(int $page_id): ?IPage
+    public static function fakeSelectByIdWithBlocks(int $page_id): ?IPage
     {
         if (self::createTable() !== false) {
             return null;
@@ -40,11 +40,11 @@ class PageFake extends Page
                 (new DataMySQLQueryBuilder())
                     ->select()
                         ->addField('*')
-                        ->from(PageFake::getTableName())
+                        ->from(self::getTableName())
                         ->where('id=:page_id'),
                 self::class,
                 parameters: [
-                    [':page_id' => [$page_id]],
+                    ':page_id' => [$page_id],
                 ]
             )
             ->addQuery(
@@ -59,9 +59,9 @@ class PageFake extends Page
                             ->innerJoin($table_name_for_blocks)
                             ->on($table_name_for_blocks . '.id = ' . $table_name_for_block_level . '.block_id')
                             ->where($table_name_for_block_level . '.page_id=:page_id'),
-                BlockFake::class,
+                Block::class,
                 parameters: [
-                    [':page_id' => [$page_id]],
+                    ':page_id' => [$page_id],
                 ]
             )
             ->send();
