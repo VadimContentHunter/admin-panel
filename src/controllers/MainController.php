@@ -58,9 +58,9 @@ class MainController
         $this->renderAdminPage->addJsFileHead(AdminPanelSetting::getPathToResources('js/Notification/Notification.js'));
         $this->renderAdminPage->addJsFileAfterBody(AdminPanelSetting::getPathToResources('js/ControlMenuItem.js'));
         $this->renderAdminPage->addHeadCodeFiles($baseView->getPage('scripts/init_paths.php', [
-            'path_node_modules' => Helper::getCurrentHostUrl(),
-            'path_resources_js' => Helper::getCurrentHostUrl() . '/src/resources/js',
-            'path_module' => Helper::getCurrentHostUrl() . '/src/modules',
+            'path_node_modules' => AdminPanelSetting::$urlPathNodeModules,
+            'path_resources_js' => AdminPanelSetting::$urlPathResourcesJs,
+            'path_module' => AdminPanelSetting::$urlPathModules,
         ]));
         $this->renderAdminPage->renderPageUiComponent(
             'admin-panel-page.php',
