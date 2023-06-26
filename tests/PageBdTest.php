@@ -102,7 +102,7 @@ class PageBdTest extends TestCase
     public function test_joining_tables(): void
     {
         // $page = new PageFake();
-        $result = PageFake::selectByIdWithBlocks(3);
+        $result = PageFake::fakeSelectByIdWithBlocks(1);
         $this->assertTrue(true);
     }
 }

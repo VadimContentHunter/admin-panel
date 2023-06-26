@@ -87,7 +87,7 @@ class Page extends ActiveRecord implements IPage
                         ->where('id=:page_id'),
                 self::class,
                 parameters: [
-                    [':page_id' => [$page_id]],
+                    ':page_id' => [$page_id],
                 ]
             )
             ->addQuery(
@@ -104,7 +104,7 @@ class Page extends ActiveRecord implements IPage
                             ->where($table_name_for_block_level . '.page_id=:page_id'),
                 Block::class,
                 parameters: [
-                    [':page_id' => [$page_id]],
+                    ':page_id' => [$page_id],
                 ]
             )
             ->send();
