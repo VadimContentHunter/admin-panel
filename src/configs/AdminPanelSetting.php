@@ -22,6 +22,12 @@ class AdminPanelSetting
 
     public static string $dbType = '';
 
+    public static string $urlPathNodeModules = '';
+
+    public static string $urlPathResourcesJs = '';
+
+    public static string $urlPathModules = '';
+
     public static function getModuleUrl(string $module_name): string
     {
         return Helper::getCurrentHostUrl() . '/admin/module/' . $module_name;
